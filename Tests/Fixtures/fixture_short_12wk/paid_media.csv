@@ -1,0 +1,13 @@
+date_week,geo,channel,spend
+2024-01-01,us,test_channel,150.0
+2024-01-08,us,test_channel,156.41
+2024-01-15,us,test_channel,161.1
+2024-01-22,us,test_channel,162.9
+2024-01-29,us,test_channel,161.56
+2024-02-05,us,test_channel,157.82
+2024-02-12,us,test_channel,153.18
+2024-02-19,us,test_channel,149.44
+2024-02-26,us,test_channel,148.1
+2024-03-04,us,test_channel,149.9
+2024-03-11,us,test_channel,154.59
+2024-03-18,us,test_channel,161.0

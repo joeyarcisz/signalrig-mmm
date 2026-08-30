@@ -1,0 +1,13 @@
+date_week,geo,kpi_name,kpi_value
+2024-01-01,us,demo_requests,300.0
+2024-01-08,us,demo_requests,311.3
+2024-01-15,us,demo_requests,320.5
+2024-01-22,us,demo_requests,325.9
+2024-01-29,us,demo_requests,326.7
+2024-02-05,us,demo_requests,323.3
+2024-02-12,us,demo_requests,316.8
+2024-02-19,us,demo_requests,309.2
+2024-02-26,us,demo_requests,302.7
+2024-03-04,us,demo_requests,299.3
+2024-03-11,us,demo_requests,300.1
+2024-03-18,us,demo_requests,305.5
