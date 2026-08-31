@@ -1,6 +1,6 @@
 # SignalRig MMM
 
-![License](https://img.shields.io/badge/license-Apache--2.0-blue) ![Platform](https://img.shields.io/badge/swift-5.9%2B-orange) ![Model](https://img.shields.io/badge/stan-2.39-purple)
+![CI](https://github.com/joeyarcisz/signalrig-mmm/actions/workflows/ci.yml/badge.svg) ![License](https://img.shields.io/badge/license-Apache--2.0-blue) ![Platform](https://img.shields.io/badge/swift-5.9%2B-orange) ![Model](https://img.shields.io/badge/stan-2.39-purple)
 
 A Bayesian media mix model that shows its work: parameter recovery and holdout
 grading are first-class outputs, not an afterthought. This is the open-source
