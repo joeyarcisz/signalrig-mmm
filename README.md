@@ -1,9 +1,15 @@
 # SignalRig MMM
 
+![License](https://img.shields.io/badge/license-Apache--2.0-blue) ![Platform](https://img.shields.io/badge/swift-5.9%2B-orange) ![Model](https://img.shields.io/badge/stan-2.39-purple)
+
 A Bayesian media mix model that shows its work: parameter recovery and holdout
 grading are first-class outputs, not an afterthought. This is the open-source
 model core of [SignalRig](https://signalrig.co), a macOS app for on-device
 media measurement.
+
+<img src="docs/mmm-lab.png" alt="SignalRig's MMM Lab: a spend-shift slider answered by fitted response curves with credible intervals" width="100%">
+
+*The engine in this repo powering [SignalRig for Mac](https://signalrig.co): pull a spend slider, fitted curves answer with intervals attached.*
 
 ## What it is
 
@@ -89,6 +95,23 @@ was validated line-by-line against a PyMC reference implementation: identical
 draws produce identical business metrics to machine precision, and full fits
 agree on recovery (24/24 planted parameters) and holdout error (2.6% vs 2.64%
 MAPE) within sampling noise.
+
+## The instrument
+
+This engine is the core of **SignalRig for Mac**: the finished instrument built
+on it, with the data validator, the interactive views, and the graded exam
+presented so a room understands it. Fully offline, $249 once, no subscription.
+[signalrig.co](https://signalrig.co)
+
+Buying the app is what funds this open-source work.
+
+## Who makes this
+
+Built by [Joey Arcisz](https://joeyarcisz.com) at
+[Geared Like A Machine](https://gearedlikeamachine.com), an independent studio
+in Texas that builds production and measurement tooling. If your team wants
+help standing up honest media measurement, say hello:
+[joey@gearedlikeamachine.com](mailto:joey@gearedlikeamachine.com).
 
 ## License
 
