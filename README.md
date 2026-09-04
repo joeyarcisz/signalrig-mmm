@@ -48,27 +48,36 @@ the graded exam instead:
 
 ## Quickstart
 
-Requirements: macOS or Linux with a C++ toolchain (to build CmdStan once),
-Swift 5.9+, and [CmdStan](https://mc-stan.org/users/interfaces/cmdstan)
-(tested against 2.39).
+Requirements: Swift 5.9+ builds the engine and runs the tests with no other
+dependencies. Fitting additionally needs a C++ toolchain and
+[CmdStan](https://mc-stan.org/users/interfaces/cmdstan) (tested against 2.39)
+to compile the model once.
 
 ```bash
-# 1. Compile the model with CmdStan (one time)
+# 1. Build the engine and run the suite. No CmdStan required for this step.
+swift build -c release
+swift test
+
+# 2. Validate and prepare the bundled synthetic fixture. Writes
+#    data_full.json, data_holdout.json and panel_meta.json.
+swift run -c release fitengine-cli prep \
+  --drop Tests/Fixtures/foreign_drop \
+  --out /tmp/mmm-prep
+
+# 3. Compile the model with CmdStan (one time).
 cd <cmdstan-dir> && make <path-to-this-repo>/stan/mmm
 
-# 2. Build the Swift package
-swift build -c release
-
-# 3. Run the full pipeline against the bundled synthetic fixture
-swift run -c release fitengine-cli e2e \
-  --drop Tests/Fixtures/foreign_drop \
-  --binary stan/mmm \
+# 4. Fit the prepared panel.
+swift run -c release fitengine-cli fit \
+  --binary <path-to-this-repo>/stan/mmm \
+  --data /tmp/mmm-prep/data_full.json \
   --work /tmp/mmm-work
 ```
 
-The `e2e` run prints a JSON report: recovery coverage, holdout accuracy, and
-sampler diagnostics. On Apple silicon a 104-week, 8-channel panel fits in
-about 80 seconds per fit.
+The `grade`, `artifacts` and `e2e` commands additionally require a `--truth`
+file naming the planted parameters. The bundled fixture is a foreign package
+with no planted truth, so those commands apply to panels you generate
+yourself with known ground truth.
 
 ## Data contract
 
