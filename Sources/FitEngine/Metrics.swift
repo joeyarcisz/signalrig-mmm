@@ -30,14 +30,14 @@ public struct TruthChannel {
     public let adstockHalfLifeWeeks: Double
     public let contributionShare: Double
     public let refWeeklySpend: Double
-    // label/wrenchClaimedCpl: only read by the artifacts port's
+    // label/vendorClaimedCpl: only read by the artifacts port's
     // recovery_artifact (posterior.py :270-329), not by grade.py's
     // recovery grading (which only needs the four fields above). Default
-    // label to the raw key and wrenchClaimedCpl to nil when a truth file
+    // label to the raw key and vendorClaimedCpl to nil when a truth file
     // omits them, so the existing `grade` CLI command (and its parity
     // test) is unaffected by this additive change.
     public let label: String
-    public let wrenchClaimedCpl: Double?
+    public let vendorClaimedCpl: Double?
 
     public static func parse(_ json: JSONValue) -> TruthChannel? {
         guard let key = json["key"]?.asString,
@@ -46,10 +46,10 @@ public struct TruthChannel {
               let share = json["contribution_share"]?.asDouble,
               let refSpend = json["ref_weekly_spend"]?.asDouble else { return nil }
         let label = json["label"]?.asString ?? key
-        let wrenchClaimedCpl = json["wrench_claimed_cpl"]?.asDouble
+        let vendorClaimedCpl = json["vendor_claimed_cpl"]?.asDouble
         return TruthChannel(key: key, trueCplAtRef: cpl, adstockHalfLifeWeeks: hl,
                              contributionShare: share, refWeeklySpend: refSpend,
-                             label: label, wrenchClaimedCpl: wrenchClaimedCpl)
+                             label: label, vendorClaimedCpl: vendorClaimedCpl)
     }
 }
 

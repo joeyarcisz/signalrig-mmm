@@ -32,7 +32,7 @@ public struct RecoveryParamArtifact {
 public struct CplComparisonRow {
     public let key: String
     public let label: String
-    public let wrenchClaimedCpl: Double?  // nil -> JSON null (vendor declined to benchmark)
+    public let vendorClaimedCpl: Double?  // nil -> JSON null (vendor declined to benchmark)
     public let trueCpl: Double
     public let recoveredCpl: IntervalResult
     public let insideInterval: Bool
@@ -41,7 +41,7 @@ public struct CplComparisonRow {
         .object([
             "key": .string(key),
             "label": .string(label),
-            "wrench_claimed_cpl": wrenchClaimedCpl.map { JSONValue.double($0) } ?? .null,
+            "vendor_claimed_cpl": vendorClaimedCpl.map { JSONValue.double($0) } ?? .null,
             "true_cpl": .double(trueCpl),
             "recovered_cpl": recoveredCpl.toJSON(),
             "inside_interval": .bool(insideInterval),
@@ -164,7 +164,7 @@ public enum RecoveryArtifactBuilder {
             }
 
             cplRows.append(CplComparisonRow(
-                key: key, label: t.label, wrenchClaimedCpl: t.wrenchClaimedCpl,
+                key: key, label: t.label, vendorClaimedCpl: t.vendorClaimedCpl,
                 trueCpl: roundTo(t.trueCplAtRef, 2), recoveredCpl: cplIv, insideInterval: insideCpl
             ))
         }
