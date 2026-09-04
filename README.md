@@ -110,7 +110,7 @@ MAPE) within sampling noise.
 This engine is the core of **SignalRig for Mac**: the finished instrument built
 on it, with the data validator, the interactive views, and the graded exam
 presented so a room understands it. Fully offline, $249 once, no subscription.
-[signalrig.co](https://signalrig.co)
+[signalrig.co](https://signalrig.co) | [Download on the Mac App Store](https://apps.apple.com/us/app/signalrig/id6806416897?mt=12)
 
 Buying the app is what funds this open-source work.
 
