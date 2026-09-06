@@ -2,15 +2,13 @@ import Foundation
 
 // Shared constants for the UI-artifact exporter (channels/curves/scenarios/
 // diagnostics/recovery/manifest/memo.json), mirroring the read-only Python
-// references at the Python reference implementation:
+// references at the historical Python research engine:
 // engine/artifacts/export.py (DISCLOSURE, CONTRACT_FILES) and
 // engine/__init__.py (__version__).
 public enum ArtifactConstants {
-    // engine/artifacts/export.py DISCLOSURE. Used verbatim in both
-    // manifest.json (when is_synthetic) and recovery.json's available
-    // variant (data_disclosure field) -- ported as data, not authored
-    // prose, so it is reproduced exactly including its em dash, matching
-    // the string already shipped in the app's committed sample artifacts.
+    public static let qualityPolicyVersion = 4
+    // Shared disclosure for newly emitted synthetic manifests and recovery
+    // artifacts. Historical bundled artifacts retain their original values.
     public static let disclosure = "Synthetic twin calibrated to the bundled sample brief. Drop a real export in Data Drop-In and this exact pipeline retrains on it."
 
     // engine/artifacts/export.py CONTRACT_FILES, fixed hashing order.
@@ -20,8 +18,8 @@ public enum ArtifactConstants {
     // engine_version in manifest.json. The task packet directs
     // engine_version/packages to become this package's own identity
     // rather than the Python engine's pymc/arviz/numpy versions.
-    public static let engineVersion = "0.1.0"
-    public static let packages: [String: String] = ["fitengine": "0.1.0", "cmdstan": "2.39.0"]
+    public static let engineVersion = "0.2.0"
+    public static let packages: [String: String] = ["fitengine": "0.2.0", "cmdstan": "2.39.0"]
 
     // bench.json generation is explicitly out of scope for this port (see
     // task packet section 1), but engine/memo.py's build_memo() needs two
@@ -50,7 +48,7 @@ public enum ArtifactConstants {
     // Default package label used in memo.json's title/headline when the
     // caller (CLI --label flag, or ArtifactsPipeline.run's packageLabel
     // parameter) does not supply one. Never a fixture brand name: the
-    // title is always "<packageLabel> \u{2014} <kpi title>: ...", so an
+    // title uses the package label and KPI title, so an
     // unset label reads as a neutral placeholder rather than borrowing any
     // one client's identity.
     public static let defaultPackageLabel = "Client package"

@@ -1,0 +1,101 @@
+{
+  "date": "2026-09-06",
+  "scope": "Sandboxed native integration harness using shipping sources; not a release-install or independent real-data test",
+  "quality_policy_version": 4,
+  "helper_build_receipt": {
+    "architecture": "arm64",
+    "build_parallelism": 1,
+    "cmdstan_makefile_sha256": "021316fafc3e1d8886f5771284baec1f0a7db6875b25021d7886eef298e21f3f",
+    "cmdstan_version": "2.39.0",
+    "compiler": "Apple clang version 21.0.0 (clang-2100.1.1.101)",
+    "helper_sha256": "91fe4b123c33bb3ea02a0c8774a164dc165c570f4fb3b1544eb7e67b141b1a91",
+    "libraries": {
+      "libtbb.dylib": "e4e6befee442cee693c6230f1f2ce93b88f5fd35d32c2cc6dbf24dd3649d7853",
+      "libtbbmalloc.dylib": "83d49b1f29a69ef71b0540af0a60d05e8ca274362b6ea54046ecf8f637336d85",
+      "libtbbmalloc_proxy.dylib": "8ecc41e9cb6eb8f3e5bc26cf96b2d105e46433de938de4084d8ee392167166c7"
+    },
+    "schema_version": 1,
+    "stan_source_sha256": "310a9bbb0af3e4191880d385ff7c62558eacb8f0672de217b29ea33e60d985e0"
+  },
+  "tested_source_tree_sha256": "1abfadd89d77c9d3b1efe58a74187c29e24dd2850f797cb910f24b96f3c9a6e8",
+  "sample_fit_reloaded": true,
+  "held_back_fit_preserved_previous_model": true,
+  "runs": [
+    {
+      "fixture": "Tests/Fixtures/ui_smoke_drop",
+      "is_synthetic": true,
+      "seed": 1651133753,
+      "input_sha256": "18b400cfb55e1cd02a6c3f165892e0327a3b1c97412dd2b28374a2762289d15f",
+      "diagnostics": {
+        "chains": 4,
+        "coverage_90_pct": 100,
+        "divergences": 0,
+        "draws": 1000,
+        "ess_bulk_min": 1380,
+        "gates": {
+          "converged": true,
+          "fit_ok": true,
+          "optimizer_unlocked": true
+        },
+        "holdout_weeks": 12,
+        "mape_holdout_pct": 3.58,
+        "quality_policy_version": 4,
+        "r2_holdout": 0.399,
+        "rhat_max": 1.0051,
+        "sampler": "NUTS (4 chains)"
+      },
+      "status": "pass",
+      "sampler": {
+        "adapt_delta": 0.97,
+        "chains_per_fit": 4,
+        "samples_per_chain": 1000,
+        "warmup_per_chain": 1000
+      },
+      "preprocessing": {
+        "holdout_weeks": 12,
+        "policy": "training-only",
+        "prior_source": "Bundled sample CPL defaults; not client-calibrated",
+        "training_weeks": 92
+      },
+      "created_at": "2026-09-06T20:50:14+00:00"
+    },
+    {
+      "fixture": "Tests/Fixtures/foreign_drop",
+      "is_synthetic": true,
+      "seed": 871717982,
+      "input_sha256": "ac10ea9344c94b3d74bc6b5b5713c2447eab4e6a82d9039d72f96bb5188e79a4",
+      "diagnostics": {
+        "chains": 4,
+        "coverage_90_pct": 41.7,
+        "divergences": 0,
+        "draws": 1000,
+        "ess_bulk_min": 2309,
+        "gates": {
+          "converged": true,
+          "fit_ok": false,
+          "optimizer_unlocked": false
+        },
+        "holdout_weeks": 12,
+        "mape_holdout_pct": 14.37,
+        "quality_policy_version": 4,
+        "r2_holdout": -8.362,
+        "rhat_max": 1.0044,
+        "sampler": "NUTS (4 chains)"
+      },
+      "status": "held_back",
+      "sampler": {
+        "adapt_delta": 0.97,
+        "chains_per_fit": 4,
+        "samples_per_chain": 1000,
+        "warmup_per_chain": 1000
+      },
+      "preprocessing": {
+        "holdout_weeks": 12,
+        "policy": "training-only",
+        "prior_source": "Bundled sample CPL defaults; not client-calibrated",
+        "training_weeks": 52
+      },
+      "created_at": "2026-09-06T20:50:36+00:00"
+    }
+  ]
+}

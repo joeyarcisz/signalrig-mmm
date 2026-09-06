@@ -3,7 +3,7 @@ import Foundation
 // Top-level orchestration for the `artifacts` CLI subcommand: wires
 // DrawsReader + PosteriorView + the per-artifact builders above into the
 // seven UI-artifact JSONs engine/run_all.py's own pipeline produces
-// (:47-93, read-only reference at the Python reference implementation),
+// (:47-93, read-only reference at the historical Python research engine),
 // minus bench.json and narratives.json (out of scope, static content
 // handled elsewhere per the task packet).
 public struct ArtifactsBundle {
@@ -69,18 +69,22 @@ public enum ArtifactsPipeline {
         packageLabel: String = ArtifactConstants.defaultPackageLabel,
         unavailableRecovery: Bool = false
     ) throws -> ArtifactsBundle {
+        try Grader.validateFitDirectories(fullDir: fullDir, holdoutDir: holdoutDir)
         let meta = try Grader.loadPanelMeta(path: metaPath)
 
         let fitFull = try DrawsReader.readDirectory(dir: fullDir)
+        try Grader.validatePanelMeta(meta, fit: fitFull)
         let viewFull = PosteriorView(fit: fitFull, meta: meta, seed: UInt64(seed))
 
         let fitHoldout = try DrawsReader.readDirectory(dir: holdoutDir)
-        let viewHoldout = PosteriorView(fit: fitHoldout, meta: meta, seed: UInt64(seed))
+        let holdoutMeta = try Grader.holdoutPanelMeta(meta, fit: fitHoldout)
+        try Grader.validateIndependentFits(full: fitFull, holdout: fitHoldout)
+        let viewHoldout = PosteriorView(fit: fitHoldout, meta: holdoutMeta, seed: UInt64(seed))
 
+        let diagnosticsArt = try ArtifactDiagnosticsBuilder.build(fitFull: fitFull, fitHoldout: fitHoldout, viewFull: viewFull, viewHoldout: viewHoldout, holdoutWeeks: meta.holdoutWeeks)
         let channelsArt = ChannelsArtifactBuilder.build(view: viewFull)
         let curvesArt = CurvesArtifactBuilder.build(view: viewFull)
         let scenariosArt = ScenariosArtifactBuilder.build(view: viewFull)
-        let diagnosticsArt = ArtifactDiagnosticsBuilder.build(fitFull: fitFull, viewFull: viewFull, viewHoldout: viewHoldout, holdoutWeeks: meta.holdoutWeeks)
 
         let recoveryJSON: JSONValue
         if unavailableRecovery {

@@ -1,6 +1,6 @@
 import Foundation
 
-// Translates the local spike workspace/scripts/grade.py
+// Translates the historical Stan feasibility workspace/scripts/grade.py
 // (read-only reference) verbatim: same formulas, operating on StanFit
 // draws instead of cmdstanpy/arviz objects.
 

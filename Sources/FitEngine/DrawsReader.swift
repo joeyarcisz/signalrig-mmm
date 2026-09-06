@@ -12,11 +12,33 @@ public struct ChainDraws {
 public enum DrawsReaderError: Error, CustomStringConvertible {
     case noFilesFound(String)
     case headerNotFound(String)
+    case invalidUTF8(String)
+    case malformedHeader(path: String, reason: String)
+    case noDraws(String)
+    case wrongFieldCount(path: String, line: Int, expected: Int, actual: Int)
+    case invalidValue(path: String, line: Int, column: String)
+    case invalidSchema(path: String, reason: String)
+    case inconsistentHeaders(path: String)
+    case inconsistentDrawCounts(path: String, expected: Int, actual: Int)
+    case duplicateChains(path: String, matchingPath: String)
 
     public var description: String {
         switch self {
         case .noFilesFound(let dir): return "no chain CSV files found in \(dir)"
         case .headerNotFound(let path): return "no header row found in \(path)"
+        case .invalidUTF8(let path): return "chain CSV is not valid UTF-8: \(path)"
+        case .malformedHeader(let path, let reason): return "invalid chain CSV header in \(path): \(reason)"
+        case .noDraws(let path): return "chain CSV contains no posterior draws: \(path)"
+        case .wrongFieldCount(let path, let line, let expected, let actual):
+            return "\(path): line \(line) has \(actual) values; expected \(expected)"
+        case .invalidValue(let path, let line, let column):
+            return "\(path): line \(line), column \(column) must contain a finite numeric posterior value (divergent__ must be 0 or 1)"
+        case .invalidSchema(let path, let reason): return "invalid posterior schema in \(path): \(reason)"
+        case .inconsistentHeaders(let path): return "chain headers do not match: \(path)"
+        case .inconsistentDrawCounts(let path, let expected, let actual):
+            return "\(path): chain has \(actual) draws; expected \(expected) to match the other chains"
+        case .duplicateChains(let path, let matchingPath):
+            return "\(path): posterior parameter draws exactly duplicate \(matchingPath); independent chains are required"
         }
     }
 }
@@ -37,7 +59,12 @@ public struct StanFit {
         var out: [Double] = []
         out.reserveCapacity(totalDraws)
         for chain in chains {
-            out.append(contentsOf: chain.columns[name] ?? [Double](repeating: 0, count: chain.nDraws))
+            // readDirectory validates this invariant before exposing a fit.
+            // A programmer requesting an absent column must not invent data.
+            guard let column = chain.columns[name], column.count == chain.nDraws else {
+                preconditionFailure("required posterior column is unavailable: \(name)")
+            }
+            out.append(contentsOf: column)
         }
         return out
     }
@@ -45,10 +72,18 @@ public struct StanFit {
     // Stacks dot-indexed vector variables (e.g. "adstock_alpha.1".."adstock_alpha.C")
     // into a (S, count) row-major matrix across all chains.
     public func stackedIndexed(_ prefix: String, count: Int) -> [[Double]] {
+        precondition(count >= 0, "posterior column count must be non-negative")
         var out = Array(repeating: [Double](repeating: 0, count: count), count: totalDraws)
+        if count == 0 { return out }
         var offset = 0
         for chain in chains {
-            let cols: [[Double]] = (1...count).map { chain.columns["\(prefix).\($0)"] ?? [Double](repeating: 0, count: chain.nDraws) }
+            let cols: [[Double]] = (1...count).map { index in
+                let name = "\(prefix).\(index)"
+                guard let column = chain.columns[name], column.count == chain.nDraws else {
+                    preconditionFailure("required posterior column is unavailable: \(name)")
+                }
+                return column
+            }
             for s in 0..<chain.nDraws {
                 for c in 0..<count {
                     out[offset + s][c] = cols[c][s]
@@ -60,7 +95,7 @@ public struct StanFit {
     }
 
     public var divergences: Int {
-        Int(stackedColumn("divergent__").reduce(0, +).rounded())
+        stackedColumn("divergent__").filter { $0 == 1 }.count
     }
 }
 
@@ -93,35 +128,46 @@ public enum DrawsReader {
 
     public static func readChain(path: String) throws -> ChainDraws {
         let data = try Data(contentsOf: URL(fileURLWithPath: path))
-        let content = String(decoding: data, as: UTF8.self)
+        guard let content = String(data: data, encoding: .utf8) else {
+            throw DrawsReaderError.invalidUTF8(path)
+        }
         var header: [String]?
-        var rows: [[Double]] = []
-        content.enumerateLines { line, _ in
-            if line.isEmpty || line.hasPrefix("#") { return }
+        var columns: [String: [Double]] = [:]
+        var draws = 0
+        for (offset, rawLine) in content.split(separator: "\n", omittingEmptySubsequences: false).enumerated() {
+            let line = rawLine.trimmingCharacters(in: .whitespacesAndNewlines)
+            if line.isEmpty || line.hasPrefix("#") { continue }
             if header == nil {
-                header = line.split(separator: ",", omittingEmptySubsequences: false).map(String.init)
+                let names = line.split(separator: ",", omittingEmptySubsequences: false).map {
+                    $0.trimmingCharacters(in: .whitespaces)
+                }
+                guard names.allSatisfy({ !$0.isEmpty }), Set(names).count == names.count else {
+                    throw DrawsReaderError.malformedHeader(path: path, reason: "column names must be nonempty and unique")
+                }
+                header = names
+                for name in names { columns[name] = [] }
             } else {
                 let fields = line.split(separator: ",", omittingEmptySubsequences: false)
-                var vals = [Double](repeating: 0, count: fields.count)
-                for (i, f) in fields.enumerated() {
-                    vals[i] = Double(f) ?? 0
+                let names = header!
+                guard fields.count == names.count else {
+                    throw DrawsReaderError.wrongFieldCount(path: path, line: offset + 1, expected: names.count, actual: fields.count)
                 }
-                rows.append(vals)
+                for (index, field) in fields.enumerated() {
+                    let name = names[index]
+                    guard let value = Double(field.trimmingCharacters(in: .whitespaces)), value.isFinite,
+                          name != "divergent__" || value == 0 || value == 1 else {
+                        throw DrawsReaderError.invalidValue(path: path, line: offset + 1, column: name)
+                    }
+                    columns[name]!.append(value)
+                }
+                draws += 1
             }
         }
         guard let hdr = header else {
             throw DrawsReaderError.headerNotFound(path)
         }
-        var columns: [String: [Double]] = [:]
-        columns.reserveCapacity(hdr.count)
-        for (ci, name) in hdr.enumerated() {
-            var col = [Double](repeating: 0, count: rows.count)
-            for (ri, row) in rows.enumerated() {
-                col[ri] = ci < row.count ? row[ci] : 0
-            }
-            columns[name] = col
-        }
-        return ChainDraws(header: hdr, columns: columns, nDraws: rows.count)
+        guard draws > 0 else { throw DrawsReaderError.noDraws(path) }
+        return ChainDraws(header: hdr, columns: columns, nDraws: draws)
     }
 
     // Dimensions are inferred from the header (never hardcoded), by finding
@@ -150,6 +196,76 @@ public enum DrawsReader {
             throw DrawsReaderError.noFilesFound(dir)
         }
         let (C, T, K) = inferDimensions(header: first.header)
-        return StanFit(chains: chains, C: C, T: T, K: K)
+        let fit = StanFit(chains: chains, C: C, T: T, K: K)
+        try validate(fit: fit, paths: files)
+        return fit
+    }
+
+    // Also used by diagnostics to validate fits constructed inside this
+    // module. Imported files can only reach callers through readDirectory.
+    static func validate(fit: StanFit, paths: [String]? = nil) throws {
+        guard let first = fit.chains.first else { throw DrawsReaderError.noFilesFound("posterior") }
+        guard fit.C > 0, fit.T > 0, fit.K >= 0,
+              fit.C <= first.header.count, fit.T <= first.header.count, fit.K <= first.header.count else {
+            throw DrawsReaderError.invalidSchema(path: paths?.first ?? "posterior", reason: "invalid channel, week, or control dimensions")
+        }
+        let vectorDimensions = [
+            ("adstock_alpha", fit.C), ("hill_kappa", fit.C), ("hill_slope", fit.C),
+            ("channel_beta", fit.C), ("fourier_beta", 4), ("control_gamma", fit.K), ("mu_scaled", fit.T),
+        ]
+        let requiredScalars = ["intercept", "trend", "sigma", "divergent__"]
+
+        for (index, chain) in fit.chains.enumerated() {
+            let path = paths?[index] ?? "chain \(index + 1)"
+            let names = Set(chain.header)
+            guard names.count == chain.header.count, !names.contains(""), names == Set(chain.columns.keys) else {
+                throw DrawsReaderError.malformedHeader(path: path, reason: "column names must be nonempty, unique, and match the stored columns")
+            }
+            guard chain.header == first.header else { throw DrawsReaderError.inconsistentHeaders(path: path) }
+            guard chain.nDraws > 0 else { throw DrawsReaderError.noDraws(path) }
+            guard chain.nDraws == first.nDraws else {
+                throw DrawsReaderError.inconsistentDrawCounts(path: path, expected: first.nDraws, actual: chain.nDraws)
+            }
+            for scalar in requiredScalars where !names.contains(scalar) {
+                throw DrawsReaderError.invalidSchema(path: path, reason: "missing required column \(scalar)")
+            }
+            for (prefix, count) in vectorDimensions {
+                let expected = Set((0..<count).map { "\(prefix).\($0 + 1)" })
+                let actual = Set(names.filter { $0 == prefix || $0.hasPrefix(prefix + ".") })
+                guard actual == expected else {
+                    throw DrawsReaderError.invalidSchema(path: path, reason: "\(prefix) must have exactly the contiguous indices 1 through \(count)")
+                }
+            }
+            let mediaColumns = Set(names.filter { $0 == "media_scaled" || $0.hasPrefix("media_scaled.") })
+            if !mediaColumns.isEmpty && mediaColumns != Set((1...fit.T).map { "media_scaled.\($0)" }) {
+                throw DrawsReaderError.invalidSchema(path: path, reason: "media_scaled dimensions must match mu_scaled")
+            }
+            for name in chain.header {
+                let values = chain.columns[name]!
+                guard values.count == chain.nDraws else {
+                    throw DrawsReaderError.inconsistentDrawCounts(path: "\(path), column \(name)", expected: chain.nDraws, actual: values.count)
+                }
+                for (draw, value) in values.enumerated() where !value.isFinite || (name == "divergent__" && value != 0 && value != 1) {
+                    throw DrawsReaderError.invalidValue(path: path, line: draw + 2, column: name)
+                }
+            }
+        }
+
+        // Renamed files, changed sampler metadata, or regenerated per-week
+        // predictions do not turn copied parameter draws into independent
+        // chains. Compare the model parameters themselves in draw order.
+        let parameterNames = ["intercept", "trend", "sigma"] + vectorDimensions
+            .filter { $0.0 != "mu_scaled" }
+            .flatMap { prefix, count in (0..<count).map { "\(prefix).\($0 + 1)" } }
+        for index in fit.chains.indices {
+            for previous in 0..<index where parameterNames.allSatisfy({
+                fit.chains[index].columns[$0] == fit.chains[previous].columns[$0]
+            }) {
+                throw DrawsReaderError.duplicateChains(
+                    path: paths?[index] ?? "chain \(index + 1)",
+                    matchingPath: paths?[previous] ?? "chain \(previous + 1)"
+                )
+            }
+        }
     }
 }

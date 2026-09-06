@@ -1,7 +1,7 @@
 import Foundation
 
 // Translates engine/model/posterior.py's channel_summaries() (:105-172,
-// read-only reference the Python reference implementation) verbatim,
+// read-only reference at the historical Python research engine) verbatim,
 // including its exact grading thresholds and decision-hint text.
 public struct ConfidenceInfo {
     public let grade: String
@@ -83,11 +83,11 @@ public enum ChannelsArtifactBuilder {
     // posterior.py :141-147.
     static func decisionHint(satPct: Double) -> String {
         if satPct > 55 {
-            return "Approaching saturation \u{2014} next dollar buys less here."
+            return "Approaching saturation - next dollar buys less here."
         } else if satPct > 35 {
             return "Headroom remains; scale in measured steps."
         } else {
-            return "Clear headroom \u{2014} strongest candidate for added spend."
+            return "Clear headroom - strongest candidate for added spend."
         }
     }
 

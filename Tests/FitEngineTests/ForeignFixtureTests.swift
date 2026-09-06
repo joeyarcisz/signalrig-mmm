@@ -3,7 +3,7 @@ import XCTest
 
 // Covers the task packet's section 5 requirements that must run WITHOUT any
 // external fixture: the five malformed-input rejections, the foreign-drop
-// prep path, a hygiene check of the full artifact set
+// (non-CarePoint) prep path, a brand-clean check of the full artifact set
 // for a foreign package, JSONValue's non-finite guard, and the T-floor
 // boundary. Every fixture this file reads lives under Tests/Fixtures/ in
 // this repo (see generate_foreign_fixtures.py), so these tests run
@@ -210,15 +210,19 @@ final class ForeignFixtureTests: XCTestCase {
         var lines = [header.joined(separator: ",")]
         for s in 0..<draws {
             let ds = Double(s + drawOffset)
+            // A constant posterior parameter now correctly has undefined
+            // diagnostics. Tiny deterministic variation keeps this fixture
+            // structural while leaving its channel economics unchanged.
+            let jitter = 0.000001 * sin(ds + 1)
             var vals: [Double] = []
             for c in 0..<C { vals.append(0.45 + 0.001 * ds + 0.01 * Double(c)) }   // adstock_alpha in (0,1)
-            for c in 0..<C { vals.append(1.0 + 0.05 * Double(c)) }                 // hill_kappa > 0
-            for c in 0..<C { vals.append(1.1 + 0.02 * Double(c)) }                 // hill_slope > 0
-            for c in 0..<C { vals.append(0.004 + 0.0004 * Double(c)) }             // channel_beta (y-scaled units)
-            vals.append(0.02)                                                       // intercept
-            vals.append(0.001)                                                      // trend
-            for _ in 0..<4 { vals.append(0.01) }                                    // fourier_beta
-            for _ in 0..<K { vals.append(0.02) }                                    // control_gamma
+            for c in 0..<C { vals.append(1.0 + 0.05 * Double(c) + jitter) }        // hill_kappa > 0
+            for c in 0..<C { vals.append(1.1 + 0.02 * Double(c) + jitter) }        // hill_slope > 0
+            for c in 0..<C { vals.append(0.004 + 0.0004 * Double(c) + jitter) }    // channel_beta (y-scaled units)
+            vals.append(0.02 + jitter)                                              // intercept
+            vals.append(0.001 + jitter)                                             // trend
+            for _ in 0..<4 { vals.append(0.01 + jitter) }                           // fourier_beta
+            for _ in 0..<K { vals.append(0.02 + jitter) }                           // control_gamma
             vals.append(0.05 + 0.0002 * ds)                                        // sigma > 0
             for t in 0..<T { vals.append(0.2 + 0.02 * sin(Double(t + s) / 6.0)) }   // mu_scaled
             vals.append(0)                                                          // divergent__
@@ -227,10 +231,10 @@ final class ForeignFixtureTests: XCTestCase {
         return lines.joined(separator: "\n") + "\n"
     }
 
-    func writeSyntheticFit(dir: URL, C: Int, K: Int, T: Int, chains: Int, draws: Int) throws {
+    func writeSyntheticFit(dir: URL, C: Int, K: Int, T: Int, chains: Int, draws: Int, fitOffset: Int = 0) throws {
         try FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
         for chain in 1...chains {
-            let text = Self.syntheticChainCSV(C: C, K: K, T: T, draws: draws, drawOffset: (chain - 1) * draws)
+            let text = Self.syntheticChainCSV(C: C, K: K, T: T, draws: draws, drawOffset: (chain - 1) * draws + fitOffset)
             try text.write(toFile: dir.appendingPathComponent("mmm_\(chain).csv").path, atomically: true, encoding: .utf8)
         }
     }
@@ -253,7 +257,7 @@ final class ForeignFixtureTests: XCTestCase {
         // a real fit (see the packet's own allowance for a tiny in-code
         // Draws value via DrawsReader).
         try writeSyntheticFit(dir: fullDir, C: panel.C, K: panel.K, T: panel.T, chains: 2, draws: 50)
-        try writeSyntheticFit(dir: holdoutDir, C: panel.C, K: panel.K, T: panel.T, chains: 2, draws: 50)
+        try writeSyntheticFit(dir: holdoutDir, C: panel.C, K: panel.K, T: panel.T, chains: 2, draws: 50, fitOffset: 1)
 
         let bundle = try ArtifactsPipeline.run(
             fullDir: fullDir.path,
@@ -267,7 +271,7 @@ final class ForeignFixtureTests: XCTestCase {
             unavailableRecovery: true
         )
 
-        let forbidden = ["NaN", "Infinity"]
+        let forbidden = ["CarePoint", "caregiver", "nan", "NaN", "inf"]
         var assertionsRun: [String] = []
         for (name, value) in bundle.files {
             let text = try value.serialized()
@@ -275,7 +279,7 @@ final class ForeignFixtureTests: XCTestCase {
                 XCTAssertFalse(text.contains(f), "\(name) contains forbidden substring \"\(f)\"")
             }
         }
-        assertionsRun.append("no artifact JSON string contains a non-finite number token")
+        assertionsRun.append("no artifact JSON string contains CarePoint/caregiver/nan/NaN/inf")
 
         XCTAssertEqual(bundle.manifest["is_synthetic"]?.asBool, false)
         assertionsRun.append("manifest.is_synthetic == false")
@@ -296,6 +300,8 @@ final class ForeignFixtureTests: XCTestCase {
         XCTAssertTrue(mape?.isFinite ?? false, "diagnostics.mape_holdout_pct must be finite")
         XCTAssertTrue(r2?.isFinite ?? false, "diagnostics.r2_holdout must be finite")
         XCTAssertTrue(coverage?.isFinite ?? false, "diagnostics.coverage_90_pct must be finite")
+        XCTAssertEqual(bundle.diagnostics["gates"]?["optimizer_unlocked"]?.asBool, false,
+                       "a two-chain structural fixture must never unlock budget recommendations")
         assertionsRun.append("diagnostics holdout numbers (mape=\(mape ?? .nan), r2=\(r2 ?? .nan), coverage=\(coverage ?? .nan)) are finite and present")
 
         print("[BrandClean] assertions checked:")

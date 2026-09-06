@@ -1,7 +1,7 @@
 import Foundation
 
 // Translates engine/model/posterior.py's PosteriorView class (:28-100,
-// read-only reference at the Python reference implementation) verbatim:
+// read-only reference at the historical Python research engine) verbatim:
 // same steady-state response equations, operating on this package's own
 // StanFit draws + PanelMeta instead of an arviz InferenceData + Panel.
 //
@@ -32,6 +32,7 @@ public struct PosteriorView {
     public let y: [Double]           // (T,) raw KPI
     public let refSpend: [Double]
     public let lMax: Int
+    public let preprocessing: PanelPreprocessing?
 
     // Predictive noise gets its own deterministic stream derived from the
     // run seed, matching `self.noise_rng_seed = seed + 1` in
@@ -63,6 +64,7 @@ public struct PosteriorView {
         y = meta.yRaw
         refSpend = meta.refSpend
         lMax = meta.lMax
+        preprocessing = meta.appliedPreprocessing
         noiseRNGSeed = seed + 1
     }
 

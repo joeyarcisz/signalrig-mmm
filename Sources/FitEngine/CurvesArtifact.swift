@@ -1,7 +1,7 @@
 import Foundation
 
 // Translates engine/model/posterior.py's curves_artifact() (:175-194,
-// the Python reference implementation) verbatim.
+// read-only reference at the historical Python research engine) verbatim.
 public struct CurvePoint {
     public let spend: Double
     public let leadsMed: Double

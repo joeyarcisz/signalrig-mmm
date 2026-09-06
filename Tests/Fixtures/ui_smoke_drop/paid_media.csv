@@ -1,0 +1,833 @@
+date_week,geo,channel,campaign,platform,spend,impressions,clicks
+2024-06-17,US,google_search,google_search_evergreen,Google Ads,3152,28368,152
+2024-06-17,US,meta,meta_evergreen,Meta,3860,321667,3192
+2024-06-17,US,tiktok,tiktok_evergreen,TikTok,2133,213300,1410
+2024-06-17,US,military_publishers,military_publishers_evergreen,audience publisher,1884,104667,962
+2024-06-17,US,youtube,youtube_evergreen,YouTube,1888,134857,1321
+2024-06-17,US,programmatic_display,programmatic_display_evergreen,DV360,1142,114200,436
+2024-06-17,US,streaming_audio,streaming_audio_evergreen,Spotify,1497,83167,429
+2024-06-17,US,mntn_ctv,mntn_ctv_evergreen,MNTN,1257,41900,254
+2024-06-24,US,google_search,google_search_evergreen,Google Ads,5132,46188,380
+2024-06-24,US,meta,meta_evergreen,Meta,4810,400833,3736
+2024-06-24,US,tiktok,tiktok_evergreen,TikTok,2267,226700,1513
+2024-06-24,US,military_publishers,military_publishers_evergreen,audience publisher,2150,119444,681
+2024-06-24,US,youtube,youtube_evergreen,YouTube,1562,111571,887
+2024-06-24,US,programmatic_display,programmatic_display_evergreen,DV360,1559,155900,1402
+2024-06-24,US,streaming_audio,streaming_audio_evergreen,Spotify,1260,70000,278
+2024-06-24,US,mntn_ctv,mntn_ctv_evergreen,MNTN,1012,33733,81
+2024-07-01,US,google_search,google_search_evergreen,Google Ads,3436,30924,226
+2024-07-01,US,meta,meta_evergreen,Meta,5557,463083,1799
+2024-07-01,US,tiktok,tiktok_evergreen,TikTok,2463,246300,1055
+2024-07-01,US,military_publishers,military_publishers_evergreen,audience publisher,1517,84278,574
+2024-07-01,US,youtube,youtube_evergreen,YouTube,1821,130071,1215
+2024-07-01,US,programmatic_display,programmatic_display_evergreen,DV360,1568,156800,621
+2024-07-01,US,streaming_audio,streaming_audio_evergreen,Spotify,1636,90889,268
+2024-07-01,US,mntn_ctv,mntn_ctv_evergreen,MNTN,1278,42600,199
+2024-07-08,US,google_search,google_search_evergreen,Google Ads,3805,34245,258
+2024-07-08,US,meta,meta_evergreen,Meta,3866,322167,2821
+2024-07-08,US,tiktok,tiktok_evergreen,TikTok,2226,222600,936
+2024-07-08,US,military_publishers,military_publishers_evergreen,audience publisher,1901,105611,611
+2024-07-08,US,youtube,youtube_evergreen,YouTube,1748,124857,1181
+2024-07-08,US,programmatic_display,programmatic_display_evergreen,DV360,1267,126700,1249
+2024-07-08,US,streaming_audio,streaming_audio_evergreen,Spotify,1181,65611,438
+2024-07-08,US,mntn_ctv,mntn_ctv_evergreen,MNTN,1183,39433,130
+2024-07-15,US,google_search,google_search_evergreen,Google Ads,4427,39843,324
+2024-07-15,US,meta,meta_evergreen,Meta,5005,417083,1006
+2024-07-15,US,tiktok,tiktok_evergreen,TikTok,2875,287500,1669
+2024-07-15,US,military_publishers,military_publishers_evergreen,audience publisher,1740,96667,832
+2024-07-15,US,youtube,youtube_evergreen,YouTube,1917,136929,446
+2024-07-15,US,programmatic_display,programmatic_display_evergreen,DV360,1560,156000,717
+2024-07-15,US,streaming_audio,streaming_audio_evergreen,Spotify,1198,66556,250
+2024-07-15,US,mntn_ctv,mntn_ctv_evergreen,MNTN,860,28667,232
+2024-07-22,US,google_search,google_search_evergreen,Google Ads,4758,42822,284
+2024-07-22,US,meta,meta_evergreen,Meta,3631,302583,1590
+2024-07-22,US,tiktok,tiktok_evergreen,TikTok,2778,277800,1542
+2024-07-22,US,military_publishers,military_publishers_evergreen,audience publisher,1515,84167,317
+2024-07-22,US,youtube,youtube_evergreen,YouTube,1411,100786,684
+2024-07-22,US,programmatic_display,programmatic_display_evergreen,DV360,1353,135300,608
+2024-07-22,US,streaming_audio,streaming_audio_evergreen,Spotify,1618,89889,269
+2024-07-22,US,mntn_ctv,mntn_ctv_evergreen,MNTN,1295,43167,124
+2024-07-29,US,google_search,google_search_evergreen,Google Ads,5229,47061,147
+2024-07-29,US,meta,meta_evergreen,Meta,4220,351667,956
+2024-07-29,US,tiktok,tiktok_evergreen,TikTok,2629,262900,1446
+2024-07-29,US,military_publishers,military_publishers_evergreen,audience publisher,1961,108944,245
+2024-07-29,US,youtube,youtube_evergreen,YouTube,1327,94786,190
+2024-07-29,US,programmatic_display,programmatic_display_evergreen,DV360,1053,105300,626
+2024-07-29,US,streaming_audio,streaming_audio_evergreen,Spotify,176,9778,97
+2024-07-29,US,mntn_ctv,mntn_ctv_evergreen,MNTN,150,5000,16
+2024-08-05,US,google_search,google_search_evergreen,Google Ads,3596,32364,148
+2024-08-05,US,meta,meta_evergreen,Meta,4721,393417,2402
+2024-08-05,US,tiktok,tiktok_evergreen,TikTok,2976,297600,2286
+2024-08-05,US,military_publishers,military_publishers_evergreen,audience publisher,1887,104833,342
+2024-08-05,US,youtube,youtube_evergreen,YouTube,1515,108214,903
+2024-08-05,US,programmatic_display,programmatic_display_evergreen,DV360,1463,146300,875
+2024-08-05,US,streaming_audio,streaming_audio_evergreen,Spotify,179,9944,78
+2024-08-05,US,mntn_ctv,mntn_ctv_evergreen,MNTN,185,6167,15
+2024-08-12,US,google_search,google_search_evergreen,Google Ads,3387,30483,139
+2024-08-12,US,meta,meta_evergreen,Meta,4129,344083,1405
+2024-08-12,US,tiktok,tiktok_evergreen,TikTok,2565,256500,1656
+2024-08-12,US,military_publishers,military_publishers_evergreen,audience publisher,2120,117778,745
+2024-08-12,US,youtube,youtube_evergreen,YouTube,2006,143286,868
+2024-08-12,US,programmatic_display,programmatic_display_evergreen,DV360,1060,106000,758
+2024-08-12,US,streaming_audio,streaming_audio_evergreen,Spotify,226,12556,78
+2024-08-12,US,mntn_ctv,mntn_ctv_evergreen,MNTN,188,6267,62
+2024-08-19,US,google_search,google_search_evergreen,Google Ads,4453,40077,301
+2024-08-19,US,meta,meta_evergreen,Meta,5712,476000,2198
+2024-08-19,US,tiktok,tiktok_evergreen,TikTok,2901,290100,1739
+2024-08-19,US,military_publishers,military_publishers_evergreen,audience publisher,2139,118833,1149
+2024-08-19,US,youtube,youtube_evergreen,YouTube,2070,147857,1320
+2024-08-19,US,programmatic_display,programmatic_display_evergreen,DV360,1331,133100,306
+2024-08-19,US,streaming_audio,streaming_audio_evergreen,Spotify,248,13778,37
+2024-08-19,US,mntn_ctv,mntn_ctv_evergreen,MNTN,174,5800,13
+2024-08-26,US,google_search,google_search_evergreen,Google Ads,5155,46395,97
+2024-08-26,US,meta,meta_evergreen,Meta,5638,469833,4105
+2024-08-26,US,tiktok,tiktok_evergreen,TikTok,1853,185300,1020
+2024-08-26,US,military_publishers,military_publishers_evergreen,audience publisher,1445,80278,492
+2024-08-26,US,youtube,youtube_evergreen,YouTube,1318,94143,446
+2024-08-26,US,programmatic_display,programmatic_display_evergreen,DV360,1112,111200,599
+2024-08-26,US,streaming_audio,streaming_audio_evergreen,Spotify,257,14278,117
+2024-08-26,US,mntn_ctv,mntn_ctv_evergreen,MNTN,200,6667,33
+2024-09-02,US,google_search,google_search_evergreen,Google Ads,4873,43857,278
+2024-09-02,US,meta,meta_evergreen,Meta,4828,402333,1216
+2024-09-02,US,tiktok,tiktok_evergreen,TikTok,2489,248900,1547
+2024-09-02,US,military_publishers,military_publishers_evergreen,audience publisher,1435,79722,332
+2024-09-02,US,youtube,youtube_evergreen,YouTube,1283,91643,307
+2024-09-02,US,programmatic_display,programmatic_display_evergreen,DV360,1181,118100,524
+2024-09-02,US,streaming_audio,streaming_audio_evergreen,Spotify,229,12722,126
+2024-09-02,US,mntn_ctv,mntn_ctv_evergreen,MNTN,168,5600,37
+2024-09-09,US,google_search,google_search_evergreen,Google Ads,5058,45522,430
+2024-09-09,US,meta,meta_evergreen,Meta,5838,486500,3153
+2024-09-09,US,tiktok,tiktok_evergreen,TikTok,2691,269100,727
+2024-09-09,US,military_publishers,military_publishers_evergreen,audience publisher,1487,82611,478
+2024-09-09,US,youtube,youtube_evergreen,YouTube,2067,147643,1063
+2024-09-09,US,programmatic_display,programmatic_display_evergreen,DV360,988,98800,349
+2024-09-09,US,streaming_audio,streaming_audio_evergreen,Spotify,1688,93778,776
+2024-09-09,US,mntn_ctv,mntn_ctv_evergreen,MNTN,1224,40800,340
+2024-09-16,US,google_search,google_search_evergreen,Google Ads,4008,36072,84
+2024-09-16,US,meta,meta_evergreen,Meta,4123,343583,2529
+2024-09-16,US,tiktok,tiktok_evergreen,TikTok,2628,262800,1466
+2024-09-16,US,military_publishers,military_publishers_evergreen,audience publisher,1906,105889,408
+2024-09-16,US,youtube,youtube_evergreen,YouTube,1523,108786,229
+2024-09-16,US,programmatic_display,programmatic_display_evergreen,DV360,1546,154600,1470
+2024-09-16,US,streaming_audio,streaming_audio_evergreen,Spotify,1199,66611,343
+2024-09-16,US,mntn_ctv,mntn_ctv_evergreen,MNTN,1008,33600,274
+2024-09-23,US,google_search,google_search_evergreen,Google Ads,5002,45018,131
+2024-09-23,US,meta,meta_evergreen,Meta,4098,341500,985
+2024-09-23,US,tiktok,tiktok_evergreen,TikTok,2612,261200,1185
+2024-09-23,US,military_publishers,military_publishers_evergreen,audience publisher,1808,100444,990
+2024-09-23,US,youtube,youtube_evergreen,YouTube,1485,106071,791
+2024-09-23,US,programmatic_display,programmatic_display_evergreen,DV360,1616,161600,1571
+2024-09-23,US,streaming_audio,streaming_audio_evergreen,Spotify,1611,89500,670
+2024-09-23,US,mntn_ctv,mntn_ctv_evergreen,MNTN,1145,38167,331
+2024-09-30,US,google_search,google_search_evergreen,Google Ads,4496,40464,258
+2024-09-30,US,meta,meta_evergreen,Meta,5503,458583,2798
+2024-09-30,US,tiktok,tiktok_evergreen,TikTok,1928,192800,819
+2024-09-30,US,military_publishers,military_publishers_evergreen,audience publisher,2247,124833,1111
+2024-09-30,US,youtube,youtube_evergreen,YouTube,2123,151643,1100
+2024-09-30,US,programmatic_display,programmatic_display_evergreen,DV360,1071,107100,783
+2024-09-30,US,streaming_audio,streaming_audio_evergreen,Spotify,1328,73778,734
+2024-09-30,US,mntn_ctv,mntn_ctv_evergreen,MNTN,1174,39133,141
+2024-10-07,US,google_search,google_search_evergreen,Google Ads,5145,46305,284
+2024-10-07,US,meta,meta_evergreen,Meta,4020,335000,2690
+2024-10-07,US,tiktok,tiktok_evergreen,TikTok,1849,184900,432
+2024-10-07,US,military_publishers,military_publishers_evergreen,audience publisher,1674,93000,698
+2024-10-07,US,youtube,youtube_evergreen,YouTube,1964,140286,422
+2024-10-07,US,programmatic_display,programmatic_display_evergreen,DV360,1351,135100,925
+2024-10-07,US,streaming_audio,streaming_audio_evergreen,Spotify,1536,85333,278
+2024-10-07,US,mntn_ctv,mntn_ctv_evergreen,MNTN,1097,36567,182
+2024-10-14,US,google_search,google_search_evergreen,Google Ads,3474,31266,229
+2024-10-14,US,meta,meta_evergreen,Meta,4312,359333,1129
+2024-10-14,US,tiktok,tiktok_evergreen,TikTok,1929,192900,1687
+2024-10-14,US,military_publishers,military_publishers_evergreen,audience publisher,1810,100556,882
+2024-10-14,US,youtube,youtube_evergreen,YouTube,2019,144214,1377
+2024-10-14,US,programmatic_display,programmatic_display_evergreen,DV360,1101,110100,1065
+2024-10-14,US,streaming_audio,streaming_audio_evergreen,Spotify,1269,70500,400
+2024-10-14,US,mntn_ctv,mntn_ctv_evergreen,MNTN,991,33033,223
+2024-10-21,US,google_search,google_search_evergreen,Google Ads,3356,30204,81
+2024-10-21,US,meta,meta_evergreen,Meta,4664,388667,1303
+2024-10-21,US,tiktok,tiktok_evergreen,TikTok,2947,294700,2140
+2024-10-21,US,military_publishers,military_publishers_evergreen,audience publisher,1964,109111,270
+2024-10-21,US,youtube,youtube_evergreen,YouTube,1786,127571,724
+2024-10-21,US,programmatic_display,programmatic_display_evergreen,DV360,1099,109900,335
+2024-10-21,US,streaming_audio,streaming_audio_evergreen,Spotify,241,13389,34
+2024-10-21,US,mntn_ctv,mntn_ctv_evergreen,MNTN,174,5800,51
+2024-10-28,US,google_search,google_search_evergreen,Google Ads,4533,40797,265
+2024-10-28,US,meta,meta_evergreen,Meta,3913,326083,1242
+2024-10-28,US,tiktok,tiktok_evergreen,TikTok,1924,192400,549
+2024-10-28,US,military_publishers,military_publishers_evergreen,audience publisher,1353,75167,170
+2024-10-28,US,youtube,youtube_evergreen,YouTube,1757,125500,361
+2024-10-28,US,programmatic_display,programmatic_display_evergreen,DV360,1271,127100,292
+2024-10-28,US,streaming_audio,streaming_audio_evergreen,Spotify,271,15056,49
+2024-10-28,US,mntn_ctv,mntn_ctv_evergreen,MNTN,151,5033,15
+2024-11-04,US,google_search,google_search_evergreen,Google Ads,5241,47169,379
+2024-11-04,US,meta,meta_evergreen,Meta,3623,301917,1671
+2024-11-04,US,tiktok,tiktok_evergreen,TikTok,2801,280100,978
+2024-11-04,US,military_publishers,military_publishers_evergreen,audience publisher,1530,85000,799
+2024-11-04,US,youtube,youtube_evergreen,YouTube,2098,149857,876
+2024-11-04,US,programmatic_display,programmatic_display_evergreen,DV360,1468,146800,1007
+2024-11-04,US,streaming_audio,streaming_audio_evergreen,Spotify,262,14556,107
+2024-11-04,US,mntn_ctv,mntn_ctv_evergreen,MNTN,179,5967,29
+2024-11-11,US,google_search,google_search_evergreen,Google Ads,4813,43317,138
+2024-11-11,US,meta,meta_evergreen,Meta,4477,373083,3677
+2024-11-11,US,tiktok,tiktok_evergreen,TikTok,2917,291700,1257
+2024-11-11,US,military_publishers,military_publishers_evergreen,audience publisher,1498,83222,379
+2024-11-11,US,youtube,youtube_evergreen,YouTube,1756,125429,951
+2024-11-11,US,programmatic_display,programmatic_display_evergreen,DV360,1224,122400,903
+2024-11-11,US,streaming_audio,streaming_audio_evergreen,Spotify,269,14944,102
+2024-11-11,US,mntn_ctv,mntn_ctv_evergreen,MNTN,196,6533,48
+2024-11-18,US,google_search,google_search_evergreen,Google Ads,4140,37260,115
+2024-11-18,US,meta,meta_evergreen,Meta,5772,481000,2510
+2024-11-18,US,tiktok,tiktok_evergreen,TikTok,2183,218300,660
+2024-11-18,US,military_publishers,military_publishers_evergreen,audience publisher,1603,89056,718
+2024-11-18,US,youtube,youtube_evergreen,YouTube,2042,145857,983
+2024-11-18,US,programmatic_display,programmatic_display_evergreen,DV360,1396,139600,1154
+2024-11-18,US,streaming_audio,streaming_audio_evergreen,Spotify,198,11000,100
+2024-11-18,US,mntn_ctv,mntn_ctv_evergreen,MNTN,169,5633,30
+2024-11-25,US,google_search,google_search_evergreen,Google Ads,3151,28359,113
+2024-11-25,US,meta,meta_evergreen,Meta,4820,401667,1975
+2024-11-25,US,tiktok,tiktok_evergreen,TikTok,2613,261300,2500
+2024-11-25,US,military_publishers,military_publishers_evergreen,audience publisher,1622,90111,195
+2024-11-25,US,youtube,youtube_evergreen,YouTube,1611,115071,240
+2024-11-25,US,programmatic_display,programmatic_display_evergreen,DV360,1162,116200,288
+2024-11-25,US,streaming_audio,streaming_audio_evergreen,Spotify,185,10278,81
+2024-11-25,US,mntn_ctv,mntn_ctv_evergreen,MNTN,137,4567,15
+2024-12-02,US,google_search,google_search_evergreen,Google Ads,4409,39681,132
+2024-12-02,US,meta,meta_evergreen,Meta,5107,425583,4191
+2024-12-02,US,tiktok,tiktok_evergreen,TikTok,2901,290100,2282
+2024-12-02,US,military_publishers,military_publishers_evergreen,audience publisher,1682,93444,647
+2024-12-02,US,youtube,youtube_evergreen,YouTube,1865,133214,970
+2024-12-02,US,programmatic_display,programmatic_display_evergreen,DV360,1423,142300,1112
+2024-12-02,US,streaming_audio,streaming_audio_evergreen,Spotify,1144,63556,152
+2024-12-02,US,mntn_ctv,mntn_ctv_evergreen,MNTN,840,28000,143
+2024-12-09,US,google_search,google_search_evergreen,Google Ads,3697,33273,319
+2024-12-09,US,meta,meta_evergreen,Meta,4289,357417,3335
+2024-12-09,US,tiktok,tiktok_evergreen,TikTok,2871,287100,1424
+2024-12-09,US,military_publishers,military_publishers_evergreen,audience publisher,1945,108056,380
+2024-12-09,US,youtube,youtube_evergreen,YouTube,1550,110714,1030
+2024-12-09,US,programmatic_display,programmatic_display_evergreen,DV360,1445,144500,932
+2024-12-09,US,streaming_audio,streaming_audio_evergreen,Spotify,1593,88500,544
+2024-12-09,US,mntn_ctv,mntn_ctv_evergreen,MNTN,1038,34600,149
+2024-12-16,US,google_search,google_search_evergreen,Google Ads,3887,34983,348
+2024-12-16,US,meta,meta_evergreen,Meta,3699,308250,1624
+2024-12-16,US,tiktok,tiktok_evergreen,TikTok,2718,271800,607
+2024-12-16,US,military_publishers,military_publishers_evergreen,audience publisher,2185,121389,954
+2024-12-16,US,youtube,youtube_evergreen,YouTube,1897,135500,708
+2024-12-16,US,programmatic_display,programmatic_display_evergreen,DV360,1022,102200,706
+2024-12-16,US,streaming_audio,streaming_audio_evergreen,Spotify,1461,81167,244
+2024-12-16,US,mntn_ctv,mntn_ctv_evergreen,MNTN,1092,36400,116
+2024-12-23,US,google_search,google_search_evergreen,Google Ads,3705,33345,290
+2024-12-23,US,meta,meta_evergreen,Meta,5816,484667,2124
+2024-12-23,US,tiktok,tiktok_evergreen,TikTok,1995,199500,751
+2024-12-23,US,military_publishers,military_publishers_evergreen,audience publisher,1412,78444,605
+2024-12-23,US,youtube,youtube_evergreen,YouTube,1775,126786,937
+2024-12-23,US,programmatic_display,programmatic_display_evergreen,DV360,1193,119300,765
+2024-12-23,US,streaming_audio,streaming_audio_evergreen,Spotify,1152,64000,376
+2024-12-23,US,mntn_ctv,mntn_ctv_evergreen,MNTN,1132,37733,181
+2024-12-30,US,google_search,google_search_evergreen,Google Ads,3164,28476,224
+2024-12-30,US,meta,meta_evergreen,Meta,4569,380750,1224
+2024-12-30,US,tiktok,tiktok_evergreen,TikTok,2257,225700,1353
+2024-12-30,US,military_publishers,military_publishers_evergreen,audience publisher,1643,91278,306
+2024-12-30,US,youtube,youtube_evergreen,YouTube,1560,111429,553
+2024-12-30,US,programmatic_display,programmatic_display_evergreen,DV360,1451,145100,1309
+2024-12-30,US,streaming_audio,streaming_audio_evergreen,Spotify,1625,90278,507
+2024-12-30,US,mntn_ctv,mntn_ctv_evergreen,MNTN,997,33233,315
+2025-01-06,US,google_search,google_search_evergreen,Google Ads,3390,30510,100
+2025-01-06,US,meta,meta_evergreen,Meta,5437,453083,2908
+2025-01-06,US,tiktok,tiktok_evergreen,TikTok,2624,262400,542
+2025-01-06,US,military_publishers,military_publishers_evergreen,audience publisher,1561,86722,639
+2025-01-06,US,youtube,youtube_evergreen,YouTube,1537,109786,902
+2025-01-06,US,programmatic_display,programmatic_display_evergreen,DV360,1373,137300,1165
+2025-01-06,US,streaming_audio,streaming_audio_evergreen,Spotify,1311,72833,443
+2025-01-06,US,mntn_ctv,mntn_ctv_evergreen,MNTN,1009,33633,315
+2025-01-13,US,google_search,google_search_evergreen,Google Ads,4850,43650,324
+2025-01-13,US,meta,meta_evergreen,Meta,5847,487250,2406
+2025-01-13,US,tiktok,tiktok_evergreen,TikTok,2548,254800,1395
+2025-01-13,US,military_publishers,military_publishers_evergreen,audience publisher,1402,77889,256
+2025-01-13,US,youtube,youtube_evergreen,YouTube,1305,93214,491
+2025-01-13,US,programmatic_display,programmatic_display_evergreen,DV360,1455,145500,1062
+2025-01-13,US,streaming_audio,streaming_audio_evergreen,Spotify,204,11333,107
+2025-01-13,US,mntn_ctv,mntn_ctv_evergreen,MNTN,188,6267,53
+2025-01-20,US,google_search,google_search_evergreen,Google Ads,3689,33201,168
+2025-01-20,US,meta,meta_evergreen,Meta,5047,420583,2963
+2025-01-20,US,tiktok,tiktok_evergreen,TikTok,1801,180100,1453
+2025-01-20,US,military_publishers,military_publishers_evergreen,audience publisher,1725,95833,404
+2025-01-20,US,youtube,youtube_evergreen,YouTube,1745,124643,546
+2025-01-20,US,programmatic_display,programmatic_display_evergreen,DV360,1058,105800,247
+2025-01-20,US,streaming_audio,streaming_audio_evergreen,Spotify,205,11389,61
+2025-01-20,US,mntn_ctv,mntn_ctv_evergreen,MNTN,155,5167,17
+2025-01-27,US,google_search,google_search_evergreen,Google Ads,3370,30330,179
+2025-01-27,US,meta,meta_evergreen,Meta,3902,325167,1483
+2025-01-27,US,tiktok,tiktok_evergreen,TikTok,2273,227300,1150
+2025-01-27,US,military_publishers,military_publishers_evergreen,audience publisher,1718,95444,717
+2025-01-27,US,youtube,youtube_evergreen,YouTube,1625,116071,462
+2025-01-27,US,programmatic_display,programmatic_display_evergreen,DV360,1445,144500,1398
+2025-01-27,US,streaming_audio,streaming_audio_evergreen,Spotify,255,14167,52
+2025-01-27,US,mntn_ctv,mntn_ctv_evergreen,MNTN,169,5633,30
+2025-02-03,US,google_search,google_search_evergreen,Google Ads,4932,44388,315
+2025-02-03,US,meta,meta_evergreen,Meta,5529,460750,1044
+2025-02-03,US,tiktok,tiktok_evergreen,TikTok,2028,202800,514
+2025-02-03,US,military_publishers,military_publishers_evergreen,audience publisher,1444,80222,458
+2025-02-03,US,youtube,youtube_evergreen,YouTube,1818,129857,1080
+2025-02-03,US,programmatic_display,programmatic_display_evergreen,DV360,1485,148500,743
+2025-02-03,US,streaming_audio,streaming_audio_evergreen,Spotify,225,12500,74
+2025-02-03,US,mntn_ctv,mntn_ctv_evergreen,MNTN,174,5800,14
+2025-02-10,US,google_search,google_search_evergreen,Google Ads,3561,32049,78
+2025-02-10,US,meta,meta_evergreen,Meta,3963,330250,2654
+2025-02-10,US,tiktok,tiktok_evergreen,TikTok,2377,237700,1997
+2025-02-10,US,military_publishers,military_publishers_evergreen,audience publisher,1959,108833,667
+2025-02-10,US,youtube,youtube_evergreen,YouTube,1485,106071,255
+2025-02-10,US,programmatic_display,programmatic_display_evergreen,DV360,1472,147200,616
+2025-02-10,US,streaming_audio,streaming_audio_evergreen,Spotify,208,11556,42
+2025-02-10,US,mntn_ctv,mntn_ctv_evergreen,MNTN,163,5433,28
+2025-02-17,US,google_search,google_search_evergreen,Google Ads,4540,40860,199
+2025-02-17,US,meta,meta_evergreen,Meta,4578,381500,826
+2025-02-17,US,tiktok,tiktok_evergreen,TikTok,1811,181100,1020
+2025-02-17,US,military_publishers,military_publishers_evergreen,audience publisher,1521,84500,538
+2025-02-17,US,youtube,youtube_evergreen,YouTube,1719,122786,642
+2025-02-17,US,programmatic_display,programmatic_display_evergreen,DV360,1434,143400,1021
+2025-02-17,US,streaming_audio,streaming_audio_evergreen,Spotify,213,11833,101
+2025-02-17,US,mntn_ctv,mntn_ctv_evergreen,MNTN,165,5500,17
+2025-02-24,US,google_search,google_search_evergreen,Google Ads,4392,39528,158
+2025-02-24,US,meta,meta_evergreen,Meta,4960,413333,3843
+2025-02-24,US,tiktok,tiktok_evergreen,TikTok,2440,244000,1202
+2025-02-24,US,military_publishers,military_publishers_evergreen,audience publisher,1917,106500,730
+2025-02-24,US,youtube,youtube_evergreen,YouTube,1619,115643,703
+2025-02-24,US,programmatic_display,programmatic_display_evergreen,DV360,1372,137200,428
+2025-02-24,US,streaming_audio,streaming_audio_evergreen,Spotify,1765,98056,229
+2025-02-24,US,mntn_ctv,mntn_ctv_evergreen,MNTN,1302,43400,386
+2025-03-03,US,google_search,google_search_evergreen,Google Ads,3977,35793,277
+2025-03-03,US,meta,meta_evergreen,Meta,5795,482917,2824
+2025-03-03,US,tiktok,tiktok_evergreen,TikTok,2248,224800,455
+2025-03-03,US,military_publishers,military_publishers_evergreen,audience publisher,1421,78944,432
+2025-03-03,US,youtube,youtube_evergreen,YouTube,1987,141929,1011
+2025-03-03,US,programmatic_display,programmatic_display_evergreen,DV360,1562,156200,1468
+2025-03-03,US,streaming_audio,streaming_audio_evergreen,Spotify,1815,100833,683
+2025-03-03,US,mntn_ctv,mntn_ctv_evergreen,MNTN,1351,45033,165
+2025-03-10,US,google_search,google_search_evergreen,Google Ads,5142,46278,139
+2025-03-10,US,meta,meta_evergreen,Meta,5550,462500,3925
+2025-03-10,US,tiktok,tiktok_evergreen,TikTok,2481,248100,2187
+2025-03-10,US,military_publishers,military_publishers_evergreen,audience publisher,2013,111833,415
+2025-03-10,US,youtube,youtube_evergreen,YouTube,1598,114143,983
+2025-03-10,US,programmatic_display,programmatic_display_evergreen,DV360,1400,140000,714
+2025-03-10,US,streaming_audio,streaming_audio_evergreen,Spotify,1831,101722,715
+2025-03-10,US,mntn_ctv,mntn_ctv_evergreen,MNTN,902,30067,102
+2025-03-17,US,google_search,google_search_evergreen,Google Ads,4544,40896,231
+2025-03-17,US,meta,meta_evergreen,Meta,4047,337250,2824
+2025-03-17,US,tiktok,tiktok_evergreen,TikTok,2161,216100,621
+2025-03-17,US,military_publishers,military_publishers_evergreen,audience publisher,2074,115222,879
+2025-03-17,US,youtube,youtube_evergreen,YouTube,1361,97214,455
+2025-03-17,US,programmatic_display,programmatic_display_evergreen,DV360,1173,117300,1074
+2025-03-17,US,streaming_audio,streaming_audio_evergreen,Spotify,1313,72944,325
+2025-03-17,US,mntn_ctv,mntn_ctv_evergreen,MNTN,876,29200,81
+2025-03-24,US,google_search,google_search_evergreen,Google Ads,3482,31338,231
+2025-03-24,US,meta,meta_evergreen,Meta,5347,445583,2261
+2025-03-24,US,tiktok,tiktok_evergreen,TikTok,2535,253500,2259
+2025-03-24,US,military_publishers,military_publishers_evergreen,audience publisher,1790,99444,834
+2025-03-24,US,youtube,youtube_evergreen,YouTube,1401,100071,244
+2025-03-24,US,programmatic_display,programmatic_display_evergreen,DV360,1013,101300,464
+2025-03-24,US,streaming_audio,streaming_audio_evergreen,Spotify,1158,64333,607
+2025-03-24,US,mntn_ctv,mntn_ctv_evergreen,MNTN,1324,44133,161
+2025-03-31,US,google_search,google_search_evergreen,Google Ads,3681,33129,157
+2025-03-31,US,meta,meta_evergreen,Meta,5499,458250,4169
+2025-03-31,US,tiktok,tiktok_evergreen,TikTok,2555,255500,684
+2025-03-31,US,military_publishers,military_publishers_evergreen,audience publisher,1722,95667,773
+2025-03-31,US,youtube,youtube_evergreen,YouTube,1730,123571,449
+2025-03-31,US,programmatic_display,programmatic_display_evergreen,DV360,1113,111300,1057
+2025-03-31,US,streaming_audio,streaming_audio_evergreen,Spotify,1732,96222,856
+2025-03-31,US,mntn_ctv,mntn_ctv_evergreen,MNTN,1294,43133,399
+2025-04-07,US,google_search,google_search_evergreen,Google Ads,3483,31347,135
+2025-04-07,US,meta,meta_evergreen,Meta,5367,447250,2183
+2025-04-07,US,tiktok,tiktok_evergreen,TikTok,1831,183100,1591
+2025-04-07,US,military_publishers,military_publishers_evergreen,audience publisher,2056,114222,787
+2025-04-07,US,youtube,youtube_evergreen,YouTube,1712,122286,992
+2025-04-07,US,programmatic_display,programmatic_display_evergreen,DV360,1431,143100,1242
+2025-04-07,US,streaming_audio,streaming_audio_evergreen,Spotify,248,13778,55
+2025-04-07,US,mntn_ctv,mntn_ctv_evergreen,MNTN,130,4333,15
+2025-04-14,US,google_search,google_search_evergreen,Google Ads,4657,41913,391
+2025-04-14,US,meta,meta_evergreen,Meta,4513,376083,1137
+2025-04-14,US,tiktok,tiktok_evergreen,TikTok,2867,286700,1712
+2025-04-14,US,military_publishers,military_publishers_evergreen,audience publisher,1511,83944,574
+2025-04-14,US,youtube,youtube_evergreen,YouTube,1709,122071,919
+2025-04-14,US,programmatic_display,programmatic_display_evergreen,DV360,1163,116300,626
+2025-04-14,US,streaming_audio,streaming_audio_evergreen,Spotify,218,12111,43
+2025-04-14,US,mntn_ctv,mntn_ctv_evergreen,MNTN,124,4133,34
+2025-04-21,US,google_search,google_search_evergreen,Google Ads,4614,41526,108
+2025-04-21,US,meta,meta_evergreen,Meta,4329,360750,750
+2025-04-21,US,tiktok,tiktok_evergreen,TikTok,2240,224000,731
+2025-04-21,US,military_publishers,military_publishers_evergreen,audience publisher,1389,77167,640
+2025-04-21,US,youtube,youtube_evergreen,YouTube,1465,104643,994
+2025-04-21,US,programmatic_display,programmatic_display_evergreen,DV360,1087,108700,849
+2025-04-21,US,streaming_audio,streaming_audio_evergreen,Spotify,209,11611,70
+2025-04-21,US,mntn_ctv,mntn_ctv_evergreen,MNTN,191,6367,42
+2025-04-28,US,google_search,google_search_evergreen,Google Ads,3796,34164,167
+2025-04-28,US,meta,meta_evergreen,Meta,5464,455333,4153
+2025-04-28,US,tiktok,tiktok_evergreen,TikTok,1899,189900,1846
+2025-04-28,US,military_publishers,military_publishers_evergreen,audience publisher,1451,80611,779
+2025-04-28,US,youtube,youtube_evergreen,YouTube,1777,126929,965
+2025-04-28,US,programmatic_display,programmatic_display_evergreen,DV360,1447,144700,818
+2025-04-28,US,streaming_audio,streaming_audio_evergreen,Spotify,239,13278,116
+2025-04-28,US,mntn_ctv,mntn_ctv_evergreen,MNTN,140,4667,33
+2025-05-05,US,google_search,google_search_evergreen,Google Ads,3542,31878,246
+2025-05-05,US,meta,meta_evergreen,Meta,5012,417667,3233
+2025-05-05,US,tiktok,tiktok_evergreen,TikTok,2282,228200,913
+2025-05-05,US,military_publishers,military_publishers_evergreen,audience publisher,1399,77722,426
+2025-05-05,US,youtube,youtube_evergreen,YouTube,1856,132571,677
+2025-05-05,US,programmatic_display,programmatic_display_evergreen,DV360,1055,105500,877
+2025-05-05,US,streaming_audio,streaming_audio_evergreen,Spotify,252,14000,88
+2025-05-05,US,mntn_ctv,mntn_ctv_evergreen,MNTN,206,6867,64
+2025-05-12,US,google_search,google_search_evergreen,Google Ads,4896,44064,261
+2025-05-12,US,meta,meta_evergreen,Meta,4706,392167,1483
+2025-05-12,US,tiktok,tiktok_evergreen,TikTok,2414,241400,1154
+2025-05-12,US,military_publishers,military_publishers_evergreen,audience publisher,2025,112500,721
+2025-05-12,US,youtube,youtube_evergreen,YouTube,1468,104857,970
+2025-05-12,US,programmatic_display,programmatic_display_evergreen,DV360,1320,132000,824
+2025-05-12,US,streaming_audio,streaming_audio_evergreen,Spotify,216,12000,69
+2025-05-12,US,mntn_ctv,mntn_ctv_evergreen,MNTN,183,6100,61
+2025-05-19,US,google_search,google_search_evergreen,Google Ads,3743,33687,279
+2025-05-19,US,meta,meta_evergreen,Meta,4185,348750,2490
+2025-05-19,US,tiktok,tiktok_evergreen,TikTok,2646,264600,2338
+2025-05-19,US,military_publishers,military_publishers_evergreen,audience publisher,1750,97222,511
+2025-05-19,US,youtube,youtube_evergreen,YouTube,1453,103786,609
+2025-05-19,US,programmatic_display,programmatic_display_evergreen,DV360,1597,159700,602
+2025-05-19,US,streaming_audio,streaming_audio_evergreen,Spotify,1316,73111,638
+2025-05-19,US,mntn_ctv,mntn_ctv_evergreen,MNTN,1228,40933,138
+2025-05-26,US,google_search,google_search_evergreen,Google Ads,3773,33957,189
+2025-05-26,US,meta,meta_evergreen,Meta,5074,422833,4216
+2025-05-26,US,tiktok,tiktok_evergreen,TikTok,1886,188600,1828
+2025-05-26,US,military_publishers,military_publishers_evergreen,audience publisher,1756,97556,501
+2025-05-26,US,youtube,youtube_evergreen,YouTube,1623,115929,510
+2025-05-26,US,programmatic_display,programmatic_display_evergreen,DV360,1164,116400,1037
+2025-05-26,US,streaming_audio,streaming_audio_evergreen,Spotify,1446,80333,528
+2025-05-26,US,mntn_ctv,mntn_ctv_evergreen,MNTN,843,28100,166
+2025-06-02,US,google_search,google_search_evergreen,Google Ads,4780,43020,392
+2025-06-02,US,meta,meta_evergreen,Meta,5280,440000,2455
+2025-06-02,US,tiktok,tiktok_evergreen,TikTok,1966,196600,1113
+2025-06-02,US,military_publishers,military_publishers_evergreen,audience publisher,2052,114000,1039
+2025-06-02,US,youtube,youtube_evergreen,YouTube,1360,97143,696
+2025-06-02,US,programmatic_display,programmatic_display_evergreen,DV360,1061,106100,549
+2025-06-02,US,streaming_audio,streaming_audio_evergreen,Spotify,1376,76444,691
+2025-06-02,US,mntn_ctv,mntn_ctv_evergreen,MNTN,1076,35867,243
+2025-06-09,US,google_search,google_search_evergreen,Google Ads,4700,42300,138
+2025-06-09,US,meta,meta_evergreen,Meta,3855,321250,2010
+2025-06-09,US,tiktok,tiktok_evergreen,TikTok,2948,294800,1266
+2025-06-09,US,military_publishers,military_publishers_evergreen,audience publisher,1606,89222,420
+2025-06-09,US,youtube,youtube_evergreen,YouTube,1875,133929,952
+2025-06-09,US,programmatic_display,programmatic_display_evergreen,DV360,1420,142000,788
+2025-06-09,US,streaming_audio,streaming_audio_evergreen,Spotify,1220,67778,204
+2025-06-09,US,mntn_ctv,mntn_ctv_evergreen,MNTN,919,30633,100
+2025-06-16,US,google_search,google_search_evergreen,Google Ads,3912,35208,233
+2025-06-16,US,meta,meta_evergreen,Meta,3765,313750,656
+2025-06-16,US,tiktok,tiktok_evergreen,TikTok,1877,187700,603
+2025-06-16,US,military_publishers,military_publishers_evergreen,audience publisher,2142,119000,420
+2025-06-16,US,youtube,youtube_evergreen,YouTube,2011,143643,300
+2025-06-16,US,programmatic_display,programmatic_display_evergreen,DV360,1208,120800,275
+2025-06-16,US,streaming_audio,streaming_audio_evergreen,Spotify,1221,67833,260
+2025-06-16,US,mntn_ctv,mntn_ctv_evergreen,MNTN,1228,40933,406
+2025-06-23,US,google_search,google_search_evergreen,Google Ads,4352,39168,124
+2025-06-23,US,meta,meta_evergreen,Meta,5211,434250,2700
+2025-06-23,US,tiktok,tiktok_evergreen,TikTok,2721,272100,2703
+2025-06-23,US,military_publishers,military_publishers_evergreen,audience publisher,1654,91889,531
+2025-06-23,US,youtube,youtube_evergreen,YouTube,1878,134143,1181
+2025-06-23,US,programmatic_display,programmatic_display_evergreen,DV360,1495,149500,472
+2025-06-23,US,streaming_audio,streaming_audio_evergreen,Spotify,1609,89389,723
+2025-06-23,US,mntn_ctv,mntn_ctv_evergreen,MNTN,1271,42367,346
+2025-06-30,US,google_search,google_search_evergreen,Google Ads,4789,43101,223
+2025-06-30,US,meta,meta_evergreen,Meta,5817,484750,3499
+2025-06-30,US,tiktok,tiktok_evergreen,TikTok,2563,256300,2411
+2025-06-30,US,military_publishers,military_publishers_evergreen,audience publisher,1830,101667,899
+2025-06-30,US,youtube,youtube_evergreen,YouTube,1364,97429,535
+2025-06-30,US,programmatic_display,programmatic_display_evergreen,DV360,1035,103500,648
+2025-06-30,US,streaming_audio,streaming_audio_evergreen,Spotify,278,15444,118
+2025-06-30,US,mntn_ctv,mntn_ctv_evergreen,MNTN,196,6533,48
+2025-07-07,US,google_search,google_search_evergreen,Google Ads,3792,34128,211
+2025-07-07,US,meta,meta_evergreen,Meta,4404,367000,3043
+2025-07-07,US,tiktok,tiktok_evergreen,TikTok,2489,248900,1668
+2025-07-07,US,military_publishers,military_publishers_evergreen,audience publisher,1944,108000,441
+2025-07-07,US,youtube,youtube_evergreen,YouTube,1967,140500,711
+2025-07-07,US,programmatic_display,programmatic_display_evergreen,DV360,1411,141100,808
+2025-07-07,US,streaming_audio,streaming_audio_evergreen,Spotify,241,13389,87
+2025-07-07,US,mntn_ctv,mntn_ctv_evergreen,MNTN,129,4300,43
+2025-07-14,US,google_search,google_search_evergreen,Google Ads,3676,33084,327
+2025-07-14,US,meta,meta_evergreen,Meta,4713,392750,963
+2025-07-14,US,tiktok,tiktok_evergreen,TikTok,2895,289500,1115
+2025-07-14,US,military_publishers,military_publishers_evergreen,audience publisher,1381,76722,409
+2025-07-14,US,youtube,youtube_evergreen,YouTube,2111,150786,787
+2025-07-14,US,programmatic_display,programmatic_display_evergreen,DV360,1499,149900,910
+2025-07-14,US,streaming_audio,streaming_audio_evergreen,Spotify,193,10722,39
+2025-07-14,US,mntn_ctv,mntn_ctv_evergreen,MNTN,195,6500,24
+2025-07-21,US,google_search,google_search_evergreen,Google Ads,3422,30798,64
+2025-07-21,US,meta,meta_evergreen,Meta,5384,448667,4208
+2025-07-21,US,tiktok,tiktok_evergreen,TikTok,2413,241300,617
+2025-07-21,US,military_publishers,military_publishers_evergreen,audience publisher,1784,99111,614
+2025-07-21,US,youtube,youtube_evergreen,YouTube,1456,104000,605
+2025-07-21,US,programmatic_display,programmatic_display_evergreen,DV360,1336,133600,413
+2025-07-21,US,streaming_audio,streaming_audio_evergreen,Spotify,178,9889,72
+2025-07-21,US,mntn_ctv,mntn_ctv_evergreen,MNTN,199,6633,63
+2025-07-28,US,google_search,google_search_evergreen,Google Ads,3340,30060,143
+2025-07-28,US,meta,meta_evergreen,Meta,3600,300000,1743
+2025-07-28,US,tiktok,tiktok_evergreen,TikTok,2951,295100,1882
+2025-07-28,US,military_publishers,military_publishers_evergreen,audience publisher,1644,91333,217
+2025-07-28,US,youtube,youtube_evergreen,YouTube,1623,115929,1143
+2025-07-28,US,programmatic_display,programmatic_display_evergreen,DV360,1584,158400,1451
+2025-07-28,US,streaming_audio,streaming_audio_evergreen,Spotify,172,9556,66
+2025-07-28,US,mntn_ctv,mntn_ctv_evergreen,MNTN,167,5567,20
+2025-08-04,US,google_search,google_search_evergreen,Google Ads,3882,34938,114
+2025-08-04,US,meta,meta_evergreen,Meta,5245,437083,1018
+2025-08-04,US,tiktok,tiktok_evergreen,TikTok,2454,245400,1613
+2025-08-04,US,military_publishers,military_publishers_evergreen,audience publisher,1719,95500,782
+2025-08-04,US,youtube,youtube_evergreen,YouTube,1905,136071,682
+2025-08-04,US,programmatic_display,programmatic_display_evergreen,DV360,1577,157700,1261
+2025-08-04,US,streaming_audio,streaming_audio_evergreen,Spotify,228,12667,67
+2025-08-04,US,mntn_ctv,mntn_ctv_evergreen,MNTN,165,5500,19
+2025-08-11,US,google_search,google_search_evergreen,Google Ads,5245,47205,193
+2025-08-11,US,meta,meta_evergreen,Meta,5732,477667,1368
+2025-08-11,US,tiktok,tiktok_evergreen,TikTok,2096,209600,1163
+2025-08-11,US,military_publishers,military_publishers_evergreen,audience publisher,1407,78167,485
+2025-08-11,US,youtube,youtube_evergreen,YouTube,1913,136643,596
+2025-08-11,US,programmatic_display,programmatic_display_evergreen,DV360,1014,101400,366
+2025-08-11,US,streaming_audio,streaming_audio_evergreen,Spotify,1464,81333,565
+2025-08-11,US,mntn_ctv,mntn_ctv_evergreen,MNTN,990,33000,179
+2025-08-18,US,google_search,google_search_evergreen,Google Ads,3651,32859,291
+2025-08-18,US,meta,meta_evergreen,Meta,4626,385500,1407
+2025-08-18,US,tiktok,tiktok_evergreen,TikTok,1812,181200,1489
+2025-08-18,US,military_publishers,military_publishers_evergreen,audience publisher,1634,90778,544
+2025-08-18,US,youtube,youtube_evergreen,YouTube,1514,108143,922
+2025-08-18,US,programmatic_display,programmatic_display_evergreen,DV360,1624,162400,843
+2025-08-18,US,streaming_audio,streaming_audio_evergreen,Spotify,1385,76944,574
+2025-08-18,US,mntn_ctv,mntn_ctv_evergreen,MNTN,1271,42367,243
+2025-08-25,US,google_search,google_search_evergreen,Google Ads,3420,30780,117
+2025-08-25,US,meta,meta_evergreen,Meta,4857,404750,2763
+2025-08-25,US,tiktok,tiktok_evergreen,TikTok,2706,270600,999
+2025-08-25,US,military_publishers,military_publishers_evergreen,audience publisher,2069,114944,519
+2025-08-25,US,youtube,youtube_evergreen,YouTube,1317,94071,702
+2025-08-25,US,programmatic_display,programmatic_display_evergreen,DV360,1337,133700,1036
+2025-08-25,US,streaming_audio,streaming_audio_evergreen,Spotify,1393,77389,272
+2025-08-25,US,mntn_ctv,mntn_ctv_evergreen,MNTN,1146,38200,171
+2025-09-01,US,google_search,google_search_evergreen,Google Ads,4036,36324,172
+2025-09-01,US,meta,meta_evergreen,Meta,4363,363583,3495
+2025-09-01,US,tiktok,tiktok_evergreen,TikTok,2391,239100,1380
+2025-09-01,US,military_publishers,military_publishers_evergreen,audience publisher,1802,100111,558
+2025-09-01,US,youtube,youtube_evergreen,YouTube,1896,135429,1232
+2025-09-01,US,programmatic_display,programmatic_display_evergreen,DV360,1113,111300,316
+2025-09-01,US,streaming_audio,streaming_audio_evergreen,Spotify,1176,65333,183
+2025-09-01,US,mntn_ctv,mntn_ctv_evergreen,MNTN,1111,37033,158
+2025-09-08,US,google_search,google_search_evergreen,Google Ads,3461,31149,144
+2025-09-08,US,meta,meta_evergreen,Meta,3600,300000,1001
+2025-09-08,US,tiktok,tiktok_evergreen,TikTok,2749,274900,2191
+2025-09-08,US,military_publishers,military_publishers_evergreen,audience publisher,1591,88389,342
+2025-09-08,US,youtube,youtube_evergreen,YouTube,1364,97429,617
+2025-09-08,US,programmatic_display,programmatic_display_evergreen,DV360,1302,130200,769
+2025-09-08,US,streaming_audio,streaming_audio_evergreen,Spotify,1442,80111,341
+2025-09-08,US,mntn_ctv,mntn_ctv_evergreen,MNTN,1217,40567,262
+2025-09-15,US,google_search,google_search_evergreen,Google Ads,3750,33750,294
+2025-09-15,US,meta,meta_evergreen,Meta,4229,352417,1884
+2025-09-15,US,tiktok,tiktok_evergreen,TikTok,2647,264700,1423
+2025-09-15,US,military_publishers,military_publishers_evergreen,audience publisher,2011,111722,868
+2025-09-15,US,youtube,youtube_evergreen,YouTube,1277,91214,717
+2025-09-15,US,programmatic_display,programmatic_display_evergreen,DV360,1526,152600,680
+2025-09-15,US,streaming_audio,streaming_audio_evergreen,Spotify,1412,78444,735
+2025-09-15,US,mntn_ctv,mntn_ctv_evergreen,MNTN,892,29733,284
+2025-09-22,US,google_search,google_search_evergreen,Google Ads,4744,42696,346
+2025-09-22,US,meta,meta_evergreen,Meta,4025,335417,3346
+2025-09-22,US,tiktok,tiktok_evergreen,TikTok,2374,237400,1519
+2025-09-22,US,military_publishers,military_publishers_evergreen,audience publisher,1536,85333,681
+2025-09-22,US,youtube,youtube_evergreen,YouTube,2004,143143,397
+2025-09-22,US,programmatic_display,programmatic_display_evergreen,DV360,1494,149400,1257
+2025-09-22,US,streaming_audio,streaming_audio_evergreen,Spotify,179,9944,46
+2025-09-22,US,mntn_ctv,mntn_ctv_evergreen,MNTN,127,4233,27
+2025-09-29,US,google_search,google_search_evergreen,Google Ads,4675,42075,361
+2025-09-29,US,meta,meta_evergreen,Meta,4118,343167,1980
+2025-09-29,US,tiktok,tiktok_evergreen,TikTok,2322,232200,1324
+2025-09-29,US,military_publishers,military_publishers_evergreen,audience publisher,2227,123722,253
+2025-09-29,US,youtube,youtube_evergreen,YouTube,1702,121571,981
+2025-09-29,US,programmatic_display,programmatic_display_evergreen,DV360,1605,160500,632
+2025-09-29,US,streaming_audio,streaming_audio_evergreen,Spotify,254,14111,77
+2025-09-29,US,mntn_ctv,mntn_ctv_evergreen,MNTN,185,6167,31
+2025-10-06,US,google_search,google_search_evergreen,Google Ads,4819,43371,98
+2025-10-06,US,meta,meta_evergreen,Meta,5219,434917,1105
+2025-10-06,US,tiktok,tiktok_evergreen,TikTok,2682,268200,1913
+2025-10-06,US,military_publishers,military_publishers_evergreen,audience publisher,1558,86556,781
+2025-10-06,US,youtube,youtube_evergreen,YouTube,2104,150286,1503
+2025-10-06,US,programmatic_display,programmatic_display_evergreen,DV360,1513,151300,1285
+2025-10-06,US,streaming_audio,streaming_audio_evergreen,Spotify,187,10389,40
+2025-10-06,US,mntn_ctv,mntn_ctv_evergreen,MNTN,186,6200,48
+2025-10-13,US,google_search,google_search_evergreen,Google Ads,4148,37332,157
+2025-10-13,US,meta,meta_evergreen,Meta,5336,444667,3038
+2025-10-13,US,tiktok,tiktok_evergreen,TikTok,2560,256000,1683
+2025-10-13,US,military_publishers,military_publishers_evergreen,audience publisher,1394,77444,586
+2025-10-13,US,youtube,youtube_evergreen,YouTube,1807,129071,494
+2025-10-13,US,programmatic_display,programmatic_display_evergreen,DV360,977,97700,776
+2025-10-13,US,streaming_audio,streaming_audio_evergreen,Spotify,260,14444,79
+2025-10-13,US,mntn_ctv,mntn_ctv_evergreen,MNTN,168,5600,21
+2025-10-20,US,google_search,google_search_evergreen,Google Ads,5103,45927,436
+2025-10-20,US,meta,meta_evergreen,Meta,4206,350500,3154
+2025-10-20,US,tiktok,tiktok_evergreen,TikTok,2544,254400,1765
+2025-10-20,US,military_publishers,military_publishers_evergreen,audience publisher,1653,91833,402
+2025-10-20,US,youtube,youtube_evergreen,YouTube,1532,109429,1068
+2025-10-20,US,programmatic_display,programmatic_display_evergreen,DV360,1571,157100,1566
+2025-10-20,US,streaming_audio,streaming_audio_evergreen,Spotify,211,11722,49
+2025-10-20,US,mntn_ctv,mntn_ctv_evergreen,MNTN,124,4133,23
+2025-10-27,US,google_search,google_search_evergreen,Google Ads,5078,45702,240
+2025-10-27,US,meta,meta_evergreen,Meta,4814,401167,3887
+2025-10-27,US,tiktok,tiktok_evergreen,TikTok,2581,258100,1101
+2025-10-27,US,military_publishers,military_publishers_evergreen,audience publisher,1708,94889,318
+2025-10-27,US,youtube,youtube_evergreen,YouTube,1874,133857,832
+2025-10-27,US,programmatic_display,programmatic_display_evergreen,DV360,1263,126300,485
+2025-10-27,US,streaming_audio,streaming_audio_evergreen,Spotify,189,10500,85
+2025-10-27,US,mntn_ctv,mntn_ctv_evergreen,MNTN,126,4200,35
+2025-11-03,US,google_search,google_search_evergreen,Google Ads,3235,29115,149
+2025-11-03,US,meta,meta_evergreen,Meta,4261,355083,2168
+2025-11-03,US,tiktok,tiktok_evergreen,TikTok,2575,257500,2478
+2025-11-03,US,military_publishers,military_publishers_evergreen,audience publisher,2039,113278,568
+2025-11-03,US,youtube,youtube_evergreen,YouTube,1384,98857,362
+2025-11-03,US,programmatic_display,programmatic_display_evergreen,DV360,1551,155100,1289
+2025-11-03,US,streaming_audio,streaming_audio_evergreen,Spotify,1538,85444,186
+2025-11-03,US,mntn_ctv,mntn_ctv_evergreen,MNTN,1337,44567,201
+2025-11-10,US,google_search,google_search_evergreen,Google Ads,4971,44739,346
+2025-11-10,US,meta,meta_evergreen,Meta,5274,439500,4262
+2025-11-10,US,tiktok,tiktok_evergreen,TikTok,2522,252200,2027
+2025-11-10,US,military_publishers,military_publishers_evergreen,audience publisher,2005,111389,379
+2025-11-10,US,youtube,youtube_evergreen,YouTube,1540,110000,900
+2025-11-10,US,programmatic_display,programmatic_display_evergreen,DV360,1138,113800,576
+2025-11-10,US,streaming_audio,streaming_audio_evergreen,Spotify,1484,82444,572
+2025-11-10,US,mntn_ctv,mntn_ctv_evergreen,MNTN,1345,44833,272
+2025-11-17,US,google_search,google_search_evergreen,Google Ads,4723,42507,113
+2025-11-17,US,meta,meta_evergreen,Meta,4400,366667,1121
+2025-11-17,US,tiktok,tiktok_evergreen,TikTok,2484,248400,1882
+2025-11-17,US,military_publishers,military_publishers_evergreen,audience publisher,1620,90000,662
+2025-11-17,US,youtube,youtube_evergreen,YouTube,1806,129000,972
+2025-11-17,US,programmatic_display,programmatic_display_evergreen,DV360,999,99900,478
+2025-11-17,US,streaming_audio,streaming_audio_evergreen,Spotify,1513,84056,172
+2025-11-17,US,mntn_ctv,mntn_ctv_evergreen,MNTN,1009,33633,300
+2025-11-24,US,google_search,google_search_evergreen,Google Ads,4720,42480,88
+2025-11-24,US,meta,meta_evergreen,Meta,4355,362917,2409
+2025-11-24,US,tiktok,tiktok_evergreen,TikTok,2622,262200,1006
+2025-11-24,US,military_publishers,military_publishers_evergreen,audience publisher,1674,93000,809
+2025-11-24,US,youtube,youtube_evergreen,YouTube,1330,95000,911
+2025-11-24,US,programmatic_display,programmatic_display_evergreen,DV360,1573,157300,1015
+2025-11-24,US,streaming_audio,streaming_audio_evergreen,Spotify,1430,79444,247
+2025-11-24,US,mntn_ctv,mntn_ctv_evergreen,MNTN,1210,40333,318
+2025-12-01,US,google_search,google_search_evergreen,Google Ads,4773,42957,333
+2025-12-01,US,meta,meta_evergreen,Meta,4022,335167,763
+2025-12-01,US,tiktok,tiktok_evergreen,TikTok,2975,297500,2272
+2025-12-01,US,military_publishers,military_publishers_evergreen,audience publisher,1924,106889,837
+2025-12-01,US,youtube,youtube_evergreen,YouTube,1827,130500,1213
+2025-12-01,US,programmatic_display,programmatic_display_evergreen,DV360,1593,159300,1056
+2025-12-01,US,streaming_audio,streaming_audio_evergreen,Spotify,1757,97611,859
+2025-12-01,US,mntn_ctv,mntn_ctv_evergreen,MNTN,1305,43500,407
+2025-12-08,US,google_search,google_search_evergreen,Google Ads,4525,40725,328
+2025-12-08,US,meta,meta_evergreen,Meta,4427,368917,2978
+2025-12-08,US,tiktok,tiktok_evergreen,TikTok,2198,219800,1924
+2025-12-08,US,military_publishers,military_publishers_evergreen,audience publisher,1892,105111,600
+2025-12-08,US,youtube,youtube_evergreen,YouTube,1523,108786,277
+2025-12-08,US,programmatic_display,programmatic_display_evergreen,DV360,1580,158000,816
+2025-12-08,US,streaming_audio,streaming_audio_evergreen,Spotify,1351,75056,626
+2025-12-08,US,mntn_ctv,mntn_ctv_evergreen,MNTN,922,30733,69
+2025-12-15,US,google_search,google_search_evergreen,Google Ads,3331,29979,221
+2025-12-15,US,meta,meta_evergreen,Meta,4547,378917,3109
+2025-12-15,US,tiktok,tiktok_evergreen,TikTok,2775,277500,2196
+2025-12-15,US,military_publishers,military_publishers_evergreen,audience publisher,1936,107556,503
+2025-12-15,US,youtube,youtube_evergreen,YouTube,1540,110000,746
+2025-12-15,US,programmatic_display,programmatic_display_evergreen,DV360,1125,112500,966
+2025-12-15,US,streaming_audio,streaming_audio_evergreen,Spotify,263,14611,123
+2025-12-15,US,mntn_ctv,mntn_ctv_evergreen,MNTN,173,5767,47
+2025-12-22,US,google_search,google_search_evergreen,Google Ads,3427,30843,248
+2025-12-22,US,meta,meta_evergreen,Meta,5284,440333,2667
+2025-12-22,US,tiktok,tiktok_evergreen,TikTok,2591,259100,1399
+2025-12-22,US,military_publishers,military_publishers_evergreen,audience publisher,1432,79556,711
+2025-12-22,US,youtube,youtube_evergreen,YouTube,2118,151286,439
+2025-12-22,US,programmatic_display,programmatic_display_evergreen,DV360,1382,138200,316
+2025-12-22,US,streaming_audio,streaming_audio_evergreen,Spotify,222,12333,110
+2025-12-22,US,mntn_ctv,mntn_ctv_evergreen,MNTN,137,4567,21
+2025-12-29,US,google_search,google_search_evergreen,Google Ads,3201,28809,98
+2025-12-29,US,meta,meta_evergreen,Meta,5522,460167,3891
+2025-12-29,US,tiktok,tiktok_evergreen,TikTok,2089,208900,1978
+2025-12-29,US,military_publishers,military_publishers_evergreen,audience publisher,1754,97444,888
+2025-12-29,US,youtube,youtube_evergreen,YouTube,1801,128643,567
+2025-12-29,US,programmatic_display,programmatic_display_evergreen,DV360,1336,133600,1048
+2025-12-29,US,streaming_audio,streaming_audio_evergreen,Spotify,232,12889,107
+2025-12-29,US,mntn_ctv,mntn_ctv_evergreen,MNTN,127,4233,23
+2026-01-05,US,google_search,google_search_evergreen,Google Ads,3711,33399,235
+2026-01-05,US,meta,meta_evergreen,Meta,4562,380167,2665
+2026-01-05,US,tiktok,tiktok_evergreen,TikTok,2267,226700,1760
+2026-01-05,US,military_publishers,military_publishers_evergreen,audience publisher,1804,100222,268
+2026-01-05,US,youtube,youtube_evergreen,YouTube,1394,99571,503
+2026-01-05,US,programmatic_display,programmatic_display_evergreen,DV360,1309,130900,1285
+2026-01-05,US,streaming_audio,streaming_audio_evergreen,Spotify,193,10722,105
+2026-01-05,US,mntn_ctv,mntn_ctv_evergreen,MNTN,158,5267,19
+2026-01-12,US,google_search,google_search_evergreen,Google Ads,3805,34245,202
+2026-01-12,US,meta,meta_evergreen,Meta,4723,393583,807
+2026-01-12,US,tiktok,tiktok_evergreen,TikTok,1937,193700,1150
+2026-01-12,US,military_publishers,military_publishers_evergreen,audience publisher,1996,110889,331
+2026-01-12,US,youtube,youtube_evergreen,YouTube,2107,150500,571
+2026-01-12,US,programmatic_display,programmatic_display_evergreen,DV360,1431,143100,1074
+2026-01-12,US,streaming_audio,streaming_audio_evergreen,Spotify,201,11167,48
+2026-01-12,US,mntn_ctv,mntn_ctv_evergreen,MNTN,194,6467,45
+2026-01-19,US,google_search,google_search_evergreen,Google Ads,3298,29682,79
+2026-01-19,US,meta,meta_evergreen,Meta,4834,402833,2913
+2026-01-19,US,tiktok,tiktok_evergreen,TikTok,2174,217400,1314
+2026-01-19,US,military_publishers,military_publishers_evergreen,audience publisher,1959,108833,804
+2026-01-19,US,youtube,youtube_evergreen,YouTube,1412,100857,548
+2026-01-19,US,programmatic_display,programmatic_display_evergreen,DV360,1426,142600,895
+2026-01-19,US,streaming_audio,streaming_audio_evergreen,Spotify,234,13000,83
+2026-01-19,US,mntn_ctv,mntn_ctv_evergreen,MNTN,149,4967,27
+2026-01-26,US,google_search,google_search_evergreen,Google Ads,4205,37845,217
+2026-01-26,US,meta,meta_evergreen,Meta,4016,334667,3231
+2026-01-26,US,tiktok,tiktok_evergreen,TikTok,1982,198200,1970
+2026-01-26,US,military_publishers,military_publishers_evergreen,audience publisher,1943,107944,996
+2026-01-26,US,youtube,youtube_evergreen,YouTube,1446,103286,485
+2026-01-26,US,programmatic_display,programmatic_display_evergreen,DV360,1309,130900,1218
+2026-01-26,US,streaming_audio,streaming_audio_evergreen,Spotify,1738,96556,901
+2026-01-26,US,mntn_ctv,mntn_ctv_evergreen,MNTN,841,28033,214
+2026-02-02,US,google_search,google_search_evergreen,Google Ads,4511,40599,289
+2026-02-02,US,meta,meta_evergreen,Meta,5296,441333,4044
+2026-02-02,US,tiktok,tiktok_evergreen,TikTok,2597,259700,1830
+2026-02-02,US,military_publishers,military_publishers_evergreen,audience publisher,1898,105444,631
+2026-02-02,US,youtube,youtube_evergreen,YouTube,1617,115500,298
+2026-02-02,US,programmatic_display,programmatic_display_evergreen,DV360,1125,112500,1063
+2026-02-02,US,streaming_audio,streaming_audio_evergreen,Spotify,1735,96389,405
+2026-02-02,US,mntn_ctv,mntn_ctv_evergreen,MNTN,955,31833,146
+2026-02-09,US,google_search,google_search_evergreen,Google Ads,4599,41391,312
+2026-02-09,US,meta,meta_evergreen,Meta,3935,327917,1088
+2026-02-09,US,tiktok,tiktok_evergreen,TikTok,2905,290500,2485
+2026-02-09,US,military_publishers,military_publishers_evergreen,audience publisher,1591,88389,640
+2026-02-09,US,youtube,youtube_evergreen,YouTube,2069,147786,1009
+2026-02-09,US,programmatic_display,programmatic_display_evergreen,DV360,1197,119700,1047
+2026-02-09,US,streaming_audio,streaming_audio_evergreen,Spotify,1183,65722,259
+2026-02-09,US,mntn_ctv,mntn_ctv_evergreen,MNTN,1127,37567,93
+2026-02-16,US,google_search,google_search_evergreen,Google Ads,3983,35847,131
+2026-02-16,US,meta,meta_evergreen,Meta,5796,483000,2767
+2026-02-16,US,tiktok,tiktok_evergreen,TikTok,2616,261600,2546
+2026-02-16,US,military_publishers,military_publishers_evergreen,audience publisher,2073,115167,1142
+2026-02-16,US,youtube,youtube_evergreen,YouTube,1863,133071,831
+2026-02-16,US,programmatic_display,programmatic_display_evergreen,DV360,976,97600,211
+2026-02-16,US,streaming_audio,streaming_audio_evergreen,Spotify,1562,86778,192
+2026-02-16,US,mntn_ctv,mntn_ctv_evergreen,MNTN,1275,42500,249
+2026-02-23,US,google_search,google_search_evergreen,Google Ads,4972,44748,345
+2026-02-23,US,meta,meta_evergreen,Meta,4487,373917,1059
+2026-02-23,US,tiktok,tiktok_evergreen,TikTok,2175,217500,1636
+2026-02-23,US,military_publishers,military_publishers_evergreen,audience publisher,2009,111611,881
+2026-02-23,US,youtube,youtube_evergreen,YouTube,1852,132286,807
+2026-02-23,US,programmatic_display,programmatic_display_evergreen,DV360,1333,133300,389
+2026-02-23,US,streaming_audio,streaming_audio_evergreen,Spotify,1848,102667,1003
+2026-02-23,US,mntn_ctv,mntn_ctv_evergreen,MNTN,1093,36433,113
+2026-03-02,US,google_search,google_search_evergreen,Google Ads,3978,35802,109
+2026-03-02,US,meta,meta_evergreen,Meta,3685,307083,884
+2026-03-02,US,tiktok,tiktok_evergreen,TikTok,1918,191800,600
+2026-03-02,US,military_publishers,military_publishers_evergreen,audience publisher,1558,86556,801
+2026-03-02,US,youtube,youtube_evergreen,YouTube,2124,151714,833
+2026-03-02,US,programmatic_display,programmatic_display_evergreen,DV360,1297,129700,1067
+2026-03-02,US,streaming_audio,streaming_audio_evergreen,Spotify,1463,81278,632
+2026-03-02,US,mntn_ctv,mntn_ctv_evergreen,MNTN,1119,37300,242
+2026-03-09,US,google_search,google_search_evergreen,Google Ads,4674,42066,412
+2026-03-09,US,meta,meta_evergreen,Meta,4035,336250,1396
+2026-03-09,US,tiktok,tiktok_evergreen,TikTok,2793,279300,1854
+2026-03-09,US,military_publishers,military_publishers_evergreen,audience publisher,2123,117944,567
+2026-03-09,US,youtube,youtube_evergreen,YouTube,1775,126786,587
+2026-03-09,US,programmatic_display,programmatic_display_evergreen,DV360,1402,140200,457
+2026-03-09,US,streaming_audio,streaming_audio_evergreen,Spotify,263,14611,130
+2026-03-09,US,mntn_ctv,mntn_ctv_evergreen,MNTN,189,6300,54
+2026-03-16,US,google_search,google_search_evergreen,Google Ads,5012,45108,120
+2026-03-16,US,meta,meta_evergreen,Meta,4053,337750,2359
+2026-03-16,US,tiktok,tiktok_evergreen,TikTok,2456,245600,1828
+2026-03-16,US,military_publishers,military_publishers_evergreen,audience publisher,1772,98444,544
+2026-03-16,US,youtube,youtube_evergreen,YouTube,1453,103786,341
+2026-03-16,US,programmatic_display,programmatic_display_evergreen,DV360,1101,110100,961
+2026-03-16,US,streaming_audio,streaming_audio_evergreen,Spotify,251,13944,32
+2026-03-16,US,mntn_ctv,mntn_ctv_evergreen,MNTN,125,4167,39
+2026-03-23,US,google_search,google_search_evergreen,Google Ads,4769,42921,251
+2026-03-23,US,meta,meta_evergreen,Meta,5122,426833,3209
+2026-03-23,US,tiktok,tiktok_evergreen,TikTok,2587,258700,1427
+2026-03-23,US,military_publishers,military_publishers_evergreen,audience publisher,2081,115611,1019
+2026-03-23,US,youtube,youtube_evergreen,YouTube,2024,144571,904
+2026-03-23,US,programmatic_display,programmatic_display_evergreen,DV360,1248,124800,684
+2026-03-23,US,streaming_audio,streaming_audio_evergreen,Spotify,249,13833,65
+2026-03-23,US,mntn_ctv,mntn_ctv_evergreen,MNTN,161,5367,38
+2026-03-30,US,google_search,google_search_evergreen,Google Ads,4955,44595,182
+2026-03-30,US,meta,meta_evergreen,Meta,3689,307417,1649
+2026-03-30,US,tiktok,tiktok_evergreen,TikTok,2042,204200,1000
+2026-03-30,US,military_publishers,military_publishers_evergreen,audience publisher,1429,79389,229
+2026-03-30,US,youtube,youtube_evergreen,YouTube,2025,144643,1034
+2026-03-30,US,programmatic_display,programmatic_display_evergreen,DV360,1237,123700,1059
+2026-03-30,US,streaming_audio,streaming_audio_evergreen,Spotify,170,9444,88
+2026-03-30,US,mntn_ctv,mntn_ctv_evergreen,MNTN,203,6767,19
+2026-04-06,US,google_search,google_search_evergreen,Google Ads,4695,42255,91
+2026-04-06,US,meta,meta_evergreen,Meta,6000,500000,1526
+2026-04-06,US,tiktok,tiktok_evergreen,TikTok,2133,213300,620
+2026-04-06,US,military_publishers,military_publishers_evergreen,audience publisher,1926,107000,998
+2026-04-06,US,youtube,youtube_evergreen,YouTube,1672,119429,261
+2026-04-06,US,programmatic_display,programmatic_display_evergreen,DV360,1028,102800,330
+2026-04-06,US,streaming_audio,streaming_audio_evergreen,Spotify,194,10778,68
+2026-04-06,US,mntn_ctv,mntn_ctv_evergreen,MNTN,135,4500,15
+2026-04-13,US,google_search,google_search_evergreen,Google Ads,3357,30213,155
+2026-04-13,US,meta,meta_evergreen,Meta,4285,357083,1013
+2026-04-13,US,tiktok,tiktok_evergreen,TikTok,2408,240800,1895
+2026-04-13,US,military_publishers,military_publishers_evergreen,audience publisher,1735,96389,405
+2026-04-13,US,youtube,youtube_evergreen,YouTube,1910,136429,999
+2026-04-13,US,programmatic_display,programmatic_display_evergreen,DV360,1261,126100,680
+2026-04-13,US,streaming_audio,streaming_audio_evergreen,Spotify,251,13944,83
+2026-04-13,US,mntn_ctv,mntn_ctv_evergreen,MNTN,143,4767,11
+2026-04-20,US,google_search,google_search_evergreen,Google Ads,4377,39393,143
+2026-04-20,US,meta,meta_evergreen,Meta,4721,393417,3644
+2026-04-20,US,tiktok,tiktok_evergreen,TikTok,2706,270600,1580
+2026-04-20,US,military_publishers,military_publishers_evergreen,audience publisher,1559,86611,608
+2026-04-20,US,youtube,youtube_evergreen,YouTube,1514,108143,839
+2026-04-20,US,programmatic_display,programmatic_display_evergreen,DV360,1454,145400,1291
+2026-04-20,US,streaming_audio,streaming_audio_evergreen,Spotify,1271,70611,634
+2026-04-20,US,mntn_ctv,mntn_ctv_evergreen,MNTN,1278,42600,118
+2026-04-27,US,google_search,google_search_evergreen,Google Ads,4300,38700,166
+2026-04-27,US,meta,meta_evergreen,Meta,3873,322750,1320
+2026-04-27,US,tiktok,tiktok_evergreen,TikTok,2790,279000,1360
+2026-04-27,US,military_publishers,military_publishers_evergreen,audience publisher,1989,110500,564
+2026-04-27,US,youtube,youtube_evergreen,YouTube,1723,123071,700
+2026-04-27,US,programmatic_display,programmatic_display_evergreen,DV360,1227,122700,835
+2026-04-27,US,streaming_audio,streaming_audio_evergreen,Spotify,1445,80278,261
+2026-04-27,US,mntn_ctv,mntn_ctv_evergreen,MNTN,1114,37133,167
+2026-05-04,US,google_search,google_search_evergreen,Google Ads,4081,36729,307
+2026-05-04,US,meta,meta_evergreen,Meta,5653,471083,2663
+2026-05-04,US,tiktok,tiktok_evergreen,TikTok,2781,278100,594
+2026-05-04,US,military_publishers,military_publishers_evergreen,audience publisher,2244,124667,432
+2026-05-04,US,youtube,youtube_evergreen,YouTube,2117,151214,1329
+2026-05-04,US,programmatic_display,programmatic_display_evergreen,DV360,1154,115400,680
+2026-05-04,US,streaming_audio,streaming_audio_evergreen,Spotify,1754,97444,801
+2026-05-04,US,mntn_ctv,mntn_ctv_evergreen,MNTN,1002,33400,179
+2026-05-11,US,google_search,google_search_evergreen,Google Ads,4383,39447,192
+2026-05-11,US,meta,meta_evergreen,Meta,4804,400333,2615
+2026-05-11,US,tiktok,tiktok_evergreen,TikTok,2935,293500,2700
+2026-05-11,US,military_publishers,military_publishers_evergreen,audience publisher,1920,106667,654
+2026-05-11,US,youtube,youtube_evergreen,YouTube,1480,105714,504
+2026-05-11,US,programmatic_display,programmatic_display_evergreen,DV360,1137,113700,738
+2026-05-11,US,streaming_audio,streaming_audio_evergreen,Spotify,1635,90833,399
+2026-05-11,US,mntn_ctv,mntn_ctv_evergreen,MNTN,942,31400,290
+2026-05-18,US,google_search,google_search_evergreen,Google Ads,4240,38160,137
+2026-05-18,US,meta,meta_evergreen,Meta,5556,463000,4064
+2026-05-18,US,tiktok,tiktok_evergreen,TikTok,2873,287300,929
+2026-05-18,US,military_publishers,military_publishers_evergreen,audience publisher,1606,89222,629
+2026-05-18,US,youtube,youtube_evergreen,YouTube,1919,137071,1004
+2026-05-18,US,programmatic_display,programmatic_display_evergreen,DV360,1078,107800,764
+2026-05-18,US,streaming_audio,streaming_audio_evergreen,Spotify,1327,73722,408
+2026-05-18,US,mntn_ctv,mntn_ctv_evergreen,MNTN,1051,35033,311
+2026-05-25,US,google_search,google_search_evergreen,Google Ads,5194,46746,333
+2026-05-25,US,meta,meta_evergreen,Meta,5996,499667,2301
+2026-05-25,US,tiktok,tiktok_evergreen,TikTok,2454,245400,503
+2026-05-25,US,military_publishers,military_publishers_evergreen,audience publisher,2106,117000,834
+2026-05-25,US,youtube,youtube_evergreen,YouTube,1536,109714,368
+2026-05-25,US,programmatic_display,programmatic_display_evergreen,DV360,1448,144800,417
+2026-05-25,US,streaming_audio,streaming_audio_evergreen,Spotify,1765,98056,871
+2026-05-25,US,mntn_ctv,mntn_ctv_evergreen,MNTN,1214,40467,164
+2026-06-01,US,google_search,google_search_evergreen,Google Ads,3222,28998,174
+2026-06-01,US,meta,meta_evergreen,Meta,3949,329083,1915
+2026-06-01,US,tiktok,tiktok_evergreen,TikTok,2847,284700,2428
+2026-06-01,US,military_publishers,military_publishers_evergreen,audience publisher,1841,102278,603
+2026-06-01,US,youtube,youtube_evergreen,YouTube,1474,105286,1042
+2026-06-01,US,programmatic_display,programmatic_display_evergreen,DV360,1309,130900,301
+2026-06-01,US,streaming_audio,streaming_audio_evergreen,Spotify,215,11944,59
+2026-06-01,US,mntn_ctv,mntn_ctv_evergreen,MNTN,193,6433,26
+2026-06-08,US,google_search,google_search_evergreen,Google Ads,3194,28746,84
+2026-06-08,US,meta,meta_evergreen,Meta,4467,372250,2898
+2026-06-08,US,tiktok,tiktok_evergreen,TikTok,2647,264700,556
+2026-06-08,US,military_publishers,military_publishers_evergreen,audience publisher,1714,95222,197
+2026-06-08,US,youtube,youtube_evergreen,YouTube,1436,102571,667
+2026-06-08,US,programmatic_display,programmatic_display_evergreen,DV360,1228,122800,769
+2026-06-08,US,streaming_audio,streaming_audio_evergreen,Spotify,198,11000,81
+2026-06-08,US,mntn_ctv,mntn_ctv_evergreen,MNTN,196,6533,19

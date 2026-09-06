@@ -1,42 +1,16 @@
-// mmm.stan — precompiled-binary spike port of SignalRig's PyMC MMM.
+// SignalRig Bayesian national weekly media mix model.
+// Normalized geometric adstock, Hill saturation, linear trend,
+// Fourier seasonality, and standardized controls with a Normal likelihood.
 //
-// Reference implementation ported 1:1 (functional form + priors):
-//   engine/model/transforms.py  (geometric_adstock_np / hill_np)
-//   engine/model/mmm.py         (build_and_fit)
-// from the Python reference implementation (NOT
-// shipped, NOT imported at runtime — Python there is used only to prepare
-// this spike's data.json files, exactly the way an in-app Swift data-prep
-// step would normalize spend/KPI before calling this binary).
+// Swift and Python prepare data for this model. Full and holdout fits
+// estimate preprocessing separately from their respective observed weeks.
+// Future spend and controls are known conditional forecast inputs; held-out
+// outcomes are zeroed in the holdout input and never enter its likelihood.
 //
-// Deliberate deviations from the Python engine (all additive/harmless to
-// the ported math, documented per PORT step 2):
-//   1. Data normalization (x_norm = spend / per-channel max spend,
-//      y_s = KPI / max KPI, Fourier design, standardized controls,
-//      beta_center prior anchor) is computed in Python BEFORE this file
-//      ever runs, identically to engine/model/mmm.py lines 137-162 (which
-//      is itself plain numpy, not part of the PyMC graph). Stan receives
-//      already-normalized arrays as `data`. This is a harness-parity
-//      choice, not a math change — the shipping app would do the same
-//      normalization in Swift.
-//   2. mu (transformed parameter, not generated quantity) is computed over
-//      the FULL T-week window regardless of how many weeks are in the
-//      likelihood (`obs`), mirroring engine/model/mmm.py's
-//      observe_weeks=None/holdout split: adstock/seasonality run on the
-//      whole panel, only the Normal likelihood is truncated to the first
-//      `obs` weeks. This lets one compiled binary serve both the full fit
-//      and the 92-week holdout refit.
-//   3. Posterior-derived metrics (CPL at reference spend, adstock
-//      half-life, contribution share, holdout MAPE/R2/coverage) are
-//      computed OUTSIDE Stan in the grading script, reusing the exact
-//      formulas from engine/model/posterior.py against Stan's raw
-//      parameter draws (alpha, kappa, slope, beta, sigma, mu). Nothing
-//      about the math differs; only where it's computed (Stan gives you
-//      draws, not derived business metrics, by design).
-//   4. No changes to L_MAX (8), the adstock normalization, the Hill form,
-//      or any prior family/hyperparameter. Beta(2,4)/Gamma(2,4)/Gamma(6,4)
-//      use Stan's (shape, rate) parameterization, which is the same
-//      parameterization PyMC's Beta(alpha,beta)/Gamma(alpha,beta) use —
-//      no translation needed.
+// Channel coefficient prior centers still use bundled sample CPL defaults.
+// They require practitioner review and sensitivity analysis for other KPIs.
+// Model diagnostics and synthetic recovery are checks, not evidence of
+// causal identification or validated performance on independent client data.
 
 functions {
   // Normalized geometric adstock for one channel's spend series.
@@ -123,7 +97,7 @@ transformed parameters {
 }
 
 model {
-  // Priors — identical families/hyperparameters to engine/model/mmm.py.
+  // Priors - identical families/hyperparameters to engine/model/mmm.py.
   adstock_alpha ~ beta(2.0, 4.0);
   hill_kappa ~ gamma(2.0, 4.0);
   hill_slope ~ gamma(6.0, 4.0);

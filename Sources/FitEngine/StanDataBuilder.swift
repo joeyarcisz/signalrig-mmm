@@ -1,7 +1,7 @@
 import Foundation
 
-// Mirrors the local spike workspace/scripts/prep_data.py
-// (read-only reference).
+// Full-fit math matches the original Stan prep. Holdout normalization is
+// fitted independently to its training window and recorded for rescaling.
 public struct StanData {
     public let T: Int
     public let C: Int
@@ -45,9 +45,34 @@ public struct PanelMeta {
     public let yRaw: [Double]
     public let holdoutWeeks: Int
     public let lMax: Int
+    public let fullPreprocessing: PanelPreprocessing?
+    public let holdout: PanelPreprocessing?
+    // The transform applied to one PosteriorView. A loaded panel defaults
+    // to the full fit; holdoutPanelMeta explicitly selects its own receipt.
+    public let appliedPreprocessing: PanelPreprocessing?
+
+    public init(
+        channels: [String], dates: [String], xScale: [Double], yScale: Double,
+        refSpend: [Double], xRaw: [[Double]], yRaw: [Double], holdoutWeeks: Int, lMax: Int,
+        fullPreprocessing: PanelPreprocessing? = nil, holdout: PanelPreprocessing? = nil,
+        appliedPreprocessing: PanelPreprocessing? = nil
+    ) {
+        self.channels = channels
+        self.dates = dates
+        self.xScale = xScale
+        self.yScale = yScale
+        self.refSpend = refSpend
+        self.xRaw = xRaw
+        self.yRaw = yRaw
+        self.holdoutWeeks = holdoutWeeks
+        self.lMax = lMax
+        self.fullPreprocessing = fullPreprocessing
+        self.holdout = holdout
+        self.appliedPreprocessing = appliedPreprocessing ?? fullPreprocessing
+    }
 
     public func toJSON() -> JSONValue {
-        .object([
+        var object: [String: JSONValue] = [
             "channels": .stringArray(channels),
             "dates": .stringArray(dates),
             "x_scale": .doubleArray(xScale),
@@ -57,7 +82,10 @@ public struct PanelMeta {
             "y_raw": .doubleArray(yRaw),
             "holdout_weeks": .int(holdoutWeeks),
             "l_max": .int(lMax),
-        ])
+        ]
+        if let fullPreprocessing { object["full_preprocessing"] = fullPreprocessing.toJSON() }
+        if let holdout { object["holdout"] = holdout.toJSON() }
+        return .object(object)
     }
 }
 
@@ -90,39 +118,36 @@ public enum StanDataBuilder {
         let K = panel.K
         let L = ChannelRegistry.lMax
 
-        let xScale = panel.xScale
-        let yScale = panel.yScale
-        let refSpend = panel.refSpend
-
-        var xNorm = Array(repeating: [Double](repeating: 0, count: C), count: T)
-        for t in 0..<T {
-            for c in 0..<C {
-                xNorm[t][c] = panel.X[t][c] / xScale[c]
-            }
-        }
-        let yS = panel.y.map { $0 / yScale }
+        precondition(holdoutWeeks > 0 && holdoutWeeks < T, "holdout must leave a nonempty training window")
+        let fullPreprocessing = PanelPreprocessing.fit(panel: panel, observedWeeks: T)
+        let holdoutPreprocessing = PanelPreprocessing.fit(panel: panel, observedWeeks: T - holdoutWeeks)
         let Fx = fourier(T: T)
         let tNorm = (0..<T).map { Double($0) / 52.0 }
 
-        var betaCenter = [Double](repeating: 0, count: C)
-        for c in 0..<C {
-            let key = panel.channels[c]
-            let priorCpl = ChannelRegistry.priorCPL(forKey: key)
-            let priorLeads = refSpend[c] / priorCpl
-            betaCenter[c] = max((priorLeads / 0.5) / yScale, 1e-4)
+        func data(using preprocessing: PanelPreprocessing) -> StanData {
+            let xNorm = panel.X.map { row in
+                (0..<C).map { row[$0] / preprocessing.xScale[$0] }
+            }
+            // Stan only reads y_s[1:obs]. Exclude held-out outcomes from
+            // the sampler input entirely; metadata retains them for scoring.
+            let yS = (0..<T).map { $0 < preprocessing.observedWeeks ? panel.y[$0] / preprocessing.yScale : 0 }
+            // Future spend and controls remain known conditional inputs.
+            // Their values never contribute to the fitted scale or priors.
+            return StanData(
+                T: T, C: C, K: K, L: L, obs: preprocessing.observedWeeks,
+                xNorm: xNorm, yS: yS, Z: preprocessing.standardizedControls(panel.rawControls),
+                Fx: Fx, tNorm: tNorm, betaCenter: preprocessing.betaCenter
+            )
         }
 
-        let full = StanData(
-            T: T, C: C, K: K, L: L, obs: T,
-            xNorm: xNorm, yS: yS, Z: panel.Z, Fx: Fx, tNorm: tNorm, betaCenter: betaCenter
-        )
-        let holdout = StanData(
-            T: T, C: C, K: K, L: L, obs: T - holdoutWeeks,
-            xNorm: xNorm, yS: yS, Z: panel.Z, Fx: Fx, tNorm: tNorm, betaCenter: betaCenter
-        )
+        let full = data(using: fullPreprocessing)
+        let holdout = data(using: holdoutPreprocessing)
         let meta = PanelMeta(
-            channels: panel.channels, dates: panel.dates, xScale: xScale, yScale: yScale,
-            refSpend: refSpend, xRaw: panel.X, yRaw: panel.y, holdoutWeeks: holdoutWeeks, lMax: L
+            channels: panel.channels, dates: panel.dates,
+            xScale: fullPreprocessing.xScale, yScale: fullPreprocessing.yScale,
+            refSpend: fullPreprocessing.refSpend, xRaw: panel.X, yRaw: panel.y,
+            holdoutWeeks: holdoutWeeks, lMax: L,
+            fullPreprocessing: fullPreprocessing, holdout: holdoutPreprocessing
         )
 
         return Built(full: full, holdout: holdout, meta: meta)

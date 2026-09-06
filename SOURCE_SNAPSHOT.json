@@ -1,0 +1,314 @@
+{
+  "date": "2026-09-06",
+  "shipping_source_base_revision": "6d3c3d254ea53ced3ae220b973daa07c854bf0cc",
+  "public_base_revision": "382bc5633ec309cefdb21192003498f40a3f1586",
+  "changes_unpublished": true,
+  "normalization": "Private historical names and machine-specific reference paths removed; ASCII punctuation normalized. Model computations are preserved.",
+  "legacy_external_fixture_tests": "Not included: PrepParity, MetricsParity, ArtifactsParity require historical external fixtures; current tests are self-contained.",
+  "files": [
+    {
+      "path": "Sources/FitEngine/JSONValue.swift",
+      "shipping_sha256": "3e9d7eeeb0a24fd11d7b29a7da5c7c4a41104789841156764d626429dcb3f78f",
+      "review_sha256": "3e9d7eeeb0a24fd11d7b29a7da5c7c4a41104789841156764d626429dcb3f78f"
+    },
+    {
+      "path": "Sources/FitEngine/MemoArtifact.swift",
+      "shipping_sha256": "9740b8e06a70281e3eb673d414511f14ca115d06fb309d1b5f0cebfa2c79196b",
+      "review_sha256": "47577f428ba801d2488f123b6e4304cee9931f8740e9e0634795c368759895c0"
+    },
+    {
+      "path": "Sources/FitEngine/ArtifactDiagnostics.swift",
+      "shipping_sha256": "28144f570a7ee2316e6f5558ced37be817ecc5017b17bac3d6ab53da871ae657",
+      "review_sha256": "e0b194a7eec0b463128246e4c5c1cefe95bda1ce04f020b38deeca377d1ec6a1"
+    },
+    {
+      "path": "Sources/FitEngine/Channels.swift",
+      "shipping_sha256": "88168ab9a198190c8ef5bcd27947193c9c2bf56015b4fb985bc3d999af66c1ba",
+      "review_sha256": "a7433a63c5cf7030321589d2cf238072f5ebea031fa01f4652f5f7f97fa44a43"
+    },
+    {
+      "path": "Sources/FitEngine/PosteriorView.swift",
+      "shipping_sha256": "7936c5792e477ae6745b6890c551d3a9c09885fd8be42334d63fca36ce3b8e33",
+      "review_sha256": "aca332bf9fe4e514036c97525d96741c6fdc1f2edc268d1d2c02881b676248a9"
+    },
+    {
+      "path": "Sources/FitEngine/StanDataBuilder.swift",
+      "shipping_sha256": "a50337ddfa2775f721174770e5956d7d362d860e00cfb76c6256dd2c1284c166",
+      "review_sha256": "a50337ddfa2775f721174770e5956d7d362d860e00cfb76c6256dd2c1284c166"
+    },
+    {
+      "path": "Sources/FitEngine/StanRunner.swift",
+      "shipping_sha256": "b64b9152cad0fe62eb93a46753bccd3e7a8f95fcbdfe160c0d0fcffff7356a1d",
+      "review_sha256": "ead3388f5f4fb1532026639ca8c54ee736daa6f7bb249f71b1810f018179c2c2"
+    },
+    {
+      "path": "Sources/FitEngine/ManifestArtifact.swift",
+      "shipping_sha256": "44f2dc0d5fe51f76f73d44292652d5f180f8449aeb33675fbeaf0649d9e29ad1",
+      "review_sha256": "f312f391837fde283198107cf675e49573037d7427419c1ffa406e0c734faf2b"
+    },
+    {
+      "path": "Sources/FitEngine/Grader.swift",
+      "shipping_sha256": "928b0c53f84a30e237b4cf5dec1d336f88b9ea9de9a18d7a82a74c241312d0c7",
+      "review_sha256": "a0d3d1fcd7748fcb1ee9cc2b365500b2d3b50790098e73d1ce34f17de343b72b"
+    },
+    {
+      "path": "Sources/FitEngine/Panel.swift",
+      "shipping_sha256": "8ab5264fda54fe337afb5559100596066d69a8436cc5ae0be99948fe050c482a",
+      "review_sha256": "8ab5264fda54fe337afb5559100596066d69a8436cc5ae0be99948fe050c482a"
+    },
+    {
+      "path": "Sources/FitEngine/Rounding.swift",
+      "shipping_sha256": "5154692e205c464ff0e2997b053aceb6ec9d5dc1f9953986673e7c590caa3567",
+      "review_sha256": "5154692e205c464ff0e2997b053aceb6ec9d5dc1f9953986673e7c590caa3567"
+    },
+    {
+      "path": "Sources/FitEngine/Optimizer.swift",
+      "shipping_sha256": "079f7067ee7ac1ce9e06965eafaed49821aaaeccf7c33567d6369375e2f62cf6",
+      "review_sha256": "489f1573ef8aec82b5ae10172bf9228b35641af4d1fc2afe749ae04dc0552235"
+    },
+    {
+      "path": "Sources/FitEngine/DrawsReader.swift",
+      "shipping_sha256": "05146bebb3e99fc7d21ff62d3a9887a8c9c23398a567bbb31cbbef3063d65fa5",
+      "review_sha256": "05146bebb3e99fc7d21ff62d3a9887a8c9c23398a567bbb31cbbef3063d65fa5"
+    },
+    {
+      "path": "Sources/FitEngine/PanelLoader.swift",
+      "shipping_sha256": "e5231f4e38facb574eb2db3a609f5639b68f47b8a0cdb9c4dc06afdbc4c9eba3",
+      "review_sha256": "3c7415a432a510b41012d8a512a5b65a98da7dd9a4bc682fe75318fe0dbe661a"
+    },
+    {
+      "path": "Sources/FitEngine/ChannelsArtifact.swift",
+      "shipping_sha256": "0ba4fd7230c480175c9535bb80611367ed1a8aa5a1024f654eb061491065f43f",
+      "review_sha256": "b9a0c6456ffb29bb0d07977247715f03f449642590c7f610ca993fd4cf336ccd"
+    },
+    {
+      "path": "Sources/FitEngine/CSVReader.swift",
+      "shipping_sha256": "122701e22f93f91f4868eb2e540fe3932fcaff5b0122c7d545219476d09e5d47",
+      "review_sha256": "122701e22f93f91f4868eb2e540fe3932fcaff5b0122c7d545219476d09e5d47"
+    },
+    {
+      "path": "Sources/FitEngine/CurvesArtifact.swift",
+      "shipping_sha256": "43b91937e7db848ecbcf4947b973e8573ade85edcd572ce8e2d1866f77f63254",
+      "review_sha256": "146d8f49adae7562406631d1f56ccda92f34344207cb3a30aeacdd83ab1a1548"
+    },
+    {
+      "path": "Sources/FitEngine/Metrics.swift",
+      "shipping_sha256": "7391e63c019904c18e74b67786b8466ae426406f35ae58de8f1cf7fce53af82f",
+      "review_sha256": "0dba22d2d09530c436477bd571d56b68cb1f0a1090fbf8e6179957cc26d98f20"
+    },
+    {
+      "path": "Sources/FitEngine/ArtifactsPipeline.swift",
+      "shipping_sha256": "b39ee50990360c65606c0e6e314791193c81f2a1ce353683aef3a95c91002324",
+      "review_sha256": "bf47e389f336b925e769d9afb2f85c36cac51b13c6d7412a7e4cc1dba3ed6339"
+    },
+    {
+      "path": "Sources/FitEngine/RecoveryArtifactBuilder.swift",
+      "shipping_sha256": "d7307be38ee4713a01ed7fe22862fc550694019f40dde1e01df021a747e384cd",
+      "review_sha256": "28fed187f67edf879249e60a5393e434b5f09849e8dc92f53f43e3578c684b41"
+    },
+    {
+      "path": "Sources/FitEngine/RNG.swift",
+      "shipping_sha256": "e1559715f177d4cea2c788c3e28bba42e2f4d296261be675b060bbb05bddd5e3",
+      "review_sha256": "e1559715f177d4cea2c788c3e28bba42e2f4d296261be675b060bbb05bddd5e3"
+    },
+    {
+      "path": "Sources/FitEngine/Diagnostics.swift",
+      "shipping_sha256": "042020e90734d1875b4c31db0cd3f451e3d5f0dd2ee016285daab9aa9e8815f7",
+      "review_sha256": "042020e90734d1875b4c31db0cd3f451e3d5f0dd2ee016285daab9aa9e8815f7"
+    },
+    {
+      "path": "Sources/FitEngine/Percentile.swift",
+      "shipping_sha256": "6c8d92a8a4bab222ed0fd18d0a49a7a2d12c1b72300a6657eee89539ce3a582e",
+      "review_sha256": "6c8d92a8a4bab222ed0fd18d0a49a7a2d12c1b72300a6657eee89539ce3a582e"
+    },
+    {
+      "path": "Sources/FitEngine/ScenariosArtifact.swift",
+      "shipping_sha256": "0b62d6817a5154f5b1a5a9408b8f29618dbb75b7ae00c0f0ae20b809e1b41d5e",
+      "review_sha256": "9fb9ecdf8c90eebabcee94a7b6970aaa25bef5dd5bb55a937ec55e8d7ca97513"
+    },
+    {
+      "path": "Sources/FitEngine/ArtifactConstants.swift",
+      "shipping_sha256": "ae561cc5a406c0c1ee373c9815e42e957120af974a255dc9ed0049568433efc3",
+      "review_sha256": "d5bd024a6faa7a8f822517624387ec16da58922ace56a2af0a29491c344b46bc"
+    },
+    {
+      "path": "Sources/fitengine-cli/main.swift",
+      "shipping_sha256": "c12453d58cd1813a81d4aab935646a220c4dd2894919cfe5e47aaa951dea9c22",
+      "review_sha256": "c12453d58cd1813a81d4aab935646a220c4dd2894919cfe5e47aaa951dea9c22"
+    },
+    {
+      "path": "Tests/Fixtures/planted_truth.json",
+      "shipping_sha256": "09694cd2b57162a426d7abc95459581f98ec8ee8ecca444f168ce806daa32b07",
+      "review_sha256": "09694cd2b57162a426d7abc95459581f98ec8ee8ecca444f168ce806daa32b07"
+    },
+    {
+      "path": "Tests/Fixtures/generate_foreign_fixtures.py",
+      "shipping_sha256": "d5548e05a294b59ff89d4eeb66aa812b60e0c04bbc6070dde7164280e7b4ccd2",
+      "review_sha256": "214eb7fd8d0095ca02d3fef8a097af9324b57e7c5f08b955ac5bc483dca040a7"
+    },
+    {
+      "path": "Tests/Fixtures/generate_planted_fixture.py",
+      "shipping_sha256": "56ac579af529feef1c3086b80918a1b65872b1eed6133c0f206327f63e18645f",
+      "review_sha256": "56ac579af529feef1c3086b80918a1b65872b1eed6133c0f206327f63e18645f"
+    },
+    {
+      "path": "Tests/Fixtures/planted_drop/controls.csv",
+      "shipping_sha256": "7f1ceb3511de0b553efb1b93fb57ea9354e7a45e681b9ac5b3c61b2896e5e323",
+      "review_sha256": "7f1ceb3511de0b553efb1b93fb57ea9354e7a45e681b9ac5b3c61b2896e5e323"
+    },
+    {
+      "path": "Tests/Fixtures/planted_drop/paid_media.csv",
+      "shipping_sha256": "896d01f74e1bfe74563f58b459b4418250e498cf9efaa5e09faa7c6511a4e46e",
+      "review_sha256": "896d01f74e1bfe74563f58b459b4418250e498cf9efaa5e09faa7c6511a4e46e"
+    },
+    {
+      "path": "Tests/Fixtures/planted_drop/kpi.csv",
+      "shipping_sha256": "528497730c9223e499ce4b9e317eec1bb7561b3f6076bc9cfcb43a048b0fefc0",
+      "review_sha256": "528497730c9223e499ce4b9e317eec1bb7561b3f6076bc9cfcb43a048b0fefc0"
+    },
+    {
+      "path": "Tests/Fixtures/planted_drop/non_media_treatments.csv",
+      "shipping_sha256": "fcc6a36d2e4d2eab00ca8da72d3a3145f9a7f8fb83516c3fb029640fd4b90785",
+      "review_sha256": "fcc6a36d2e4d2eab00ca8da72d3a3145f9a7f8fb83516c3fb029640fd4b90785"
+    },
+    {
+      "path": "Tests/Fixtures/fixture_negative_spend/paid_media.csv",
+      "shipping_sha256": "3b048ddde905b831247e3c1732e989991c7f2b81f50f2df64a5eae52f9842783",
+      "review_sha256": "3b048ddde905b831247e3c1732e989991c7f2b81f50f2df64a5eae52f9842783"
+    },
+    {
+      "path": "Tests/Fixtures/fixture_negative_spend/kpi.csv",
+      "shipping_sha256": "964f64334265401999c5d71258183ce12d4017333837158a86eee883460e3a01",
+      "review_sha256": "964f64334265401999c5d71258183ce12d4017333837158a86eee883460e3a01"
+    },
+    {
+      "path": "Tests/Fixtures/fixture_short_12wk/paid_media.csv",
+      "shipping_sha256": "e590889d50a8df9abd6f89ebd55ce7ff2cd49cfe55cecc60ea9f0b09f328b11f",
+      "review_sha256": "e590889d50a8df9abd6f89ebd55ce7ff2cd49cfe55cecc60ea9f0b09f328b11f"
+    },
+    {
+      "path": "Tests/Fixtures/fixture_short_12wk/kpi.csv",
+      "shipping_sha256": "48dd52fb56c0bdbe4b3ee234d73fbb20b60ca124d001dfdcaf3369aecc0e8925",
+      "review_sha256": "48dd52fb56c0bdbe4b3ee234d73fbb20b60ca124d001dfdcaf3369aecc0e8925"
+    },
+    {
+      "path": "Tests/Fixtures/foreign_drop/controls.csv",
+      "shipping_sha256": "207227029da100e0aff6455b8d33b71f6b0381c0a0744a139517e0d66f87a558",
+      "review_sha256": "207227029da100e0aff6455b8d33b71f6b0381c0a0744a139517e0d66f87a558"
+    },
+    {
+      "path": "Tests/Fixtures/foreign_drop/paid_media.csv",
+      "shipping_sha256": "66f4bd5b2a254d340f1554f0724492254a76769a96bcb48629f0fca4642b6030",
+      "review_sha256": "66f4bd5b2a254d340f1554f0724492254a76769a96bcb48629f0fca4642b6030"
+    },
+    {
+      "path": "Tests/Fixtures/foreign_drop/kpi.csv",
+      "shipping_sha256": "bec431b4850c9ad0f3c523e21441ad3dddfc086a5b25c5dcd9e62d8c8292e8c2",
+      "review_sha256": "bec431b4850c9ad0f3c523e21441ad3dddfc086a5b25c5dcd9e62d8c8292e8c2"
+    },
+    {
+      "path": "Tests/Fixtures/fixture_mixed_kpi_name/paid_media.csv",
+      "shipping_sha256": "698ddf537f2201fa17e7830d3715471b6e51d7dd470cb31aaf48ca1f8405fa5d",
+      "review_sha256": "698ddf537f2201fa17e7830d3715471b6e51d7dd470cb31aaf48ca1f8405fa5d"
+    },
+    {
+      "path": "Tests/Fixtures/fixture_mixed_kpi_name/kpi.csv",
+      "shipping_sha256": "33935d7884096864c4abecbc9c4209fa059c548e5bb5da4430779aa8f1768109",
+      "review_sha256": "33935d7884096864c4abecbc9c4209fa059c548e5bb5da4430779aa8f1768109"
+    },
+    {
+      "path": "Tests/Fixtures/fixture_nan_kpi/paid_media.csv",
+      "shipping_sha256": "698ddf537f2201fa17e7830d3715471b6e51d7dd470cb31aaf48ca1f8405fa5d",
+      "review_sha256": "698ddf537f2201fa17e7830d3715471b6e51d7dd470cb31aaf48ca1f8405fa5d"
+    },
+    {
+      "path": "Tests/Fixtures/fixture_nan_kpi/kpi.csv",
+      "shipping_sha256": "e229e98e3cfadad558aef9740be4082d2778f0730df1ba35e31c817d3b18edbf",
+      "review_sha256": "e229e98e3cfadad558aef9740be4082d2778f0730df1ba35e31c817d3b18edbf"
+    },
+    {
+      "path": "Tests/Fixtures/fixture_inf_spend/paid_media.csv",
+      "shipping_sha256": "d1bfb1e6790117f4ff44556aef268c8b1d5dcc25c1f755efab8d9ea65b9f6e07",
+      "review_sha256": "d1bfb1e6790117f4ff44556aef268c8b1d5dcc25c1f755efab8d9ea65b9f6e07"
+    },
+    {
+      "path": "Tests/Fixtures/fixture_inf_spend/kpi.csv",
+      "shipping_sha256": "964f64334265401999c5d71258183ce12d4017333837158a86eee883460e3a01",
+      "review_sha256": "964f64334265401999c5d71258183ce12d4017333837158a86eee883460e3a01"
+    },
+    {
+      "path": "Tests/FitEngineTests/ArtifactDiagnosticsTests.swift",
+      "shipping_sha256": "05ec18f4d53c78549c53a8fe43291416dfd7371a08a959687607a758c85b3ad0",
+      "review_sha256": "05ec18f4d53c78549c53a8fe43291416dfd7371a08a959687607a758c85b3ad0"
+    },
+    {
+      "path": "Tests/FitEngineTests/PercentileTests.swift",
+      "shipping_sha256": "45f9da2f381e4932bcca7392af8621d8f198f7289d8d8291110cce19d31c4885",
+      "review_sha256": "45f9da2f381e4932bcca7392af8621d8f198f7289d8d8291110cce19d31c4885"
+    },
+    {
+      "path": "Tests/FitEngineTests/PanelContractTests.swift",
+      "shipping_sha256": "f63e28af85b00d4b0fbef569513ff841ac57e94204d6a444bf54376583b0091c",
+      "review_sha256": "f63e28af85b00d4b0fbef569513ff841ac57e94204d6a444bf54376583b0091c"
+    },
+    {
+      "path": "Tests/FitEngineTests/DrawsReaderValidationTests.swift",
+      "shipping_sha256": "5576344ffb94a855d4045291632c7d0457c5ffab36bec302274767d712c1fa10",
+      "review_sha256": "5576344ffb94a855d4045291632c7d0457c5ffab36bec302274767d712c1fa10"
+    },
+    {
+      "path": "Tests/FitEngineTests/PlantedFixtureTests.swift",
+      "shipping_sha256": "99f4236b5b1e5bd1f8f1f58c4f006bc181c781433aa37d9df06e8433cfb95b96",
+      "review_sha256": "99f4236b5b1e5bd1f8f1f58c4f006bc181c781433aa37d9df06e8433cfb95b96"
+    },
+    {
+      "path": "Tests/FitEngineTests/ForeignFixtureTests.swift",
+      "shipping_sha256": "30428f2cf2d5f72a6101bc27be5c18b9c75bbcb39cde073a31c4c42a60400e5a",
+      "review_sha256": "bff38a87798d1da57eddfa4a8b4731b5ace1dc463635fceb83e9d943618d8ec1"
+    },
+    {
+      "path": "Tests/FitEngineTests/DiagnosticsTests.swift",
+      "shipping_sha256": "7817c586268ad3cb69521ebf9f6354d1266d667604e8d377bf43302dab87db87",
+      "review_sha256": "7817c586268ad3cb69521ebf9f6354d1266d667604e8d377bf43302dab87db87"
+    },
+    {
+      "path": "Tests/FitEngineTests/MemoArtifactTests.swift",
+      "shipping_sha256": "1782ad44156c0ea12c530da5243bd92689b81bd70d928ea604f0557a66dcbc18",
+      "review_sha256": "1782ad44156c0ea12c530da5243bd92689b81bd70d928ea604f0557a66dcbc18"
+    },
+    {
+      "path": "Tests/FitEngineTests/PanelMetaValidationTests.swift",
+      "shipping_sha256": "0eeadd1a82379437a6a9935adf7971dd54cd725faf53cf6ce1f67d4e0eda2341",
+      "review_sha256": "0eeadd1a82379437a6a9935adf7971dd54cd725faf53cf6ce1f67d4e0eda2341"
+    },
+    {
+      "path": "Tests/FitEngineTests/DrawsReaderTests.swift",
+      "shipping_sha256": "5c4a3f6e38f529df478710e76d6184b5717a41d8ead03d7a60f5c1135f03c311",
+      "review_sha256": "5c4a3f6e38f529df478710e76d6184b5717a41d8ead03d7a60f5c1135f03c311"
+    },
+    {
+      "path": "Tests/FitEngineTests/HoldoutPreprocessingTests.swift",
+      "shipping_sha256": "49996abfedfdad3431e389780e709ccfcfe94fc0d6095edcdb7a8e7c9fa2a47f",
+      "review_sha256": "49996abfedfdad3431e389780e709ccfcfe94fc0d6095edcdb7a8e7c9fa2a47f"
+    },
+    {
+      "path": "stan/mmm.stan",
+      "shipping_sha256": "310a9bbb0af3e4191880d385ff7c62558eacb8f0672de217b29ea33e60d985e0",
+      "review_sha256": "310a9bbb0af3e4191880d385ff7c62558eacb8f0672de217b29ea33e60d985e0"
+    },
+    {
+      "path": "Package.swift",
+      "shipping_sha256": "83483beba02bb4831e7abdbe4b386a1432e091d70a590ebd2171d595ebdac6fa",
+      "review_sha256": "83483beba02bb4831e7abdbe4b386a1432e091d70a590ebd2171d595ebdac6fa"
+    }
+  ],
+  "quality_policy_version": 4,
+  "ui_smoke_fixture": {
+    "source": "src/demo/sampleHandoff.ts in the shipping app",
+    "source_sha256": "5b9dcb1633a25adaf0a148182e6c72f56662743603f742883eb7f48e818073a5",
+    "review_generator": "Tests/Fixtures/generate_ui_smoke.ts",
+    "fixture": "Tests/Fixtures/ui_smoke_drop",
+    "contract_hash_verified_against_native_receipt": true
+  },
+  "shipping_source_revision": "38f926004ee54902ef363b0b14a12a3dc2581b17"
+}

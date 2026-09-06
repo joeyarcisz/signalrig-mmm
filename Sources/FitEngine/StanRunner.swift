@@ -1,7 +1,7 @@
 import Foundation
 
 // Runs the precompiled CmdStan binary as 4 concurrent chains. The binary at
-// the local spike workspace/dist/mmm is rpath-fixed with a
+// the historical Stan feasibility workspace/dist/mmm is rpath-fixed with a
 // sibling lib/ directory, so no environment variables are set here.
 public enum StanRunnerError: Error, CustomStringConvertible {
     case binaryNotFound(String)
@@ -26,6 +26,10 @@ public struct StanRunResult {
 }
 
 public enum StanRunner {
+    // Match the reference engine's target_accept=0.97, rather than CmdStan's
+    // implicit 0.8 default. Diagnostic thresholds are unchanged.
+    public static let defaultAdaptDelta = 0.97
+
     public static func run(
         binaryPath: String,
         dataPath: String,
@@ -34,7 +38,8 @@ public enum StanRunner {
         chains: Int = 4,
         numSamples: Int = 1000,
         numWarmup: Int = 1000,
-        timeout: TimeInterval = 900
+        timeout: TimeInterval = 900,
+        adaptDelta: Double = defaultAdaptDelta
     ) throws -> StanRunResult {
         guard FileManager.default.fileExists(atPath: binaryPath) else {
             throw StanRunnerError.binaryNotFound(binaryPath)
@@ -65,6 +70,7 @@ public enum StanRunner {
                 "sample",
                 "num_samples=\(numSamples)",
                 "num_warmup=\(numWarmup)",
+                "adapt", "delta=\(adaptDelta)",
                 "data", "file=\(dataPath)",
                 "output", "file=\(outputPath)",
                 "random", "seed=\(seed)",

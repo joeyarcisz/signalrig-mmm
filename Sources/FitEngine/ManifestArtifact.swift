@@ -3,7 +3,7 @@ import Foundation
 
 // Translates engine/artifacts/export.py's build_manifest() (:60-77) and
 // _data_sha256() (:31-40), read-only reference at
-// the Python reference implementation, verbatim.
+// the historical Python research engine, verbatim.
 //
 // engine_version/packages are the one deliberate substitution the task
 // packet calls for: Python's build_manifest reports its own pymc/arviz/

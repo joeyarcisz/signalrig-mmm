@@ -1,10 +1,10 @@
 import Foundation
 
 // Translates engine/model/posterior.py's diagnostics_artifact() (:360-415,
-// the Python reference implementation) verbatim.
-// rhat_max/ess_bulk_min/divergences come from this package's existing
-// DiagnosticsCalc.compute (already ported and parity-tested against
-// grade.py); the ppc/holdout SeriesPoint bands and mape/r2/coverage come
+// read-only reference at the historical Python research engine).
+// rhat_max/ess_bulk_min/divergences summarize BOTH full and holdout fits:
+// worst R-hat, lowest ESS, and total divergences. The ppc/holdout bands
+// and mape/r2/coverage come
 // from Metrics.predictiveSeries/errorStats (this file's own additions,
 // added alongside this port). The predictive-noise stream is this
 // package's own RNG (SplitMix64), not numpy's -- per the task packet,
@@ -60,6 +60,7 @@ public struct DiagnosticsArtifact {
 
     public func toJSON() -> JSONValue {
         .object([
+            "quality_policy_version": .int(ArtifactConstants.qualityPolicyVersion),
             "rhat_max": .double(rhatMax),
             "ess_bulk_min": .double(essBulkMin),
             "divergences": .int(divergences),
@@ -77,15 +78,81 @@ public struct DiagnosticsArtifact {
     }
 }
 
+public enum ArtifactDiagnosticsError: Error, CustomStringConvertible {
+    case incompatiblePanels
+    case unverifiedPreprocessing
+
+    public var description: String {
+        switch self {
+        case .incompatiblePanels:
+            return "full and holdout fits must describe the same panel with a valid held-out window"
+        case .unverifiedPreprocessing:
+            return "full and holdout views must carry preprocessing receipts for their own observed windows"
+        }
+    }
+}
+
 public enum ArtifactDiagnosticsBuilder {
+    // Stan's diagnostic guidance recommends at least four chains, folded
+    // rank R-hat below 1.01, and bulk ESS of at least 100 per chain.
+    // Any divergent transition blocks a budget recommendation.
+    // https://mc-stan.org/docs/2_39/cmdstan-guide/diagnose_utility.html
+    static let minimumChains = 4
+    static let minimumBulkESSPerChain = 100
+    static let maximumRhat = 1.01
+
+    static func makeGates(
+        full: DiagnosticsResult, fullChains: Int,
+        holdout: DiagnosticsResult, holdoutChains: Int,
+        mapeHoldoutPct: Double, r2Holdout: Double, coverage90Pct: Double
+    ) -> Gates {
+        func trustworthy(_ diagnostics: DiagnosticsResult, chains: Int) -> Bool {
+            chains >= minimumChains && diagnostics.rhatMax.isFinite && diagnostics.rhatMax > 0
+                && diagnostics.rhatMax < maximumRhat
+                && diagnostics.essBulkMin / max(chains, 1) >= minimumBulkESSPerChain
+                && diagnostics.divergences == 0
+        }
+        let converged = trustworthy(full, chains: fullChains) && trustworthy(holdout, chains: holdoutChains)
+        // Product withholding policy, not a claim of general calibration:
+        // small percentage error alone can hide a worse-than-mean fit and
+        // severe undercoverage. At 12 weeks, the coverage floor needs at
+        // least 10 observed outcomes inside their nominal 90% intervals.
+        let fitOk = mapeHoldoutPct.isFinite && mapeHoldoutPct >= 0 && mapeHoldoutPct < 15
+            && r2Holdout.isFinite && r2Holdout > 0 && r2Holdout <= 1
+            && coverage90Pct.isFinite && coverage90Pct >= 80 && coverage90Pct <= 100
+        return Gates(converged: converged, fitOk: fitOk, optimizerUnlocked: converged && fitOk)
+    }
+
     // viewHoldout is required, not optional (frozen design decision 1: the
     // no-holdout "diagnostics skipped" artifact variant is removed
     // entirely -- every real fit that reaches this builder always ran the
     // 12-week holdout refit, so mape/r2/coverage below are always
     // computed from real numbers, never left as NaN placeholders that
     // later get silently zeroed or printed as the literal text "nan").
-    public static func build(fitFull: StanFit, viewFull: PosteriorView, viewHoldout: PosteriorView, holdoutWeeks: Int) -> DiagnosticsArtifact {
-        let diag = DiagnosticsCalc.compute(fit: fitFull)
+    public static func build(fitFull: StanFit, fitHoldout: StanFit, viewFull: PosteriorView, viewHoldout: PosteriorView, holdoutWeeks: Int) throws -> DiagnosticsArtifact {
+        guard fitFull.C == fitHoldout.C, fitFull.K == fitHoldout.K, fitFull.T == fitHoldout.T,
+              viewFull.T == fitFull.T, viewHoldout.T == fitHoldout.T,
+              viewFull.C == fitFull.C, viewHoldout.C == fitHoldout.C,
+              viewFull.S == fitFull.totalDraws, viewHoldout.S == fitHoldout.totalDraws,
+              viewFull.dates == viewHoldout.dates, viewFull.channels == viewHoldout.channels,
+              holdoutWeeks > 0, holdoutWeeks < viewFull.T else {
+            throw ArtifactDiagnosticsError.incompatiblePanels
+        }
+        func hasPreprocessing(_ view: PosteriorView, observedWeeks: Int, controls: Int) -> Bool {
+            guard let preprocessing = view.preprocessing else { return false }
+            return preprocessing.observedWeeks == observedWeeks
+                && preprocessing.xScale == view.M && preprocessing.yScale == view.yMax
+                && preprocessing.refSpend == view.refSpend
+                && preprocessing.controlNames.count == controls
+                && preprocessing.controlMean.count == controls && preprocessing.controlStd.count == controls
+        }
+        guard hasPreprocessing(viewFull, observedWeeks: fitFull.T, controls: fitFull.K),
+              hasPreprocessing(viewHoldout, observedWeeks: fitHoldout.T - holdoutWeeks, controls: fitHoldout.K) else {
+            throw ArtifactDiagnosticsError.unverifiedPreprocessing
+        }
+        try Grader.validateIndependentFits(full: fitFull, holdout: fitHoldout)
+        let diag = try DiagnosticsCalc.compute(fit: fitFull)
+        let holdoutDiag = try DiagnosticsCalc.compute(fit: fitHoldout)
         let T = viewFull.T
 
         let (loFull, medFull, hiFull) = viewFull.predictiveSeries()
@@ -125,18 +192,19 @@ public enum ArtifactDiagnosticsBuilder {
             ))
         }
 
-        // Gate thresholds copied verbatim from posterior.py :398-399.
-        let converged = diag.rhatMax < 1.01 && diag.divergences <= 5
-        let fitOk = !mape.isNaN && mape < 15.0
-        let gates = Gates(converged: converged, fitOk: fitOk, optimizerUnlocked: converged && fitOk)
+        let gates = makeGates(
+            full: diag, fullChains: fitFull.nChains,
+            holdout: holdoutDiag, holdoutChains: fitHoldout.nChains,
+            mapeHoldoutPct: mape, r2Holdout: r2, coverage90Pct: coverage
+        )
 
         let chains = fitFull.nChains
         let drawsPerChain = fitFull.chains.first?.nDraws ?? 0
 
         return DiagnosticsArtifact(
-            rhatMax: diag.rhatMax,
-            essBulkMin: Double(diag.essBulkMin),
-            divergences: diag.divergences,
+            rhatMax: max(diag.rhatMax, holdoutDiag.rhatMax),
+            essBulkMin: Double(min(diag.essBulkMin, holdoutDiag.essBulkMin)),
+            divergences: diag.divergences + holdoutDiag.divergences,
             mapeHoldoutPct: mape,
             r2Holdout: r2,
             coverage90Pct: coverage,

@@ -1,15 +1,33 @@
 import Foundation
 
-// Split rank-normalized R-hat and bulk ESS, per Vehtari, Gelman, Simpson,
-// Carpenter, Burkner (2021). This implements the BULK statistic only (rank
-// normalize raw draws, classic R-hat formula on split chains) as specified
-// in the task packet section 3f; it does not compute the tail-folded
-// R-hat that CmdStan's stansummary additionally maxes against, since the
-// packet's formula definition is explicit and does not mention folding.
+// Rank-normalized split/folded R-hat and bulk ESS, per Vehtari, Gelman,
+// Simpson, Carpenter, Burkner (2021). Undefined diagnostics are errors;
+// they cannot be represented by a reassuring substitute score.
+// https://mc-stan.org/docs/2_39/cmdstan-guide/diagnose_utility.html
 public struct DiagnosticsResult {
     public let rhatMax: Double
     public let essBulkMin: Int
     public let divergences: Int
+}
+
+public enum DiagnosticsError: Error, CustomStringConvertible {
+    case insufficientChains(Int)
+    case insufficientDraws(Int)
+    case constantParameter(String)
+    case undefinedDiagnostic(String)
+
+    public var description: String {
+        switch self {
+        case .insufficientChains(let count):
+            return "posterior diagnostics require at least two chains; found \(count)"
+        case .insufficientDraws(let count):
+            return "posterior diagnostics require at least four draws per chain; found \(count)"
+        case .constantParameter(let name):
+            return "posterior parameter \(name) is constant; convergence cannot be established"
+        case .undefinedDiagnostic(let name):
+            return "posterior diagnostics for \(name) are undefined; chains may be stuck or numerically invalid"
+        }
+    }
 }
 
 public enum DiagnosticsCalc {
@@ -32,49 +50,52 @@ public enum DiagnosticsCalc {
         return names
     }
 
-    public static func compute(fit: StanFit) -> DiagnosticsResult {
+    public static func compute(fit: StanFit) throws -> DiagnosticsResult {
+        try DrawsReader.validate(fit: fit)
+        guard fit.nChains >= 2 else { throw DiagnosticsError.insufficientChains(fit.nChains) }
+        let drawsPerChain = fit.chains[0].nDraws
+        guard drawsPerChain >= 4 else { throw DiagnosticsError.insufficientDraws(drawsPerChain) }
         let names = scalarColumnNames(C: fit.C, K: fit.K)
         var rhatMax = -Double.infinity
         var essMin = Double.infinity
 
         for name in names {
-            let perChain = fit.chains.map { $0.columns[name] ?? [] }
-            guard perChain.allSatisfy({ !$0.isEmpty }) else { continue }
-
-            let allValues = perChain.flatMap { $0 }
-            // Constant-column guard (packet section 3f): Stan itself would
-            // report NaN here; instead treat R-hat as 1 and ESS as the full
-            // raw draw count, and still include it in the running min/max
-            // (documented choice: "use S as ESS" rather than skipping).
-            let isConstant = allValues.allSatisfy { $0 == allValues[0] }
-            if isConstant {
-                rhatMax = max(rhatMax, 1.0)
-                essMin = min(essMin, Double(allValues.count))
-                continue
+            let split = splitChains(fit.chains.map { $0.columns[name]! })
+            let allValues = split.flatMap { $0 }
+            guard !allValues.allSatisfy({ $0 == allValues[0] }) else {
+                throw DiagnosticsError.constantParameter(name)
+            }
+            let halfLength = split[0].count
+            func restoreChains(_ values: [Double]) -> [[Double]] {
+                split.indices.map { index in
+                    Array(values[(index * halfLength)..<((index + 1) * halfLength)])
+                }
             }
 
-            let z = rankNormalize(allValues)
-            var zPerChain: [[Double]] = []
-            zPerChain.reserveCapacity(perChain.count)
-            var offset = 0
-            for chain in perChain {
-                zPerChain.append(Array(z[offset..<(offset + chain.count)]))
-                offset += chain.count
+            let normalized = restoreChains(rankNormalize(allValues))
+            let bulkRhat = classicRhat(normalized)
+            let median = Percentile.percentile(allValues, 50)
+            let folded = allValues.map { abs($0 - median) }
+            guard folded.allSatisfy({ $0.isFinite }) else { throw DiagnosticsError.undefinedDiagnostic(name) }
+            // A constant folded transform can occur for a well-mixed,
+            // symmetric two-point sequence. Its raw rank diagnostic still
+            // determines convergence; it adds no scale information.
+            let foldedRhat = folded.allSatisfy({ $0 == folded[0] })
+                ? 1.0 : classicRhat(restoreChains(rankNormalize(folded)))
+            let rhat = max(bulkRhat, foldedRhat)
+            let ess = bulkESS(normalized)
+            guard bulkRhat.isFinite, foldedRhat.isFinite, rhat.isFinite, ess.isFinite, ess > 0 else {
+                throw DiagnosticsError.undefinedDiagnostic(name)
             }
-            let split = splitChains(zPerChain)
-            let rhat = classicRhat(split)
-            let ess = bulkESS(split)
 
             rhatMax = max(rhatMax, rhat)
             essMin = min(essMin, ess)
         }
 
-        if rhatMax == -Double.infinity { rhatMax = 1.0 }
-        if essMin == Double.infinity { essMin = Double(fit.totalDraws) }
-
         return DiagnosticsResult(
             rhatMax: roundTo(rhatMax, 4),
-            essBulkMin: roundToInt(essMin),
+            // Never round a sub-threshold ESS upward into an approved fit.
+            essBulkMin: Int(essMin.rounded(.down)),
             divergences: fit.divergences
         )
     }
@@ -163,11 +184,17 @@ public enum DiagnosticsCalc {
     // sqrt((W*(n-1)/n + B/n) / W) over m split chains of length n each.
     static func classicRhat(_ chains: [[Double]]) -> Double {
         let m = chains.count
-        guard m > 0, let n = chains.first?.count, n > 1 else { return 1.0 }
+        guard m > 1, let n = chains.first?.count, n > 1,
+              chains.allSatisfy({ $0.count == n }) else { return .nan }
 
         var chainMeans = [Double](repeating: 0, count: m)
         var chainVars = [Double](repeating: 0, count: m)
         for (i, chain) in chains.enumerated() {
+            if chain.allSatisfy({ $0 == chain[0] }) {
+                chainMeans[i] = chain[0]
+                chainVars[i] = 0
+                continue
+            }
             let mean = chain.reduce(0, +) / Double(n)
             var v = 0.0
             for x in chain { v += (x - mean) * (x - mean) }
@@ -176,7 +203,6 @@ public enum DiagnosticsCalc {
             chainVars[i] = v
         }
         let W = chainVars.reduce(0, +) / Double(m)
-        if W <= 0 { return 1.0 } // constant-column guard
 
         var B = 0.0
         if m > 1 {
@@ -185,6 +211,9 @@ public enum DiagnosticsCalc {
             for mu in chainMeans { between += (mu - grandMean) * (mu - grandMean) }
             B = Double(n) * between / Double(m - 1)
         }
+        // Distinct chains stuck at different constants have zero W and
+        // positive B. That is failed convergence, never R-hat 1.
+        if W <= 0 { return B > 0 ? .infinity : .nan }
         let varPlus = (Double(n - 1) / Double(n)) * W + B / Double(n)
         return (varPlus / W).squareRoot()
     }
@@ -232,7 +261,7 @@ public enum DiagnosticsCalc {
             for mu in chainMeans { between += (mu - grandMean) * (mu - grandMean) }
             varPlus += between / Double(m - 1)
         }
-        guard varPlus > 0 else { return Double(m * n) } // constant-column guard
+        guard varPlus > 0 else { return .nan }
 
         func meanAcovAtLag(_ lag: Int) -> Double {
             var s = 0.0

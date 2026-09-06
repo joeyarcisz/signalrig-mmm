@@ -1,7 +1,7 @@
 import Foundation
 
 // Translates engine/model/posterior.py's scenarios_artifact() (:197-235,
-// the Python reference implementation) verbatim.
+// read-only reference at the historical Python research engine) verbatim.
 // Row order matches Python's nested loops exactly (source outer, target
 // middle, shift_pct inner, 1...24) since the consuming app does integer
 // index lookups into the rows array.

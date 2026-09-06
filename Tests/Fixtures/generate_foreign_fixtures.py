@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Generates the FitEngine test fixtures committed alongside this script:
-foreign_drop/ (a complete, valid drop with no relation to the bundled sample
+foreign_drop/ (a complete, valid drop with no relation to the CarePoint
 fixture the rest of the suite is built around) plus five malformed
 variants, each demonstrating exactly one PanelLoader rejection.
 

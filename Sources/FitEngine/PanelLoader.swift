@@ -1,7 +1,7 @@
 import Foundation
 
 // Mirrors engine/model/mmm.py Panel (read-only Python reference at
-// the Python reference implementation). X and Z are stored row-major
+// the historical Python research engine). X and Z are stored row-major
 // (T outer, C/K inner) to match how the Python arrays are shaped and
 // iterated when this code was ported.
 public struct Panel {
@@ -9,7 +9,7 @@ public struct Panel {
     public let channels: [String]
     public let X: [[Double]]      // (T, C) raw weekly spend
     public let y: [Double]        // (T,) raw KPI
-    public let Z: [[Double]]      // (T, K) standardized controls + treatments
+    public let rawControls: [[Double]] // (T, K) controls + treatments before normalization
     public let controlNames: [String]
 
     // KPI display name, read from kpi.csv's own kpi_name column (see
@@ -26,6 +26,12 @@ public struct Panel {
     public var T: Int { dates.count }
     public var C: Int { channels.count }
     public var K: Int { controlNames.count }
+
+    // Compatibility accessor for full-panel inspection. The holdout
+    // builder always fits a separate transform to rawControls.
+    public var Z: [[Double]] {
+        PanelPreprocessing.fit(panel: self, observedWeeks: T).standardizedControls(rawControls)
+    }
 
     // Per-channel spend normalizer: max spend across the panel, floored at 1e-9.
     public var xScale: [Double] {
@@ -56,6 +62,11 @@ public struct Panel {
 
 public enum PanelLoadError: Error, CustomStringConvertible {
     case missingRequiredFile(String)
+    case malformedDate(file: String, row: Int, text: String)
+    case invalidWeeklyCadence(previous: String, current: String)
+    case dateCoverageMismatch(file: String, missing: [String], unexpected: [String])
+    case dateOutsideKPI(file: String, row: Int, date: String)
+    case conflictingCovariate(file: String, date: String, name: String)
 
     // Fail-closed input parsing (frozen design decision 2): empty string,
     // non-numeric text, NaN, or infinity in kpi_value/spend/control_value/
@@ -84,6 +95,19 @@ public enum PanelLoadError: Error, CustomStringConvertible {
         switch self {
         case .missingRequiredFile(let name):
             return "drop directory is missing required file: \(name)"
+        case .malformedDate(let file, let row, let text):
+            return "\(file): row \(row), column \"date_week\": expected a valid YYYY-MM-DD date, got \"\(text)\""
+        case .invalidWeeklyCadence(let previous, let current):
+            return "kpi.csv: date_week must be exactly 7 days apart; found \(previous) and \(current)"
+        case .dateCoverageMismatch(let file, let missing, let unexpected):
+            var details: [String] = []
+            if !missing.isEmpty { details.append("missing dates: \(missing.joined(separator: ", "))") }
+            if !unexpected.isEmpty { details.append("unexpected dates: \(unexpected.joined(separator: ", "))") }
+            return "\(file): date_week must match kpi.csv; \(details.joined(separator: "; ")). Include explicit zero-spend rows for weeks with no spend."
+        case .dateOutsideKPI(let file, let row, let date):
+            return "\(file): row \(row), date_week \(date) is not present in kpi.csv"
+        case .conflictingCovariate(let file, let date, let name):
+            return "\(file): conflicting values for \(name) on \(date); provide one national value or identical values across geos"
         case .malformedValue(let file, let row, let column, let text):
             return "\(file): row \(row), column \"\(column)\": expected a finite number, got \"\(text)\""
         case .negativeValue(let file, let row, let column, let text):
@@ -113,12 +137,18 @@ public enum PanelLoader {
         let paidMedia = try CSVReader.read(path: paidMediaPath)
 
         var warnings: [String] = []
+        if FileManager.default.fileExists(atPath: dir.appendingPathComponent("organic_owned.csv").path) {
+            warnings.append("organic_owned.csv is not used by the current model.")
+        }
 
-        // dates = sorted set of date_week from kpi.csv; lexicographic sort on
-        // ISO date strings equals chronological order.
+        // Require canonical calendar dates before sorting or joining tables.
         var dateSet = Set<String>()
-        for r in kpi.rows {
-            if let d = r["date_week"] { dateSet.insert(d) }
+        var calendarDates: [String: Date] = [:]
+        for (rowIdx, r) in kpi.rows.enumerated() {
+            let date = try parseRequiredDate(r["date_week"], file: "kpi.csv", row: rowIdx + 1)
+            let text = r["date_week"]!
+            dateSet.insert(text)
+            calendarDates[text] = date
         }
         let dates = dateSet.sorted()
         var dateIndex: [String: Int] = [:]
@@ -131,6 +161,27 @@ public enum PanelLoader {
         // training data left (frozen design decision 1).
         guard T >= ArtifactConstants.minimumWeeks else {
             throw PanelLoadError.insufficientWeeks(weeks: T, minimum: ArtifactConstants.minimumWeeks)
+        }
+
+        for t in 1..<T {
+            let previous = dates[t - 1]
+            let current = dates[t]
+            guard calendarDates[current]!.timeIntervalSince(calendarDates[previous]!) == 7 * 24 * 60 * 60 else {
+                throw PanelLoadError.invalidWeeklyCadence(previous: previous, current: current)
+            }
+        }
+
+        var paidDates = Set<String>()
+        for (rowIdx, r) in paidMedia.rows.enumerated() {
+            _ = try parseRequiredDate(r["date_week"], file: "paid_media.csv", row: rowIdx + 1)
+            paidDates.insert(r["date_week"]!)
+        }
+        let missingPaidDates = dateSet.subtracting(paidDates).sorted()
+        let unexpectedPaidDates = paidDates.subtracting(dateSet).sorted()
+        guard missingPaidDates.isEmpty && unexpectedPaidDates.isEmpty else {
+            throw PanelLoadError.dateCoverageMismatch(
+                file: "paid_media.csv", missing: missingPaidDates, unexpected: unexpectedPaidDates
+            )
         }
 
         // Geo aggregation stays (matches the Python engine: every geo's KPI
@@ -192,19 +243,24 @@ public enum PanelLoader {
             warnings.append("Aggregated \(duplicateSpendRows) duplicate date+channel spend row(s) in paid_media.csv")
         }
 
-        // Controls/treatments: assignment (not accumulation) into a column
-        // per name, column order = sorted(all names).
+        // Covariates represent one national value per date and name.
+        // Identical repeats across geos are harmless; conflicts are ambiguous.
         var controlCols: [String: [Double]] = [:]
 
         let controlsPath = dir.appendingPathComponent("controls.csv").path
         if FileManager.default.fileExists(atPath: controlsPath) {
             let controls = try CSVReader.read(path: controlsPath)
+            var seenValues: [String: [String: Double]] = [:]
             for (rowIdx, r) in controls.rows.enumerated() {
+                let (date, idx) = try requirePanelDate(r["date_week"], file: "controls.csv", row: rowIdx + 1, dateIndex: dateIndex)
                 guard let name = r["control_name"], !name.isEmpty else { continue }
                 var col = controlCols[name] ?? [Double](repeating: 0, count: T)
-                if let dw = r["date_week"], let idx = dateIndex[dw] {
-                    col[idx] = try parseRequiredDouble(r["control_value"], file: "controls.csv", row: rowIdx + 1, column: "control_value")
+                let value = try parseRequiredDouble(r["control_value"], file: "controls.csv", row: rowIdx + 1, column: "control_value")
+                if let previous = seenValues[name]?[date], previous != value {
+                    throw PanelLoadError.conflictingCovariate(file: "controls.csv", date: date, name: name)
                 }
+                seenValues[name, default: [:]][date] = value
+                col[idx] = value
                 controlCols[name] = col
             }
         }
@@ -212,37 +268,33 @@ public enum PanelLoader {
         let treatmentsPath = dir.appendingPathComponent("non_media_treatments.csv").path
         if FileManager.default.fileExists(atPath: treatmentsPath) {
             let treatments = try CSVReader.read(path: treatmentsPath)
+            var seenValues: [String: [String: Double]] = [:]
             for (rowIdx, r) in treatments.rows.enumerated() {
+                let (date, idx) = try requirePanelDate(r["date_week"], file: "non_media_treatments.csv", row: rowIdx + 1, dateIndex: dateIndex)
                 guard let name = r["treatment_name"], !name.isEmpty else { continue }
                 let colName = "treatment_" + name
                 var col = controlCols[colName] ?? [Double](repeating: 0, count: T)
-                if let dw = r["date_week"], let idx = dateIndex[dw] {
-                    col[idx] = try parseRequiredDouble(r["treatment_value"], file: "non_media_treatments.csv", row: rowIdx + 1, column: "treatment_value")
+                let value = try parseRequiredDouble(r["treatment_value"], file: "non_media_treatments.csv", row: rowIdx + 1, column: "treatment_value")
+                if let previous = seenValues[name]?[date], previous != value {
+                    throw PanelLoadError.conflictingCovariate(file: "non_media_treatments.csv", date: date, name: name)
                 }
+                seenValues[name, default: [:]][date] = value
+                col[idx] = value
                 controlCols[colName] = col
             }
         }
 
         let controlNames = controlCols.keys.sorted()
         let K = controlNames.count
-        var Z = Array(repeating: [Double](repeating: 0, count: K), count: T)
+        var rawControls = Array(repeating: [Double](repeating: 0, count: K), count: T)
         for (ci, name) in controlNames.enumerated() {
             let col = controlCols[name]!
-            var mean = 0.0
-            for v in col { mean += v }
-            mean /= Double(T)
-            var variance = 0.0
-            for v in col { variance += (v - mean) * (v - mean) }
-            // Population std, ddof 0, matching numpy's default Z.std(axis=0).
-            variance /= Double(T)
-            let std = variance.squareRoot()
-            let denom = std > 1e-9 ? std : 1.0
             for t in 0..<T {
-                Z[t][ci] = (col[t] - mean) / denom
+                rawControls[t][ci] = col[t]
             }
         }
 
-        return Panel(dates: dates, channels: channels, X: X, y: y, Z: Z, controlNames: controlNames,
+        return Panel(dates: dates, channels: channels, X: X, y: y, rawControls: rawControls, controlNames: controlNames,
                      kpiName: kpiName, warnings: warnings)
     }
 
@@ -285,6 +337,38 @@ public enum PanelLoader {
             throw PanelLoadError.mixedKPIName(file: file, values: distinct.sorted())
         }
         return (distinct.first!, nil)
+    }
+
+    private static func parseRequiredDate(_ raw: String?, file: String, row: Int) throws -> Date {
+        let text = raw ?? ""
+        let parts = text.split(separator: "-", omittingEmptySubsequences: false)
+        let shapeIsValid = parts.count == 3 && parts[0].count == 4 && parts[1].count == 2 && parts[2].count == 2
+            && parts.allSatisfy { $0.utf8.allSatisfy { $0 >= 48 && $0 <= 57 } }
+        guard shapeIsValid,
+              let year = Int(parts[0]), year >= 1,
+              let month = Int(parts[1]), let day = Int(parts[2]) else {
+            throw PanelLoadError.malformedDate(file: file, row: row, text: text)
+        }
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = TimeZone(secondsFromGMT: 0)!
+        let components = DateComponents(year: year, month: month, day: day)
+        guard let date = calendar.date(from: components) else {
+            throw PanelLoadError.malformedDate(file: file, row: row, text: text)
+        }
+        let actual = calendar.dateComponents([.year, .month, .day], from: date)
+        guard actual.year == year, actual.month == month, actual.day == day else {
+            throw PanelLoadError.malformedDate(file: file, row: row, text: text)
+        }
+        return date
+    }
+
+    private static func requirePanelDate(_ raw: String?, file: String, row: Int, dateIndex: [String: Int]) throws -> (String, Int) {
+        _ = try parseRequiredDate(raw, file: file, row: row)
+        let date = raw!
+        guard let idx = dateIndex[date] else {
+            throw PanelLoadError.dateOutsideKPI(file: file, row: row, date: date)
+        }
+        return (date, idx)
     }
 
     // Fail-closed numeric parsing (frozen design decision 2): empty string,

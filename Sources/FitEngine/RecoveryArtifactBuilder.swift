@@ -2,7 +2,7 @@ import Foundation
 
 // Translates engine/model/posterior.py's recovery_artifact() (:270-329)
 // and unavailable_recovery_artifact() (:332-357), read-only reference at
-// the Python reference implementation, verbatim. These are distinct
+// the historical Python research engine, verbatim. These are distinct
 // types from Metrics.RecoveryResult/RecoveryParam (used by the existing
 // `grade` CLI command, which mirrors grade.py's leaner shape): the
 // artifact shape additionally carries "label" per param and the separate
@@ -180,14 +180,14 @@ public enum RecoveryArtifactBuilder {
             coverageRate: coverageRate,
             nParams: nParams,
             nInside: nInside,
-            note: "Generated and fitted under the same model family \u{2014} a fair parameter-recovery exam, said plainly. Real-data receipts are the holdout error, interval coverage, and posterior predictive checks."
+            note: "Generated and fitted under the same model family - a fair parameter-recovery exam, said plainly. Real-data receipts are the holdout error, interval coverage, and posterior predictive checks."
         )
     }
 
     public static func buildUnavailable(reason: String = "no ground truth for real data") -> RecoveryUnavailableArtifact {
         RecoveryUnavailableArtifact(
             reason: reason,
-            dataDisclosure: "Fitted on the client data package \u{2014} no hidden ground truth exists for real data.",
+            dataDisclosure: "Fitted on the client data package - no hidden ground truth exists for real data.",
             note: "Receipts for real data are the holdout error, interval coverage, and posterior predictive checks."
         )
     }

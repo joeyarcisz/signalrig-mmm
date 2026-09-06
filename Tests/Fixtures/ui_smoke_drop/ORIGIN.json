@@ -1,0 +1,14 @@
+{
+  "origin": "Generated UI smoke fixture, exported from the native sample-package generator",
+  "is_synthetic": true,
+  "kpi_design": "Seasonal KPI is generated separately from channel spend. This is not an effect-recovery fixture; use it to examine spurious media attribution.",
+  "generator_seed": 7,
+  "file_sha256": {
+    "kpi.csv": "799aa61eb3b69127a75b5b0b763266902f8c8fc62b0507bf639bd3dab0384e84",
+    "paid_media.csv": "b17268f99f7ee220320c01267f1a0835effa727c85666c7ce1fa40b17ee62230",
+    "organic_owned.csv": "2f4d709ac17c9baf84926b98db360f7cb57d20bde1cd04d70600c585a0ae92ac",
+    "controls.csv": "70e8a9bd8dc268c59e75958208e096cd6b0abba03ca4676ab3f9403ab6735088",
+    "non_media_treatments.csv": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "empty_optional_file": "The native UI passes the absent optional treatment table as an empty file; preserved here to match its exact input fingerprint."
+}

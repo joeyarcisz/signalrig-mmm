@@ -2,7 +2,7 @@ import Foundation
 
 // Deterministic replacement for engine/model/posterior.py's
 // _optimal_allocation() (:238-267, read-only reference at
-// the Python reference implementation), which uses scipy's SLSQP.
+// the historical Python research engine), which uses scipy's SLSQP.
 // SLSQP is not ported (out of scope per the task packet -- it names this
 // exact deviation and asks for "a deterministic concave-surface optimizer
 // of your choice" instead).

@@ -2,7 +2,7 @@ import Foundation
 
 // Registry of channels this package ships display metadata for, mirroring
 // engine/config.py CHANNEL_KEYS and engine/model/mmm.py PRIOR_CPL (read-only
-// Python reference at the Python reference implementation). Values
+// Python reference at the historical Python research engine). Values
 // copied by hand, not computed, since the Python source is out of scope for
 // this package.
 //
@@ -54,7 +54,7 @@ public enum ChannelRegistry {
 // scope here, since this package never generates synthetic data). Used by
 // channels.json and curves.json for display strings via
 // ChannelRegistry.label(forKey:)/platform(forKey:) below, NOT by direct
-// dictionary lookup with a sample-registry fallback -- a channel key this
+// dictionary lookup with a CarePoint-shaped fallback -- a channel key this
 // registry has never seen (any real client package will have several)
 // gets a generated label/platform instead of silently borrowing this
 // fixture's own display strings.

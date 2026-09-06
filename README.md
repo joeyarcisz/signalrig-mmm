@@ -1,158 +1,71 @@
-# SignalRig MMM
+# SignalRig MMM: practitioner review candidate
 
-![CI](https://github.com/joeyarcisz/signalrig-mmm/actions/workflows/ci.yml/badge.svg) ![License](https://img.shields.io/badge/license-Apache--2.0-blue) ![Platform](https://img.shields.io/badge/swift-5.9%2B-orange) ![Model](https://img.shields.io/badge/stan-2.39-purple)
+September 6, 2026. Engine 0.2.0, quality policy 4. This candidate is prepared for independent review. The public repository and circulating Mac download are separate release surfaces; local changes do not update either one.
 
-A Bayesian media mix model that shows its work: parameter recovery and holdout
-grading are first-class outputs, not an afterthought. This is the open-source
-model core of [SignalRig](https://signalrig.co), a macOS app for on-device
-media measurement.
+SignalRig is intended to help a planner turn aggregate weekly media and outcome history into one defensible measurement or budget decision, with inspectable inputs, assumptions, uncertainty, and explicit refusal when checks fail. This package contains the model, the Swift engine, synthetic fixtures, and repeatable checks. It contains no private agency correspondence or client datasets.
 
-<img src="docs/mmm-lab.png" alt="SignalRig's MMM Lab: a spend-shift slider answered by fitted response curves with credible intervals" width="100%">
+## Start here
 
-*The engine in this repo powering [SignalRig for Mac](https://signalrig.co): pull a spend slider, fitted curves answer with intervals attached.*
+1. Read `REVIEW_GUIDE.md` for the review questions and current limits.
+2. Run `swift test`. These checks validate implementation behavior, not real-account predictive or causal performance.
+3. Read `stan/mmm.stan`, `Sources/FitEngine/Panel.swift`, `StanDataBuilder.swift`, `ArtifactDiagnostics.swift`, and `Metrics.swift`.
+4. Use the commands below for actual sampling. Record every seed and result, including held-back runs.
+5. See `CHECKS.md` for evidence collected for this candidate.
 
-## What it is
+## Model and changes
 
-- **`stan/mmm.stan`**: the model. Normalized geometric adstock (carryover
-  window L = 8 weeks), Hill saturation per channel, Fourier seasonality,
-  standardized controls, and a CPL-anchored prior center per channel. One
-  compiled binary serves both the full fit and the holdout refit.
-- **`Sources/FitEngine`**: a pure-Swift orchestration layer (Foundation only,
-  no dependencies). Fail-closed CSV panel loading, Stan data preparation,
-  4-chain CmdStan process orchestration, draws parsing, posterior grading
-  (recovery intervals, holdout MAPE / R-squared / interval coverage, split
-  rank-normalized R-hat, bulk ESS), a deterministic budget-allocation
-  optimizer, and emitters for a full set of UI-ready artifact JSONs.
-- **`Sources/fitengine-cli`**: a command-line driver (`prep`, `fit`, `grade`,
-  `artifacts`, `e2e`).
-- **`Tests/`**: a self-contained suite (20 tests, no CmdStan needed) covering a
-  complete synthetic fixture (64 weeks, two geos, four channels), malformed
-  variants proving the fail-closed input handling, and the committed
-  planted-truth panel behind the recovery benchmark below.
+The national weekly model uses normalized geometric adstock with an eight-week carryover window, Hill saturation, trend, Fourier seasonality, and standardized controls under a Normal likelihood. Multiple geographies aggregate to national totals. The implementation does not estimate geography-level effects.
 
-## The philosophy
+Full and holdout fits now learn separate preprocessing from their own observed windows. The holdout fit uses the first T-12 weeks to calculate spend/outcome scales, control means and population standard deviations, and reference spend for prior centers. Held-out outcomes are zeroed in its Stan input. Future spend and controls are retained as known inputs to a conditional forecast, not as an unconditional forecast of future marketing activity.
 
-Most marketing mix tools ask you to trust a score. This one is built around
-the graded exam instead:
+Each fit needs at least four chains, folded/rank-normalized R-hat below 1.01, bulk ESS of at least 100 per chain, and zero divergences. Holdout MAPE must be below 15%, R-squared above zero, and coverage of nominal 90% predictive intervals at least 80%. These short-window withholding thresholds are product rules to review, not a statistical calibration guarantee. These are necessary implementation checks, not a claim of causal identification. The sampler now explicitly uses acceptance target 0.97, matching the Python reference configuration rather than relying on CmdStan's default 0.8.
 
-1. **Planted-truth recovery.** On synthetic data with known ground truth, the
-   model must recover the planted parameters inside its own credible
-   intervals, and report exactly how many it recovered.
-2. **Blindfold holdout.** The model refits on the first T-12 weeks and is
-   scored on the 12 weeks it never saw: MAPE, R-squared, and whether the 90%
-   intervals actually cover 90%.
-3. **Fail closed.** Malformed input (non-finite numbers, negative spend,
-   mixed KPIs, thin history) is a named, specific error, never a silent zero.
-4. **Gates before recommendations.** If R-hat, ESS, or divergences miss their
-   bars, downstream budget recommendations lock. A fit that did not converge
-   does not get to spend your money.
+Malformed CSVs, non-finite values, negative spend/outcomes, mixed KPIs, irregular weekly calendars, and incompatible paid-media calendars are rejected. Fits without current preprocessing provenance require refitting. Reusing a full fit as the holdout is invalid.
 
-## Quickstart
+## Reproduce
 
-Requirements: Swift 5.9+ builds the engine and runs the tests with no other
-dependencies. Fitting additionally needs a C++ toolchain and
-[CmdStan](https://mc-stan.org/users/interfaces/cmdstan) (tested against 2.39)
-to compile the model once.
+Requires macOS 13+, Swift 5.9+, and, for sampling, CmdStan 2.39.0 with its C++ toolchain. Tests do not need CmdStan. Build and run one job at a time.
 
 ```bash
-# 1. Build the engine and run the suite. No CmdStan required for this step.
-swift build -c release
-swift test
-
-# 2. Validate and prepare the bundled synthetic fixture. Writes
-#    data_full.json, data_holdout.json and panel_meta.json.
-swift run -c release fitengine-cli prep \
-  --drop Tests/Fixtures/foreign_drop \
-  --out /tmp/mmm-prep
-
-# 3. Compile the model with CmdStan (one time).
-cd <cmdstan-dir> && make <path-to-this-repo>/stan/mmm
-
-# 4. Fit the prepared panel.
-swift run -c release fitengine-cli fit \
-  --binary <path-to-this-repo>/stan/mmm \
-  --data /tmp/mmm-prep/data_full.json \
-  --work /tmp/mmm-work
+swift test --jobs 1
+swift build -c release --jobs 1
+swift run -c release --skip-build fitengine-cli prep --drop Tests/Fixtures/foreign_drop --out /tmp/signalrig-review-prep
 ```
 
-The `grade`, `artifacts` and `e2e` commands additionally require a `--truth`
-file naming the planted parameters. The bundled fixture is a foreign package
-with no planted truth, so those commands apply to panels you generate
-yourself with known ground truth.
-
-## Reproducing the recovery benchmark
-
-The claim this project rests on is that the model recovers parameters it was
-not told, and says so honestly when it does not. That claim is only worth
-anything if you can re-run it, so the planted-truth fixture is committed.
-
-`Tests/Fixtures/planted_drop` is a 104-week, 8-channel synthetic panel whose
-response parameters are known, and `Tests/Fixtures/planted_truth.json` states
-them. The KPI series was produced by the same normalized geometric adstock and
-Hill saturation the Stan model fits, so recovery is a like-for-like exam
-rather than a favourable one. Both files are regenerated byte-identically by
-`Tests/Fixtures/generate_planted_fixture.py`, which is stdlib-only and seeded.
+Compile with the installed CmdStan 2.39.0 toolchain, following the [official instructions](https://mc-stan.org/docs/2_39/cmdstan-guide/installation.html):
 
 ```bash
-swift run -c release fitengine-cli e2e \
-  --drop Tests/Fixtures/planted_drop \
-  --truth Tests/Fixtures/planted_truth.json \
-  --binary <path-to-this-repo>/stan/mmm \
-  --work /tmp/mmm-planted
+export SIGNALRIG_CMDSTAN=/absolute/path/to/cmdstan-2.39.0
+make -C "$SIGNALRIG_CMDSTAN" -j1 CXX=clang++ "$(pwd)/stan/mmm"
 ```
 
-This runs two fits, the full panel and a refit that never sees the final 12
-weeks, then prints recovery coverage, holdout accuracy and sampler
-diagnostics as JSON. Recovery grades three parameters per channel, a cost per
-lead at a reference weekly spend, an adstock half life, and a contribution
-share, so 8 channels give the 24 parameters the benchmark reports.
+Set `SIGNALRIG_MODEL` below to that executable's absolute path.
 
-Sampling is stochastic, so expect small run-to-run movement in the third
-decimal rather than identical numbers.
+```bash
+export SIGNALRIG_MODEL=/absolute/path/to/stan/mmm
+swift run -c release --skip-build fitengine-cli fit --binary "$SIGNALRIG_MODEL" --data /tmp/signalrig-review-prep/data_full.json --work /tmp/signalrig-review-full --seed 42
+swift run -c release --skip-build fitengine-cli fit --binary "$SIGNALRIG_MODEL" --data /tmp/signalrig-review-prep/data_holdout.json --work /tmp/signalrig-review-holdout --seed 42
+swift run -c release --skip-build fitengine-cli artifacts --full-dir /tmp/signalrig-review-full --holdout-dir /tmp/signalrig-review-holdout --meta /tmp/signalrig-review-prep/panel_meta.json --drop Tests/Fixtures/foreign_drop --out /tmp/signalrig-review-artifacts --unavailable-recovery --seed 42
+```
+
+Inspect `diagnostics.json` and its gates. Artifact creation is not a passing model. The foreign fixture is synthetic but has no supplied ground-truth parameter key; it cannot establish parameter recovery.
+
+To reproduce the observed UI smoke run, use `Tests/Fixtures/ui_smoke_drop` in the same prep/full-fit/holdout/artifacts sequence with seed `1651133753` and separate output directories. Its KPI is generated separately from media spend, so a predictive pass is not recovered-media-effect evidence. The foreign run used seed `871717982`. Exact input fingerprints are in `SAMPLE_RESULTS.json`.
+
+For the committed planted fixture:
+
+```bash
+swift run -c release --skip-build fitengine-cli e2e --drop Tests/Fixtures/planted_drop --truth Tests/Fixtures/planted_truth.json --binary "$SIGNALRIG_MODEL" --work /tmp/signalrig-review-planted --seed 42
+```
+
+The planted generator uses the same model family. It is an implementation check, not independent validation. Historical 24/24 interval coverage and approximately 2.6% holdout error came from earlier synthetic runs and must not be represented as results for this candidate or for real customer data. Intervals can cover truth while being too wide to support a useful decision.
 
 ## Data contract
 
-Weekly CSVs: `kpi.csv` (date_week, geo, kpi_name, kpi_value) and
-`paid_media.csv` (date_week, channel, spend) required; `controls.csv` and
-`non_media_treatments.csv` optional. Multiple geos aggregate to national
-totals with an explicit warning. Fitting requires at least 52 distinct weeks;
-the holdout refit always runs.
+Required: `kpi.csv` with `date_week,geo,kpi_name,kpi_value`, and `paid_media.csv` with `date_week,channel,spend`. At least 52 consecutive weekly observations are required. `controls.csv` and `non_media_treatments.csv` are optional. `organic_owned.csv` is validated by the app but not used by the current model. The app expects canonical CSVs; arbitrary platform-export mapping, Excel/JSON import, and daily aggregation are not implemented.
 
-## Honest scope
+## Scope and license
 
-- All accuracy figures in this repo's tests are from synthetic fixtures with
-  planted ground truth. They grade the pipeline, not your data.
-- Parameter recovery is only possible when truth is known, which means
-  synthetic data. On real data the honest evidence is the holdout grade, and
-  the artifact emitters say so explicitly.
-- The channel registry and prior CPL table are a sample planning library.
-  Bring your own priors for your own vertical.
+The channel CPL priors are bundled sample defaults, including a common fallback for unknown channels. They are not calibrated to another business or KPI. Prior sensitivity, omitted-variable bias, channel identifiability, simple forecasting baselines, interval calibration, and an independently reviewed real account remain open.
 
-## Provenance
-
-Extracted from the SignalRig macOS app as a clean-room export. The Swift port
-was validated line-by-line against a PyMC reference implementation: identical
-draws produce identical business metrics to machine precision, and full fits
-agree on recovery (24/24 planted parameters) and holdout error (2.6% vs 2.64%
-MAPE) within sampling noise.
-
-## The instrument
-
-This engine is the core of **SignalRig for Mac**: the finished instrument built
-on it, with the data validator, the interactive views, and the graded exam
-presented so a room understands it. Fully offline, $249 once, no subscription.
-[signalrig.co](https://signalrig.co) | [Download on the Mac App Store](https://apps.apple.com/us/app/signalrig/id6806416897?mt=12)
-
-Buying the app is what funds this open-source work.
-
-## Who makes this
-
-Built by [Joey Arcisz](https://joeyarcisz.com) at
-[Geared Like A Machine](https://gearedlikeamachine.com), an independent studio
-in Texas that builds production and measurement tooling. If your team wants
-help standing up honest media measurement, say hello:
-[joey@gearedlikeamachine.com](mailto:joey@gearedlikeamachine.com).
-
-## License
-
-Apache-2.0. See [LICENSE](LICENSE).
+The public core is distributed under Apache-2.0; see `LICENSE`. This package preserves that existing license. It makes no determination about private contracts or rights outside these supplied technical files.
