@@ -82,7 +82,9 @@ public enum ArtifactsPipeline {
         let viewHoldout = PosteriorView(fit: fitHoldout, meta: holdoutMeta, seed: UInt64(seed))
 
         let diagnosticsArt = try ArtifactDiagnosticsBuilder.build(fitFull: fitFull, fitHoldout: fitHoldout, viewFull: viewFull, viewHoldout: viewHoldout, holdoutWeeks: meta.holdoutWeeks)
-        let channelsArt = ChannelsArtifactBuilder.build(view: viewFull)
+        // The full fit's receipt carries each channel's prior center, so
+        // channels.json can say how far the posterior moved from it.
+        let channelsArt = ChannelsArtifactBuilder.build(view: viewFull, priors: meta.fullPreprocessing?.priorCenters)
         let curvesArt = CurvesArtifactBuilder.build(view: viewFull)
         let scenariosArt = ScenariosArtifactBuilder.build(view: viewFull)
 

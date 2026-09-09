@@ -23,6 +23,24 @@ public struct Panel {
     // don't care are free to ignore the list.
     public let warnings: [String]
 
+    // Per-channel platform-reported cost per outcome from the optional
+    // platform_costs.csv (nil where the package supplied none). Used only
+    // as that channel's prior center; the fit is free to disagree.
+    public let reportedCPL: [Double?]
+
+    public init(dates: [String], channels: [String], X: [[Double]], y: [Double], rawControls: [[Double]],
+                controlNames: [String], kpiName: String, warnings: [String], reportedCPL: [Double?]? = nil) {
+        self.dates = dates
+        self.channels = channels
+        self.X = X
+        self.y = y
+        self.rawControls = rawControls
+        self.controlNames = controlNames
+        self.kpiName = kpiName
+        self.warnings = warnings
+        self.reportedCPL = reportedCPL ?? [Double?](repeating: nil, count: channels.count)
+    }
+
     public var T: Int { dates.count }
     public var C: Int { channels.count }
     public var K: Int { controlNames.count }
@@ -90,6 +108,9 @@ public enum PanelLoadError: Error, CustomStringConvertible {
     // (frozen design decision 1: there is no more "skip the holdout"
     // escape hatch for a short panel).
     case insufficientWeeks(weeks: Int, minimum: Int)
+    case nonPositiveValue(file: String, row: Int, column: String, text: String)
+    case missingColumn(file: String, column: String)
+    case duplicateChannelCost(file: String, channel: String)
 
     public var description: String {
         switch self {
@@ -117,6 +138,12 @@ public enum PanelLoadError: Error, CustomStringConvertible {
         case .insufficientWeeks(let weeks, let minimum):
             return "panel has \(weeks) week(s) of data; fitting requires at least \(minimum) weeks " +
                    "(the holdout refit always reserves the trailing \(ArtifactConstants.holdoutWeeks) weeks)"
+        case .nonPositiveValue(let file, let row, let column, let text):
+            return "\(file): row \(row), column \"\(column)\": expected a number greater than zero, got \"\(text)\""
+        case .missingColumn(let file, let column):
+            return "\(file): missing required column \"\(column)\""
+        case .duplicateChannelCost(let file, let channel):
+            return "\(file): channel \"\(channel)\" appears more than once"
         }
     }
 }
@@ -294,8 +321,54 @@ public enum PanelLoader {
             }
         }
 
+        // Optional platform_costs.csv: one row per channel, the cost per
+        // outcome the platform itself reports. It becomes that channel's
+        // prior center (PanelPreprocessing.priorCenters). Channels the
+        // package does not spend on are noted and ignored; malformed,
+        // missing, zero or negative costs fail closed like every other
+        // numeric field.
+        let reportedCPL = try loadReportedCosts(dir: dir, channels: channels, warnings: &warnings)
+
         return Panel(dates: dates, channels: channels, X: X, y: y, rawControls: rawControls, controlNames: controlNames,
-                     kpiName: kpiName, warnings: warnings)
+                     kpiName: kpiName, warnings: warnings, reportedCPL: reportedCPL)
+    }
+
+    public static let platformCostsFile = "platform_costs.csv"
+    public static let reportedCostColumn = "reported_cost_per_outcome"
+
+    static func loadReportedCosts(dir: URL, channels: [String], warnings: inout [String]) throws -> [Double?] {
+        var out = [Double?](repeating: nil, count: channels.count)
+        let path = dir.appendingPathComponent(platformCostsFile).path
+        guard FileManager.default.fileExists(atPath: path) else { return out }
+        let table = try CSVReader.read(path: path)
+        guard table.header.contains("channel") else {
+            throw PanelLoadError.missingColumn(file: platformCostsFile, column: "channel")
+        }
+        guard table.header.contains(reportedCostColumn) else {
+            throw PanelLoadError.missingColumn(file: platformCostsFile, column: reportedCostColumn)
+        }
+        var index: [String: Int] = [:]
+        for (i, key) in channels.enumerated() { index[key] = i }
+        var seen = Set<String>()
+        var unknown: [String] = []
+        for (rowIdx, r) in table.rows.enumerated() {
+            guard let key = r["channel"]?.trimmingCharacters(in: .whitespaces), !key.isEmpty else { continue }
+            let value = try parseRequiredDouble(r[reportedCostColumn], file: platformCostsFile, row: rowIdx + 1, column: reportedCostColumn)
+            guard value > 0 else {
+                throw PanelLoadError.nonPositiveValue(file: platformCostsFile, row: rowIdx + 1, column: reportedCostColumn, text: r[reportedCostColumn] ?? "")
+            }
+            guard !seen.contains(key) else { throw PanelLoadError.duplicateChannelCost(file: platformCostsFile, channel: key) }
+            seen.insert(key)
+            if let i = index[key] {
+                out[i] = value
+            } else {
+                unknown.append(key)
+            }
+        }
+        if !unknown.isEmpty {
+            warnings.append("\(platformCostsFile) names \(unknown.count) channel(s) with no spend in paid_media.csv; ignored: \(unknown.sorted().joined(separator: ", "))")
+        }
+        return out
     }
 
     // Reads just kpi.csv's kpi_name column, for callers (the artifacts

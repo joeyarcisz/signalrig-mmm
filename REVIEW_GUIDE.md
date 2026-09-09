@@ -17,7 +17,7 @@ The companion native candidate uses a source-built Stan helper and exports diagn
 
 - **Synthetic versus real:** planted fixtures use the same model family as the fit. The foreign fixture is also synthetic. The passing UI smoke fixture generates KPI separately from media spend; use it to probe false media attribution. Historical recovery and holdout figures are not independent client validation or results for this candidate. Wide intervals can cover truth without supporting a useful decision.
 - **Inputs:** canonical weekly CSVs are required. Arbitrary platform-export mapping, Excel/JSON ingestion, and daily aggregation are not implemented.
-- **Priors:** the channel-coefficient prior center is a spend-proportional blended cost per outcome learned from the training window (media assumed to drive half of the outcome); it is not a per-channel calibration, and the half-share assumption and prior width deserve sensitivity review.
+- **Priors:** the channel-coefficient prior center is the platform-reported cost per outcome when `platform_costs.csv` supplies one, otherwise a spend-proportional blended cost learned from the training window (media assumed to drive half of the outcome). `channels.json` flags channels whose posterior barely moved from that center (`prior.dominated`); the half-share assumption and the prior width deserve sensitivity review.
 - **Coverage gaps:** 52 weeks leaves only 40 training weeks for a model with annual seasonality. Missing control cells are filled with zero. Future-only channels or controls can remain prior-driven.
 - **Holdout:** future spend and controls remain known inputs. This is conditional outcome prediction, not an unconditional forecast or proof of causal lift.
 

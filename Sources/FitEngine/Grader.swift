@@ -95,10 +95,21 @@ public enum Grader {
               let betaCenter = numbers(value["beta_center"]) else {
             throw GraderError.invalidMeta(path)
         }
+        // reported_cpl is per channel, null where the package gave none; a
+        // receipt written before the field existed reads as all-null.
+        var reportedCPL = [Double?](repeating: nil, count: refSpend.count)
+        if let raw = value["reported_cpl"]?.asArray {
+            guard raw.count == refSpend.count else { throw GraderError.invalidMeta(path) }
+            for (i, item) in raw.enumerated() {
+                if case .null = item { continue }
+                guard let number = finiteNumber(item), number > 0 else { throw GraderError.invalidMeta(path) }
+                reportedCPL[i] = number
+            }
+        }
         let preprocessing = PanelPreprocessing(
             observedWeeks: observedWeeks, xScale: xScale, yScale: yScale, refSpend: refSpend,
             controlNames: controlNames, controlMean: controlMean, controlStd: controlStd,
-            referenceMeanKPI: referenceMeanKPI
+            referenceMeanKPI: referenceMeanKPI, reportedCPL: reportedCPL
         )
         // The stored prior must be exactly the one this receipt's own window implies.
         guard zip(priorCPL, preprocessing.priorCPL).allSatisfy({ actual, expected in

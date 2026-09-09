@@ -11,7 +11,7 @@ public struct PanelPreprocessing {
     // drive (one half). Every channel shares that blended center, so the data
     // decides which channels are cheaper or dearer; no channel-name lookup and
     // no bundled per-channel default can anchor the answer.
-    public static let priorSource = "Spend-proportional blended CPL from the training window; media assumed to drive half of the outcome"
+    public static let priorSource = "Per channel: the package's platform-reported cost when supplied, otherwise a spend-proportional blended CPL from the training window (media assumed to drive half of the outcome)"
     public static let assumedMediaShareOfOutcome = 0.5
     public let observedWeeks: Int
     public let xScale: [Double]
@@ -21,6 +21,45 @@ public struct PanelPreprocessing {
     public let controlMean: [Double]
     public let controlStd: [Double]
     public let referenceMeanKPI: Double
+    // Platform-reported cost per outcome per channel (nil = not supplied).
+    public let reportedCPL: [Double?]
+
+    public init(observedWeeks: Int, xScale: [Double], yScale: Double, refSpend: [Double],
+                controlNames: [String], controlMean: [Double], controlStd: [Double],
+                referenceMeanKPI: Double, reportedCPL: [Double?]? = nil) {
+        self.observedWeeks = observedWeeks
+        self.xScale = xScale
+        self.yScale = yScale
+        self.refSpend = refSpend
+        self.controlNames = controlNames
+        self.controlMean = controlMean
+        self.controlStd = controlStd
+        self.referenceMeanKPI = referenceMeanKPI
+        self.reportedCPL = reportedCPL ?? [Double?](repeating: nil, count: refSpend.count)
+    }
+
+    public enum PriorSource: String {
+        case reported   // the package's own platform_costs.csv row for this channel
+        case blended    // the spend-proportional blended center
+    }
+
+    public struct PriorCenter {
+        public let cpl: Double
+        public let source: PriorSource
+    }
+
+    // One prior center per channel. This is the single place the prior is
+    // decided; the artifacts pipeline reads the same receipt to report how
+    // far each posterior moved from it.
+    public var priorCenters: [PriorCenter] {
+        let blended = Self.blendedPriorCPL(refSpend: refSpend, referenceMeanKPI: referenceMeanKPI)
+        return refSpend.indices.map { c in
+            if c < reportedCPL.count, let reported = reportedCPL[c], reported.isFinite, reported > 0 {
+                return PriorCenter(cpl: reported, source: .reported)
+            }
+            return PriorCenter(cpl: blended, source: .blended)
+        }
+    }
 
     // One blended prior CPL for every channel, derived from the reference window.
     public static func blendedPriorCPL(refSpend: [Double], referenceMeanKPI: Double) -> Double {
@@ -29,10 +68,7 @@ public struct PanelPreprocessing {
         return max(totalSpend / mediaOutcome, 1e-9)
     }
 
-    public var priorCPL: [Double] {
-        let blended = Self.blendedPriorCPL(refSpend: refSpend, referenceMeanKPI: referenceMeanKPI)
-        return refSpend.map { _ in blended }
-    }
+    public var priorCPL: [Double] { priorCenters.map { $0.cpl } }
 
     public var betaCenter: [Double] {
         refSpend.indices.map { c in max((refSpend[c] / priorCPL[c] / 0.5) / yScale, 1e-4) }
@@ -67,7 +103,7 @@ public struct PanelPreprocessing {
         return PanelPreprocessing(
             observedWeeks: observedWeeks, xScale: xScale, yScale: yScale, refSpend: refSpend,
             controlNames: panel.controlNames, controlMean: controlMean, controlStd: controlStd,
-            referenceMeanKPI: referenceMeanKPI
+            referenceMeanKPI: referenceMeanKPI, reportedCPL: panel.reportedCPL
         )
     }
 
@@ -91,7 +127,9 @@ public struct PanelPreprocessing {
             "control_mean": .doubleArray(controlMean),
             "control_std": .doubleArray(controlStd),
             "reference_mean_kpi": .double(referenceMeanKPI),
+            "reported_cpl": .array(reportedCPL.map { $0.map { JSONValue.double($0) } ?? .null }),
             "prior_cpl": .doubleArray(priorCPL),
+            "prior_cpl_source": .stringArray(priorCenters.map { $0.source.rawValue }),
             "prior_source": .string(Self.priorSource),
             "beta_center": .doubleArray(betaCenter),
         ])

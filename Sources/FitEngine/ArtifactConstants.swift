@@ -12,8 +12,15 @@ public enum ArtifactConstants {
     public static let disclosure = "Synthetic twin calibrated to the bundled sample brief. Drop a real export in Data Drop-In and this exact pipeline retrains on it."
 
     // engine/artifacts/export.py CONTRACT_FILES, fixed hashing order.
+    // platform_costs.csv is appended last so packages without it keep the
+    // fingerprint they always had (absent files are skipped).
     public static let contractFiles = ["kpi.csv", "paid_media.csv", "organic_owned.csv",
-                                        "non_media_treatments.csv", "controls.csv"]
+                                        "non_media_treatments.csv", "controls.csv", "platform_costs.csv"]
+
+    // Mirrors stan/mmm.stan: channel_beta ~ lognormal(log(beta_center), 0.75).
+    // The prior-dominated diagnostic in channels.json measures how much the
+    // posterior cost interval narrowed relative to this prior width.
+    public static let channelBetaPriorLogSD = 0.75
 
     // engine_version in manifest.json. The task packet directs
     // engine_version/packages to become this package's own identity

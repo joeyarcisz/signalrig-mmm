@@ -12,6 +12,27 @@ public struct ConfidenceInfo {
     }
 }
 
+// How far a channel's fitted cost moved from its prior. shrinkage is
+// 1 - (posterior 90% log-width / prior 90% log-width), clamped to 0...1:
+// 0 means the data did not narrow the interval at all, 1 means the data
+// fixed it. dominated is true when the interval barely narrowed AND the
+// median stayed near the center: the number on screen is mostly the prior.
+public struct PriorDiagnostic {
+    public let centerCpl: Double
+    public let source: String       // "reported" or "blended"
+    public let shrinkage: Double
+    public let dominated: Bool
+
+    public func toJSON() -> JSONValue {
+        .object([
+            "center_cpl": .double(centerCpl),
+            "source": .string(source),
+            "shrinkage": .double(shrinkage),
+            "dominated": .bool(dominated),
+        ])
+    }
+}
+
 public struct ChannelSummary {
     public let key: String
     public let label: String
@@ -26,9 +47,10 @@ public struct ChannelSummary {
     public let adstockHalfLifeWeeks: Double
     public let confidence: ConfidenceInfo
     public let decisionHint: String
+    public var prior: PriorDiagnostic? = nil
 
     public func toJSON() -> JSONValue {
-        .object([
+        var object: [String: JSONValue] = [
             "key": .string(key),
             "label": .string(label),
             "platform": .string(platform),
@@ -42,7 +64,9 @@ public struct ChannelSummary {
             "adstock_half_life_weeks": .double(adstockHalfLifeWeeks),
             "confidence": confidence.toJSON(),
             "decision_hint": .string(decisionHint),
-        ])
+        ]
+        if let prior = prior { object["prior"] = prior.toJSON() }
+        return .object(object)
     }
 }
 
@@ -91,7 +115,24 @@ public enum ChannelsArtifactBuilder {
         }
     }
 
-    public static func build(view: PosteriorView) -> ChannelsArtifact {
+    // Prior-dominance test for one channel. The prior on channel_beta is
+    // lognormal with log-sd ArtifactConstants.channelBetaPriorLogSD, so its
+    // 90% interval spans 2 * 1.645 * sd in log space; the posterior cost
+    // interval is compared against that width. Thresholds: less than a
+    // quarter of the prior width removed, and a median within a factor of
+    // about 1.65 (0.5 in log space) of the center.
+    public static func priorDiagnostic(cplIv: IntervalResult, center: PanelPreprocessing.PriorCenter) -> PriorDiagnostic {
+        let priorLogWidth = 2.0 * 1.645 * ArtifactConstants.channelBetaPriorLogSD
+        let lo = max(cplIv.lo, 1e-9), hi = max(cplIv.hi, lo), med = max(cplIv.med, 1e-9)
+        let posteriorLogWidth = log(hi / lo)
+        let shrinkage = min(max(1.0 - posteriorLogWidth / priorLogWidth, 0.0), 1.0)
+        let drift = abs(log(med / max(center.cpl, 1e-9)))
+        let dominated = shrinkage < 0.25 && drift < 0.5
+        return PriorDiagnostic(centerCpl: roundTo(center.cpl, 2), source: center.source.rawValue,
+                               shrinkage: roundTo(shrinkage, 3), dominated: dominated)
+    }
+
+    public static func build(view: PosteriorView, priors: [PanelPreprocessing.PriorCenter]? = nil) -> ChannelsArtifact {
         let R = view.refSpend
         let contrib = view.weeklyContributions()  // (S, T, C)
         let tailLen = min(52, view.T)
@@ -156,7 +197,8 @@ public enum ChannelsArtifactBuilder {
                 saturationPct: roundTo(satPct, 1),
                 adstockHalfLifeWeeks: roundTo(Percentile.percentile(halfLife, 50), 2),
                 confidence: confidence,
-                decisionHint: hint
+                decisionHint: hint,
+                prior: priors.map { priorDiagnostic(cplIv: cplIv, center: $0[ci]) }
             ))
         }
 
