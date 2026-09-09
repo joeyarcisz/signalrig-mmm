@@ -90,15 +90,21 @@ public enum Grader {
               let controlMean = numbers(value["control_mean"]), let controlStd = numbers(value["control_std"]),
               let priorCPL = numbers(value["prior_cpl"]), priorCPL.count == refSpend.count,
               priorCPL.allSatisfy({ $0 > 0 }), yScale > 0,
+              let referenceMeanKPI = finiteNumber(value["reference_mean_kpi"]), referenceMeanKPI > 0,
               value["prior_source"]?.asString == PanelPreprocessing.priorSource,
               let betaCenter = numbers(value["beta_center"]) else {
             throw GraderError.invalidMeta(path)
         }
         let preprocessing = PanelPreprocessing(
             observedWeeks: observedWeeks, xScale: xScale, yScale: yScale, refSpend: refSpend,
-            controlNames: controlNames, controlMean: controlMean, controlStd: controlStd, priorCPL: priorCPL
+            controlNames: controlNames, controlMean: controlMean, controlStd: controlStd,
+            referenceMeanKPI: referenceMeanKPI
         )
-        guard betaCenter.count == priorCPL.count,
+        // The stored prior must be exactly the one this receipt's own window implies.
+        guard zip(priorCPL, preprocessing.priorCPL).allSatisfy({ actual, expected in
+                  expected.isFinite && abs(actual - expected) <= max(1, abs(expected)) * 1e-12
+              }),
+              betaCenter.count == priorCPL.count,
               zip(betaCenter, preprocessing.betaCenter).allSatisfy({ actual, expected in
                   expected.isFinite && abs(actual - expected) <= max(1, abs(expected)) * 1e-12
               }) else {
@@ -161,7 +167,8 @@ public enum Grader {
     private static func validatePreprocessing(_ preprocessing: PanelPreprocessing, meta: PanelMeta, fit: StanFit) throws {
         guard preprocessing.observedWeeks > 0, preprocessing.observedWeeks <= fit.T,
               preprocessing.xScale.count == fit.C, preprocessing.refSpend.count == fit.C,
-              preprocessing.priorCPL == meta.channels.map({ ChannelRegistry.priorCPL(forKey: $0) }),
+              preprocessing.referenceMeanKPI.isFinite, preprocessing.referenceMeanKPI > 0,
+              preprocessing.priorCPL.allSatisfy({ $0.isFinite && $0 > 0 }),
               preprocessing.controlNames.count == fit.K, Set(preprocessing.controlNames).count == fit.K,
               preprocessing.controlMean.count == fit.K, preprocessing.controlStd.count == fit.K,
               preprocessing.controlMean.allSatisfy({ $0.isFinite }),

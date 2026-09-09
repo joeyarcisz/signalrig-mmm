@@ -152,9 +152,17 @@ final class HoldoutPreprocessingTests: XCTestCase {
         XCTAssertEqual(preprocessing.xScale[0], 167)
         XCTAssertEqual(preprocessing.yScale, 117)
         XCTAssertEqual(preprocessing.refSpend[0], 141.5)
-        XCTAssertEqual(preprocessing.priorCPL, [181])
-        XCTAssertEqual(built.holdout.betaCenter[0], 2 * 141.5 / (181 * 117), accuracy: 1e-12)
-        XCTAssertEqual(preprocessing.toJSON()["prior_source"]?.asString, "Bundled sample CPL defaults; not client-calibrated")
+        // The prior center is learned from the same training-only window: the
+        // blended CPL is total reference spend over half of the mean outcome.
+        let source = panel(weeks: 80)
+        let meanKPI = (16..<68).reduce(0.0) { $0 + source.y[$1] } / 52.0
+        XCTAssertEqual(preprocessing.referenceMeanKPI, meanKPI, accuracy: 1e-9)
+        let blended = 141.5 / (0.5 * meanKPI)
+        XCTAssertEqual(preprocessing.priorCPL.count, 1)
+        XCTAssertEqual(preprocessing.priorCPL[0], blended, accuracy: 1e-9)
+        XCTAssertEqual(built.holdout.betaCenter[0], 2 * 141.5 / (blended * 117), accuracy: 1e-9)
+        XCTAssertEqual(preprocessing.toJSON()["prior_source"]?.asString, PanelPreprocessing.priorSource)
+        XCTAssertEqual(preprocessing.toJSON()["reference_mean_kpi"]?.asDouble, meanKPI)
         XCTAssertEqual(preprocessing.toJSON()["beta_center"]?.asDoubleArray, built.holdout.betaCenter)
     }
 
@@ -264,6 +272,8 @@ final class HoldoutPreprocessingTests: XCTestCase {
                 ("control_mean", JSONValue.array([.string("missing"), .double(3)])),
                 ("observed_weeks", .double(52.5)),
                 ("prior_cpl", .array([.double(0)])),
+                ("prior_cpl", .array([.double(181)])),
+                ("reference_mean_kpi", .double(0)),
                 ("beta_center", .array([.double(9_999)])),
             ] {
                 var object = try XCTUnwrap(built.meta.toJSON().asObject)

@@ -4,8 +4,15 @@ import Foundation
 // The same transform can then be applied to later, known spend and controls
 // for a conditional holdout forecast without changing the training model.
 public struct PanelPreprocessing {
-    public static let version = 1
-    public static let priorSource = "Bundled sample CPL defaults; not client-calibrated"
+    public static let version = 2
+    // The channel-coefficient prior is centered on a spend-proportional cost
+    // per outcome learned from the training window itself: total reference
+    // spend divided by the share of the mean outcome that media is assumed to
+    // drive (one half). Every channel shares that blended center, so the data
+    // decides which channels are cheaper or dearer; no channel-name lookup and
+    // no bundled per-channel default can anchor the answer.
+    public static let priorSource = "Spend-proportional blended CPL from the training window; media assumed to drive half of the outcome"
+    public static let assumedMediaShareOfOutcome = 0.5
     public let observedWeeks: Int
     public let xScale: [Double]
     public let yScale: Double
@@ -13,7 +20,19 @@ public struct PanelPreprocessing {
     public let controlNames: [String]
     public let controlMean: [Double]
     public let controlStd: [Double]
-    public let priorCPL: [Double]
+    public let referenceMeanKPI: Double
+
+    // One blended prior CPL for every channel, derived from the reference window.
+    public static func blendedPriorCPL(refSpend: [Double], referenceMeanKPI: Double) -> Double {
+        let totalSpend = refSpend.reduce(0.0, +)
+        let mediaOutcome = max(referenceMeanKPI, 1e-9) * assumedMediaShareOfOutcome
+        return max(totalSpend / mediaOutcome, 1e-9)
+    }
+
+    public var priorCPL: [Double] {
+        let blended = Self.blendedPriorCPL(refSpend: refSpend, referenceMeanKPI: referenceMeanKPI)
+        return refSpend.map { _ in blended }
+    }
 
     public var betaCenter: [Double] {
         refSpend.indices.map { c in max((refSpend[c] / priorCPL[c] / 0.5) / yScale, 1e-4) }
@@ -31,6 +50,8 @@ public struct PanelPreprocessing {
             let spend = (referenceStart..<observedWeeks).reduce(0.0) { $0 + panel.X[$1][c] }
             return max(spend / Double(referenceWeeks), 1e-9)
         }
+        let referenceMeanKPI = max(
+            (referenceStart..<observedWeeks).reduce(0.0) { $0 + panel.y[$1] } / Double(referenceWeeks), 1e-9)
 
         var controlMean = [Double](repeating: 0, count: panel.K)
         var controlStd = [Double](repeating: 0, count: panel.K)
@@ -46,7 +67,7 @@ public struct PanelPreprocessing {
         return PanelPreprocessing(
             observedWeeks: observedWeeks, xScale: xScale, yScale: yScale, refSpend: refSpend,
             controlNames: panel.controlNames, controlMean: controlMean, controlStd: controlStd,
-            priorCPL: panel.channels.map { ChannelRegistry.priorCPL(forKey: $0) }
+            referenceMeanKPI: referenceMeanKPI
         )
     }
 
@@ -69,6 +90,7 @@ public struct PanelPreprocessing {
             "control_names": .stringArray(controlNames),
             "control_mean": .doubleArray(controlMean),
             "control_std": .doubleArray(controlStd),
+            "reference_mean_kpi": .double(referenceMeanKPI),
             "prior_cpl": .doubleArray(priorCPL),
             "prior_source": .string(Self.priorSource),
             "beta_center": .doubleArray(betaCenter),

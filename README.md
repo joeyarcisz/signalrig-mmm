@@ -66,6 +66,6 @@ Required: `kpi.csv` with `date_week,geo,kpi_name,kpi_value`, and `paid_media.csv
 
 ## Scope and license
 
-The channel CPL priors are bundled sample defaults, including a common fallback for unknown channels. They are not calibrated to another business or KPI. Prior sensitivity, omitted-variable bias, channel identifiability, simple forecasting baselines, interval calibration, and an independently reviewed real account remain open.
+Each channel's coefficient prior is centered on a blended cost per outcome learned from the training window: total reference spend over the half of the mean outcome that media is assumed to drive, the same center for every channel. Channel names no longer select a prior. Earlier candidates anchored any unrecognized channel name at a bundled $181 default, and a September 2026 recovery sweep showed that anchor dominating the fitted cost for low-signal channels. The half-share assumption and the prior width (log-normal, 0.75) are product choices that remain open to review. Prior sensitivity, omitted-variable bias, channel identifiability, simple forecasting baselines, interval calibration, and an independently reviewed real account remain open.
 
 The public core is distributed under Apache-2.0; see `LICENSE`. This package preserves that existing license. It makes no determination about private contracts or rights outside these supplied technical files.

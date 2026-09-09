@@ -8,7 +8,7 @@ import Foundation
 //
 // This is a DISPLAY registry, not a validity gate: PanelLoader accepts any
 // channel key it finds in a package's paid_media.csv, known or not (see
-// ChannelRegistry.label(forKey:)/platform(forKey:)/priorCPL(forKey:) below
+// ChannelRegistry.label(forKey:)/platform(forKey:) below
 // for the fallback rules an unrecognized channel gets). Real client
 // packages routinely use channels this list has never heard of.
 public enum ChannelRegistry {
@@ -23,29 +23,13 @@ public enum ChannelRegistry {
         "mntn_ctv",
     ]
 
-    public static let priorCPL: [String: Double] = [
-        "google_search": 64,
-        "meta": 48,
-        "tiktok": 62,
-        "military_publishers": 95,
-        "youtube": 267,
-        "programmatic_display": 694,
-        "streaming_audio": 1000,
-        "mntn_ctv": 2525,
-    ]
-
-    // Precomputed median of the 8 values above, matching Python's
-    // np.median(list(PRIOR_CPL.values())): sorted [48,62,64,95,267,694,1000,2525],
-    // even count, median = (95 + 267) / 2 = 181.0. Also the prior CPL for
-    // any channel outside this registry (see priorCPL(forKey:) below).
-    public static let fallbackCPL: Double = 181.0
-
     public static let lMax = 8
 
     // T-floor and holdout-window constants now live in ArtifactConstants
     // (see ArtifactConstants.minimumWeeks/holdoutWeeks) so both are defined
-    // in exactly one place; this registry only owns channel display/prior
-    // metadata.
+    // in exactly one place; this registry only owns channel display
+    // metadata. The channel-coefficient prior center is learned from the
+    // panel (see StanDataBuilder.blendedPriorCPL), never looked up by name.
 }
 
 // Label/platform registry mirroring engine/config.py CHANNELS (label,
@@ -105,10 +89,4 @@ public extension ChannelRegistry {
         specByKey[key]?.platform ?? ""
     }
 
-    // Prior CPL for a channel key: the registered prior if known, otherwise
-    // the fallback median (same value Python's own PRIOR_CPL.get(key,
-    // fallback) would use).
-    static func priorCPL(forKey key: String) -> Double {
-        priorCPL[key] ?? fallbackCPL
-    }
 }
