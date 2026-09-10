@@ -44,6 +44,10 @@ What motivated the change: a 16-fit recovery sweep (the planted generator trunca
 
 What the change does not do: for this fixture the blended center evaluates to about $182, so the sweep rerun on the changed engine is nearly unchanged on seven of eight channels. Channels whose contribution is below the noise floor remain prior-dominated under any uniform center, and one high-spend, low-variance channel is recovered with a narrow, wrong cost interval in every run, consistent with its contribution trading off against the intercept. Informative per-channel prior centers supplied with the data, and a diagnostic that reports when a channel's posterior has not moved from its prior, are the open items this evidence points to. The sweep scripts and raw results live outside this package.
 
+## Sampler acceptance target, 2026-09-10
+
+A platform-reported-cost fit run through the Mac app's engine showed 7 divergences in 4,000 draws. The cause was not the priors: that engine had never passed an acceptance target to CmdStan and was sampling at the 0.8 default, while this package runs at 0.97. The app engine now uses 0.97 as well, and both engines record the target the chains actually ran with in `diagnostics.json` (`adapt_delta`, parsed from CmdStan's output header) so a receipt can no longer silently reflect a different setting. Verification on the planted 104-week fixture with reported costs set 20% below truth (seeds 42, 7, 99) and 50% below truth (seed 42), full fits at 0.97: 0 divergences in each, maximum tree depth 9, recovery 23 of 24 in each.
+
 ## Interpretation limits
 
 Numerical approval does not establish causal identification, practitioner acceptance, tail ESS, BFMI/energy or tree-depth acceptance, SBC across seeds, robustness to misspecification, forecasting-baseline performance, or independent real-account value. The blended spend-proportional prior center is learned from the training window; it is not a per-channel calibration. These remain priority review questions.

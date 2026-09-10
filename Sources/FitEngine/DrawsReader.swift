@@ -7,6 +7,20 @@ public struct ChainDraws {
     public let header: [String]
     public let columns: [String: [Double]]   // column name -> draws, in file order
     public let nDraws: Int
+    // The sampler's acceptance target, read from CmdStan's own comment
+    // header ("#       delta = 0.97"), so a receipt records what actually
+    // ran rather than what the caller meant to pass. nil when absent.
+    public var adaptDelta: Double? = nil
+
+    static func parseAdaptDelta(commentLine: String) -> Double? {
+        // Matches "#       delta = 0.97" and "#       delta = 0.8 (Default)".
+        let trimmed = commentLine.dropFirst().trimmingCharacters(in: .whitespaces)
+        guard trimmed.hasPrefix("delta =") else { return nil }
+        let rest = trimmed.dropFirst("delta =".count).trimmingCharacters(in: .whitespaces)
+        let token = rest.split(separator: " ").first.map(String.init) ?? ""
+        guard let value = Double(token), value.isFinite, value > 0, value < 1 else { return nil }
+        return value
+    }
 }
 
 public enum DrawsReaderError: Error, CustomStringConvertible {
@@ -54,6 +68,14 @@ public struct StanFit {
 
     public var nChains: Int { chains.count }
     public var totalDraws: Int { chains.reduce(0) { $0 + $1.nDraws } }
+
+    // One acceptance target for the whole fit, or nil if any chain lacks
+    // it or the chains disagree.
+    public var adaptDelta: Double? {
+        let values = chains.map { $0.adaptDelta }
+        guard let first = values.first ?? nil, values.allSatisfy({ $0 == first }) else { return nil }
+        return first
+    }
 
     public func stackedColumn(_ name: String) -> [Double] {
         var out: [Double] = []
@@ -127,6 +149,7 @@ public enum DrawsReader {
     }
 
     public static func readChain(path: String) throws -> ChainDraws {
+        var adaptDelta: Double? = nil
         let data = try Data(contentsOf: URL(fileURLWithPath: path))
         guard let content = String(data: data, encoding: .utf8) else {
             throw DrawsReaderError.invalidUTF8(path)
@@ -136,7 +159,11 @@ public enum DrawsReader {
         var draws = 0
         for (offset, rawLine) in content.split(separator: "\n", omittingEmptySubsequences: false).enumerated() {
             let line = rawLine.trimmingCharacters(in: .whitespacesAndNewlines)
-            if line.isEmpty || line.hasPrefix("#") { continue }
+            if line.hasPrefix("#") {
+                if adaptDelta == nil, let value = ChainDraws.parseAdaptDelta(commentLine: line) { adaptDelta = value }
+                continue
+            }
+            if line.isEmpty { continue }
             if header == nil {
                 let names = line.split(separator: ",", omittingEmptySubsequences: false).map {
                     $0.trimmingCharacters(in: .whitespaces)
@@ -167,7 +194,7 @@ public enum DrawsReader {
             throw DrawsReaderError.headerNotFound(path)
         }
         guard draws > 0 else { throw DrawsReaderError.noDraws(path) }
-        return ChainDraws(header: hdr, columns: columns, nDraws: draws)
+        return ChainDraws(header: hdr, columns: columns, nDraws: draws, adaptDelta: adaptDelta)
     }
 
     // Dimensions are inferred from the header (never hardcoded), by finding

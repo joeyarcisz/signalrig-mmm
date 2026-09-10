@@ -55,6 +55,8 @@ public struct DiagnosticsArtifact {
     public let holdout: [SeriesPoint]
     public let gates: Gates
     public let sampler: String
+    // Acceptance target the chains actually ran with (from the CSV header).
+    public var adaptDelta: Double? = nil
     public let draws: Int
     public let chains: Int
 
@@ -72,6 +74,7 @@ public struct DiagnosticsArtifact {
             "holdout": .array(holdout.map { $0.toJSON() }),
             "gates": gates.toJSON(),
             "sampler": .string(sampler),
+            "adapt_delta": adaptDelta.map { JSONValue.double($0) } ?? .null,
             "draws": .int(draws),
             "chains": .int(chains),
         ])
@@ -213,6 +216,7 @@ public enum ArtifactDiagnosticsBuilder {
             holdout: holdoutSeries,
             gates: gates,
             sampler: "NUTS (\(chains) chains)",
+            adaptDelta: fitFull.adaptDelta,
             draws: drawsPerChain,
             chains: chains
         )
