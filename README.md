@@ -144,7 +144,7 @@ For the committed planted fixture:
 swift run -c release --skip-build fitengine-cli e2e --drop Tests/Fixtures/planted_drop --truth Tests/Fixtures/planted_truth.json --binary "$SIGNALRIG_MODEL" --work /tmp/signalrig-review-planted --seed 42
 ```
 
-The planted generator uses the same model family. It is an implementation check, not independent validation. Historical 24/24 interval coverage and approximately 2.6% holdout error came from earlier synthetic runs and must not be represented as results for this candidate or for real customer data. Intervals can cover truth while being too wide to support a useful decision.
+The planted generator uses the same model family. It is an implementation check, not independent validation. The result for the current engine on this fixture is recorded in `CHECKS.md` under the 2026-09-09 prior-center change. Historical 24/24 interval coverage and approximately 2.6% holdout error came from earlier synthetic runs and must not be represented as results for this candidate or for real customer data. Intervals can cover truth while being too wide to support a useful decision.
 
 ## Data contract
 
